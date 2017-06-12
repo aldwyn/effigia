@@ -1,0 +1,91 @@
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'dashboard:index' %}"><i class="fa fa-chevron-circle-right"></i> Effigia</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        {% if user.is_authenticated %}
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li>
+                        <a href="#">Popular</a>
+                    </li>
+                    <li>
+                        <a href="#">Fresh</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Groups &nbsp;<i class="fa fa-caret-down"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{% url 'group:list' %}"><i class="fa fa-chevron-circle-right"></i>&nbsp; Browse Groups</a></li>
+                            <li><a href="{% url 'group:create' %}"><i class="fa fa-plus-square"></i>&nbsp; Create a Group</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Galleries &nbsp;<i class="fa fa-caret-down"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{% url 'gallery:list' %}"><i class="fa fa-chevron-circle-right"></i>&nbsp; Browse Galleries</a></li>
+                            <li><a href="{% url 'gallery:create' %}"><i class="fa fa-plus-square"></i>&nbsp; Create a Gallery</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <form class="navbar-form" role="search">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Search for galleries..." aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                    <li>
+                        <div class="navbar-form">
+                            <a href="{% url 'portfolio:create' %}" class="btn btn-info"><i class="fa fa-cloud-upload"></i> &nbsp;Upload</a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href=""><i class="fa fa-inbox"></i></a>
+                    </li>
+                    <li>
+                        <a href=""><i class="fa fa-bell-o"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">@{{ user.username }} &nbsp;<i class="fa fa-caret-down"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{% url 'accounts:profile' %}"><i class="fa fa-user-circle-o"></i>&nbsp; My Profile</a></li>
+                            <li><a href="#"><i class="fa fa-tags"></i>&nbsp; My Galleries</a></li>
+                            <li><a href="#"><i class="fa fa-tasks"></i>&nbsp; Manage Portfolios</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="fa fa-gears"></i>&nbsp; Account Settings</a></li>
+                            <li><a href="#"><i class="fa fa-sign-out"></i>&nbsp; Log out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        {% else %}
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{% url 'accounts:login' %}">Log in</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'accounts:register' %}">Register</a>
+                    </li>
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>

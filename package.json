@@ -1,0 +1,21 @@
+{
+  "name": "effigia",
+  "version": "1.0.0",
+  "description": "The ultimate photo appreciation gallery",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootswatch": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "html5shiv": "^3.7.3",
+    "jquery": "^3.2.1",
+    "jquery.easing": "^1.4.1",
+    "respond": "^0.9.0"
+  }
+}

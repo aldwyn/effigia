@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-6">
+        <h1 class="page-header">Nature
+            <small>({{ galleries.count }} galleries)</small>
+        </h1>
+    </div>
+    <div class="col-lg-6">
+        <div class="page-header text-right">
+            <a href="{% url 'gallery:create' %}" class="btn btn-warning"><i class="fa fa-plus-square"></i>&nbsp; Create your own</a>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+<!-- Projects Row -->
+<div class="row">
+    {% for gallery in galleries %}
+    <div class="col-md-4 portfolio-item">
+        <a href="{% url 'gallery:item' gallery.slug %}">
+            <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+        </a>
+        <h3>
+            <i class="fa fa-chevron-circle-right"></i>&nbsp;
+            <a href="{% url 'gallery:item' gallery.slug %}">{{ gallery.name }}</a>
+        </h3>
+        <p>Curated {{ gallery.portfolios.count }} portfolios by <a href="">{{ gallery.created_by.get_full_name }}</a></p>
+    </div>
+    {% endfor %}
+</div>
+<!-- /.row -->
+<hr>
+<!-- Pagination -->
+{% include 'partials/pagination.html' %}
+<!-- /.row -->
+{% endblock %}

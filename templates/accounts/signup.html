@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <span class="h3">Create Account</span>
+                <hr class="style-one">
+
+                <form class="form-horizontal" action="{% url 'accounts:register' %}" method="POST">
+                    {% include 'partials/form.html' %}
+                    <div class="row">
+                        <div class="col-md-offset-10 col-md-2 text-right">
+                            <button class="btn btn-primary">Register</button>
+                        </div>
+                    </div>
+                </form>
+
+                {% include 'partials/form_errors.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

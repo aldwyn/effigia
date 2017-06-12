@@ -1,0 +1,7 @@
+node_modules/
+public/media/
+public/static/
+.coverage
+debug.log
+db.sqlite3
+*.pyc
