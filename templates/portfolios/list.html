@@ -3,13 +3,28 @@
 {% block content %}
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Portfolios <small></small></h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="{% url 'gallery:list-by-user' gallery.created_by.username %}">
+                    <em>{{ gallery.created_by.get_full_name }}'s Galleries</em>
+                </a>
+            </li>
+            <li class="active">Gallery: <em>{{ gallery.name }}</em></li>
+        </ol>
+        <h1>{{ portfolio.name }}
+            Portfolios <small>of <a href="{% url 'gallery:item' gallery.slug %}">{{ gallery.name }}</a></small>
+        </h1>
     </div>
+</div>
+
+<div class="row">
     {% for portfolio in portfolios %}
     <div class="col-lg-3 col-md-4 col-xs-6 thumb">
         <a class="thumbnail" href="{% url 'portfolio:item' portfolio.slug %}">
-            <img class="img-responsive" src="http://placehold.it/400x300" alt="">
+            <img class="img-responsive" src="{% if portfolio.image %}/media/{{ portfolio.image }}{% else %}http://placehold.it/200x200{% endif %}" alt="{{ object.name }}" alt="">
             <span class="caption">{{ portfolio.name }}</span>
+            <br>
+            <em><small class="caption">{{ portfolio.created }}</small></em>
         </a>
     </div>
     {% endfor %}

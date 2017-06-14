@@ -6,13 +6,14 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.views.generic import FormView
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.shortcuts import render
 
-from .forms import RegistrationForm
+# from .forms import RegistrationForm
 
 
 class LoginView(BaseLoginView):
@@ -22,7 +23,7 @@ class LoginView(BaseLoginView):
 
 
 class RegistrationView(FormView):
-    form_class = RegistrationForm
+    form_class = UserCreationForm
     template_name = 'accounts/signup.html'
     success_url = reverse_lazy('dashboard:home')
 

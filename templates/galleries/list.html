@@ -3,13 +3,29 @@
 {% block content %}
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Nature
-            <small>({{ galleries.count }} galleries)</small>
+        <h1 class="page-header">{{ page_header }}
+            <small>({{ all_galleries_count }} galleries)</small>
         </h1>
     </div>
     <div class="col-lg-6">
         <div class="page-header text-right">
-            <a href="{% url 'gallery:create' %}" class="btn btn-warning"><i class="fa fa-plus-square"></i>&nbsp; Create your own</a>
+            <div class="row">
+                <div class="col-md-8">
+                    {% if page_header == 'All Galleries' %}
+                    <form role="search">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="Search for galleries..." aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'gallery:create' %}" class="btn btn-warning"><i class="fa fa-plus-square"></i>&nbsp; Create your own</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -29,9 +45,9 @@
     </div>
     {% endfor %}
 </div>
-<!-- /.row -->
-<hr>
 <!-- Pagination -->
-{% include 'partials/pagination.html' %}
+{% if all_galleries_count > 15 %}
+    {% include 'partials/pagination.html' with next_url='gallery:list' %}
+{% endif %}
 <!-- /.row -->
 {% endblock %}

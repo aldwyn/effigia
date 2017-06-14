@@ -37,7 +37,7 @@ class Command(BaseCommand):
 
         self.log_info('Creating {} categories...'.format(len(categories)))
         for c in categories:
-            obj, created = Category.objects.get_or_create(name=c)
+            obj, created = Category.objects.get_or_create(name=c, slug=slugify(c))
             self.log_result(c, not created)
         categories = Category.objects.all()
 
@@ -66,9 +66,12 @@ class Command(BaseCommand):
             for i in xrange(default_gallery_count):
                 gallery = GalleryFactory.create()
                 gallery.created_by = random.choice(users)
+                gallery.category = random.choice(categories)
                 gallery.save()
                 gallery.slug = '{}-{}'.format(slugify(gallery.name), gallery.pk)
                 gallery.save()
+                for j in xrange(random.randint(1, len(users))):
+                    gallery.likers.add(random.choice(users))
                 self.log_result(gallery.name)
             galleries = Gallery.objects.all()
 
@@ -87,8 +90,6 @@ class Command(BaseCommand):
                 portfolio.save()
                 portfolio.slug = '{}-{}'.format(slugify(portfolio.name), portfolio.pk)
                 portfolio.save()
-                for j in xrange(random.randint(1, len(categories))):
-                    portfolio.categories.add(random.choice(categories))
                 for j in xrange(random.randint(1, len(users))):
                     portfolio.likers.add(random.choice(users))
                 self.log_result(portfolio.name)

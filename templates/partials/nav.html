@@ -37,16 +37,6 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <form class="navbar-form" role="search">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
-                                    <input type="text" class="form-control" placeholder="Search for galleries..." aria-describedby="basic-addon1">
-                                </div>
-                            </div>
-                        </form>
-                    </li>
-                    <li>
                         <div class="navbar-form">
                             <a href="{% url 'portfolio:create' %}" class="btn btn-info"><i class="fa fa-cloud-upload"></i> &nbsp;Upload</a>
                         </div>
@@ -60,12 +50,12 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">@{{ user.username }} &nbsp;<i class="fa fa-caret-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
+                            <li><a href="{% url 'dashboard:home' %}"><i class="fa fa-tags"></i>&nbsp; My Galleries</a></li>
                             <li><a href="{% url 'accounts:profile' %}"><i class="fa fa-user-circle-o"></i>&nbsp; My Profile</a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i>&nbsp; My Galleries</a></li>
                             <li><a href="#"><i class="fa fa-tasks"></i>&nbsp; Manage Portfolios</a></li>
                             <li class="divider"></li>
                             <li><a href="#"><i class="fa fa-gears"></i>&nbsp; Account Settings</a></li>
-                            <li><a href="#"><i class="fa fa-sign-out"></i>&nbsp; Log out</a></li>
+                            <li><a href="{% url 'accounts:logout' %}"><i class="fa fa-sign-out"></i>&nbsp; Log out</a></li>
                         </ul>
                     </li>
                 </ul>

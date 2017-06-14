@@ -1,34 +1,84 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- Portfolio Item Heading -->
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">{{ portfolio.name }}
-                    <small>(under <a href="{% url 'gallery:item' portfolio.gallery.id %}">{{ portfolio.gallery.name }}</a>)</small>
-                </h1>
     </div>
 </div>
-<!-- /.row -->
-<!-- Portfolio Item Row -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li>
+                <a href="{% url 'gallery:list-by-user' portfolio.gallery.created_by.username %}">
+                    <em>{{ portfolio.gallery.created_by.get_full_name }}'s Galleries</em>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'portfolio:list' portfolio.gallery.slug %}">
+                    Gallery: <em>{{ portfolio.gallery.name }}</em>
+                </a>
+            </li>
+            <li class="active">Portfolio: <em>{{ portfolio.name }}</em></li>
+        </ol>
+        <h1>{{ portfolio.name }}</h1>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-8">
-        <img class="img-responsive" src="http://placehold.it/750x500" alt="">
+        <div class="thumbnail">
+            <img class="img-responsive" src="/media/{{ portfolio.image }}" alt="">
+        </div>
     </div>
     <div class="col-md-4">
-        <h3>Project Description</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
-        <h3>Project Details</h3>
-        <ul>
-            <li>Lorem Ipsum</li>
-            <li>Dolor Sit Amet</li>
-            <li>Consectetur</li>
-            <li>Adipiscing Elit</li>
+        <p>
+            <i class="fa fa-calendar"></i>&nbsp;
+            <em>Created at {{ portfolio.created }}</em>
+        </p>
+        <p>
+            <i class="fa fa-play-circle"></i>&nbsp;
+            {% if portfolio.description %}
+                {{ portfolio.description|linebreaksbr }}
+            {% else %}
+                <em class="text-muted">No description was provided.</em>
+            {% endif %}
+        </p>
+        <div class="text-right">
+            <a href="" class="btn btn-warning btn-sm"><i class="fa fa-heart-o"></i>&nbsp; Favorite <span class="badge">{{ portfolio.likers.count }}</span></a>
+            <a href="" class="btn btn-info btn-sm"><i class="fa fa-download"></i>&nbsp; Download</a>
+            <div class="btn-group">
+                <button class="dropdown-toggle btn btn-danger btn-sm" data-toggle="dropdown" role="button" aria-expanded="false">Options &nbsp;&nbsp;<i class="fa fa-ellipsis-v"></i></button>
+                <ul class="dropdown-menu" role="menu">
+                    {% if user == portfolio.created_by %}
+                    <li><a href="{% url 'portfolio:edit' portfolio.slug %}"><i class="fa fa-pencil-square-o"></i>&nbsp; Edit</a></li>
+                    <li><a href="" data-toggle="modal" data-target="#gallery-delete"><i class="fa fa-trash"></i>&nbsp; Delete</a></li>
+                    {% else %}
+                    <li><a href="{% url 'portfolio:delete' portfolio.slug %}"><i class="fa fa-plus-square-o"></i>&nbsp; Add to Collections</a></li>
+                    <li><a href="{% url 'portfolio:edit' portfolio.slug %}"><i class="fa fa-exclamation-circle"></i>&nbsp; Report as inappropriate</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <h4>Comments</h4>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <strong><a href="">@adsfas</a>:</strong> Secret laneway bars movida, rooftop cinema swanston brunswick and brunswick st formula one grand prix naked for satan, pellegrini's MSAC don dons warehouse chic chopper read, chaddie rooftop bars tullamarine trams cookie, melb ball victoria street dodgies
+            </li>
+            <li class="list-group-item">
+                <strong><a href="">@adsfas</a>:</strong> This is something!
+            </li>
+            <li class="list-group-item">
+                <strong><a href="">@adsfas</a>:</strong> Aami park the corner hotel, frankston bogans the crazy wing challenge chopper read avalon is so not melb melbourne central, collins place rooftop cinema essendon bombers middle-aged lycra clad cyclists running the tan, the melbourne cup the saints brunswick st hippy tullamarine melb, chaddie collingwood ferals dame edna
+            </li>
+            <li class="list-group-item">
+                <strong><a href="">@adsfas</a>:</strong> This is something!
+            </li>
         </ul>
     </div>
 </div>
-<!-- /.row -->
-<!-- Related Projects Row -->
+
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header">Related Projects</h3>
@@ -54,5 +104,5 @@
         </a>
     </div>
 </div>
-<!-- /.row -->
+
 {% endblock %}

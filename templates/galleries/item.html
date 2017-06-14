@@ -4,13 +4,32 @@
 {% block content %}
 <!-- Portfolio Item Heading -->
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-9">
         <h1 class="page-header">{{ gallery.name }}
             {% if gallery.portfolios.count == 0 %}
             <sup data-toggle="tooltip" data-placement="top" title="This gallery is marked as private, because it does not have at least one (1) portfolio yet."><i class="fa fa-lock"></i></sup>
             {% endif %}
             <small>by <a href="" title="See {{ gallery.created_by.username }}'s profile">{{ gallery.created_by.get_full_name }}</a></small>
         </h1>
+    </div>
+    <div class="col-lg-3">
+        {% if user.is_authenticated %}
+        <div class="page-header text-right">
+            <a href="" class="btn btn-warning"><i class="fa fa-heart-o"></i>&nbsp; Favorite <span class="badge">{{ gallery.likers.count }}</span></a>
+            <div class="btn-group">
+                <button class="dropdown-toggle btn btn-danger" data-toggle="dropdown" role="button" aria-expanded="false">Options &nbsp;&nbsp;<i class="fa fa-ellipsis-v"></i></button>
+                <ul class="dropdown-menu" role="menu">
+                    {% if user == gallery.created_by %}
+                    <li><a href="{% url 'gallery:edit' gallery.slug %}"><i class="fa fa-pencil-square-o"></i>&nbsp; Edit</a></li>
+                    <li><a href="" data-toggle="modal" data-target="#gallery-delete"><i class="fa fa-trash"></i>&nbsp; Delete</a></li>
+                    {% else %}
+                    <li><a href="{% url 'gallery:delete' gallery.slug %}"><i class="fa fa-plus-square-o"></i>&nbsp; Add to Collections</a></li>
+                    <li><a href="{% url 'gallery:edit' gallery.slug %}"><i class="fa fa-exclamation-circle"></i>&nbsp; Report as inappropriate</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 <!-- /.row -->
@@ -60,26 +79,25 @@
         </div>
         <hr>
         <div class="text-right">
-            <a href="{% url 'portfolio:list' gallery.slug %}" class="btn btn-primary btn-lg"><i class="fa fa-eye"></i>&nbsp; See all portfolios</a>
+            <a href="{% url 'portfolio:list' gallery.slug %}" class="btn btn-primary btn"><i class="fa fa-eye"></i>&nbsp; See all portfolios</a>
+            {% if user == gallery.created_by %}
+                <a href="{% url 'portfolio:bulk-create' gallery.slug %}" class="btn btn-default btn"><i class="fa fa-plus-square"></i>&nbsp; Add Portfolio</a>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-4">
-        <p><i class="fa fa-play-circle"></i>&nbsp;&nbsp; {{ gallery.description }}</p>
-        <div>
-            <a href="" class="btn btn-warning btn-sm"><i class="fa fa-heart-o"></i>&nbsp; Favorite</a>
-            <div class="btn-group">
-                <button class="dropdown-toggle btn btn-danger btn-sm" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-ellipsis-h"></i></button>
-                <ul class="dropdown-menu" role="menu">
-                    {% if user.is_authenticated %}
-                    <li><a href="{% url 'gallery:edit' gallery.slug %}"><i class="fa fa-pencil-square-o"></i>&nbsp; Edit</a></li>
-                    <li><a href="" data-toggle="modal" data-target="#gallery-delete"><i class="fa fa-trash"></i>&nbsp; Delete</a></li>
-                    {% else %}
-                    <li><a href="{% url 'gallery:delete' gallery.slug %}"><i class="fa fa-plus-square-o"></i>&nbsp; Add to Collections</a></li>
-                    <li><a href="{% url 'gallery:edit' gallery.slug %}"><i class="fa fa-exclamation-circle"></i>&nbsp; Report as inappropriate</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
+        <p>
+            <i class="fa fa-calendar"></i>&nbsp;
+            <em>Created at {{ gallery.created }}</em>
+        </p>
+        <p>
+            <i class="fa fa-play-circle"></i>&nbsp;
+            {% if gallery.description %}
+                {{ gallery.description|linebreaksbr }}
+            {% else %}
+                <em class="text-muted">No description was provided.</em>
+            {% endif %}
+        </p>
         <hr>
         <h4>Comments</h4>
         <ul class="list-group">
