@@ -36,7 +36,10 @@ class PortfolioItemView(DetailView):
     model = Portfolio
 
     def get_context_data(self, **kwargs):
-        kwargs['comment_form'] = CommentForm()
+        kwargs['comment_form'] = CommentForm(initial={
+            'content_object': self.get_object(),
+            'created_by': self.request.user,
+        })
         return super(PortfolioItemView, self).get_context_data(**kwargs)
 
 

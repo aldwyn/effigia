@@ -15,6 +15,7 @@ class Comment(TimeStampedModel):
     text = models.TextField()
     created_by = models.ForeignKey(get_user_model(), related_name='comments')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    likers = models.ManyToManyField(get_user_model(), related_name='comments_liked')
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 

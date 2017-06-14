@@ -7,7 +7,7 @@ from ..accounts.factories import UserFactory
 from .models import Comment
 
 
-class GalleryFactory(factory.Factory):
+class CommentFactory(factory.Factory):
     class Meta:
         model = Comment
 

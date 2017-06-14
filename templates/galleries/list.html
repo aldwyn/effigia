@@ -35,8 +35,7 @@
     </div>
     {% endif %}
 </div>
-<!-- /.row -->
-<!-- Projects Row -->
+
 <div class="row">
     {% for gallery in galleries %}
     <div class="col-md-4 portfolio-item">
@@ -51,9 +50,9 @@
     </div>
     {% endfor %}
 </div>
-<!-- Pagination -->
+
 {% if all_galleries_count > 15 %}
     {% include 'partials/pagination.html' with next_url='gallery:list' %}
 {% endif %}
-<!-- /.row -->
+
 {% endblock %}

@@ -96,7 +96,7 @@
         <div class="text-right">
             <a href="{% url 'portfolio:list' gallery.slug %}" class="btn btn-primary btn"><i class="fa fa-eye"></i>&nbsp; See all portfolios</a>
             {% if user == gallery.created_by %}
-                <a href="{% url 'portfolio:bulk-create' gallery.slug %}" class="btn btn-default btn"><i class="fa fa-plus-square"></i>&nbsp; Add Portfolio</a>
+                <a href="{% url 'portfolio:bulk-create' gallery.slug %}" class="btn btn-default btn"><i class="fa fa-plus-square"></i>&nbsp; Add Portfolios</a>
             {% endif %}
         </div>
     </div>
@@ -114,7 +114,7 @@
             {% endif %}
         </p>
         <hr>
-        {% include 'partials/comment_form.html' with object=gallery %}
+        {% include 'partials/comment_form.html' with content_type='gallery' object=gallery %}
     </div>
 </div>
 
