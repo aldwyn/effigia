@@ -6,6 +6,7 @@ from django.core.management.base import CommandError
 from django.utils.text import slugify
 
 from apps.categories.models import Category
+from apps.comments.models import Comment
 from apps.accounts.factories import UserFactory
 from apps.galleries.factories import GalleryFactory
 from apps.galleries.models import Gallery

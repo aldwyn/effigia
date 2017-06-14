@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="row">
+    {% if page_header == 'All Galleries' %}
     <div class="col-lg-6">
         <h1 class="page-header">{{ page_header }}
             <small>({{ all_galleries_count }} galleries)</small>
@@ -11,7 +12,6 @@
         <div class="page-header text-right">
             <div class="row">
                 <div class="col-md-8">
-                    {% if page_header == 'All Galleries' %}
                     <form role="search">
                         <div class="form-group">
                             <div class="input-group">
@@ -20,7 +20,6 @@
                             </div>
                         </div>
                     </form>
-                    {% endif %}
                 </div>
                 <div class="col-md-4">
                     <a href="{% url 'gallery:create' %}" class="btn btn-warning"><i class="fa fa-plus-square"></i>&nbsp; Create your own</a>
@@ -28,6 +27,13 @@
             </div>
         </div>
     </div>
+    {% else %}
+    <div class="col-lg-12">
+        <h1 class="page-header">{{ page_header }}
+            <small>({{ all_galleries_count }} galleries)</small>
+        </h1>
+    </div>
+    {% endif %}
 </div>
 <!-- /.row -->
 <!-- Projects Row -->

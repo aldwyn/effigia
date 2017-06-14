@@ -1,0 +1,33 @@
+{% load effigia_extras %}
+
+<h4>Comments ({{ object.comments.count }})</h4>
+<ul class="list-group">
+    <div class="comment-overflow">
+        {% if object.comments.count > 0 %}
+        {% for comment in object.comments.all %}
+        <li class="list-group-item">
+            <strong>
+                <a href="{% url 'gallery:list-by-user' comment.created_by.username %}">@{{ comment.created_by.username }}</a>:
+            </strong>
+            {{ comment.text|linebreaksbr }}
+        </li>
+        {% endfor %} {% else %}
+        <li class="list-group-item">
+            <em class="text-muted">No comments here yet. Be the first.</em>
+        </li>
+        {% endif %}
+        <li class="list-group-item text-center">
+            <a href="">See 304 more comments...</a>
+        </li>
+    </div>
+    <li class="list-group-item">
+        <form action="{% url 'gallery:create' %}" enctype="multipart/form-data" method="POST">
+            <div class="form-group">
+                {{ comment_form.text|limit_textarea_rows:3 }}
+            </div>
+            <div class="form-group text-right">
+                <button class="btn btn-primary btn-sm"><i class="fa fa-commenting-o"></i>&nbsp; Submit</button>
+            </div>
+        </form>
+    </li>
+</ul>

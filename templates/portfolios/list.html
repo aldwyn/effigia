@@ -6,27 +6,45 @@
         <ol class="breadcrumb">
             <li>
                 <a href="{% url 'gallery:list-by-user' gallery.created_by.username %}">
+                    <i class="fa fa-chevron-circle-right"></i>&nbsp; 
                     <em>{{ gallery.created_by.get_full_name }}'s Galleries</em>
                 </a>
             </li>
-            <li class="active">Gallery: <em>{{ gallery.name }}</em></li>
+            <li class="active">
+                <i class="fa fa-chevron-circle-right"></i>&nbsp; 
+                Gallery: <em>{{ gallery.name }}</em>
+            </li>
         </ol>
         <h1>{{ portfolio.name }}
             Portfolios <small>of <a href="{% url 'gallery:item' gallery.slug %}">{{ gallery.name }}</a></small>
         </h1>
     </div>
 </div>
+<hr>
 
 <div class="row">
-    {% for portfolio in portfolios %}
-    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-        <a class="thumbnail" href="{% url 'portfolio:item' portfolio.slug %}">
-            <img class="img-responsive" src="{% if portfolio.image %}/media/{{ portfolio.image }}{% else %}http://placehold.it/200x200{% endif %}" alt="{{ object.name }}" alt="">
-            <span class="caption">{{ portfolio.name }}</span>
-            <br>
-            <em><small class="caption">{{ portfolio.created }}</small></em>
-        </a>
-    </div>
-    {% endfor %}
+    {% if portfolios.count > 0 %}
+        {% for portfolio in portfolios %}
+        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+            <a class="thumbnail" href="{% url 'portfolio:item' portfolio.slug %}">
+                <img class="img-responsive" src="{% if portfolio.image %}/media/{{ portfolio.image }}{% else %}http://placehold.it/200x200{% endif %}" alt="{{ object.name }}" alt="">
+                <span class="caption">{{ portfolio.name }}</span>
+                <br>
+                <em><small class="caption">{{ portfolio.created }}</small></em>
+            </a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+            <div class="well">
+                <p>There's nothing to display here yet.</p>
+            {% if gallery.created_by == user %}
+                <a href="{% url 'portfolio:bulk-create' gallery.slug %}" class="btn btn-warning">
+                    <i class="fa fa-plus-square"></i>&nbsp; Add Portfolios
+                </a>
+            {% endif %}
+            </div>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

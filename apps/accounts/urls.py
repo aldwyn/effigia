@@ -1,7 +1,7 @@
 from django.conf.urls import url
-from django.contrib.auth.views import LogoutView
 
 from .views import LoginView
+from .views import LogoutView
 from .views import RegistrationView
 from .views import ProfileView
 

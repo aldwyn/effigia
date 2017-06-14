@@ -13,6 +13,7 @@ from django.shortcuts import redirect
 from django.utils.text import slugify
 
 from ..galleries.models import Gallery
+from ..comments.forms import CommentForm
 from .models import Portfolio
 from .forms import PortfolioFormSet
 
@@ -33,6 +34,10 @@ class PortfolioItemView(DetailView):
     template_name = 'portfolios/item.html'
     context_object_name = 'portfolio'
     model = Portfolio
+
+    def get_context_data(self, **kwargs):
+        kwargs['comment_form'] = CommentForm()
+        return super(PortfolioItemView, self).get_context_data(**kwargs)
 
 
 class PortfolioCreateView(CreateView):

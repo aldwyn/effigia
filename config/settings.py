@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_nose',
     'elasticsearch',
     'haystack',
+    'apps.core',
     'apps.accounts',
     'apps.comments',
     'apps.dashboard',

@@ -59,6 +59,16 @@
         .footer-hr {
             margin-top: 50px;
         }
+
+        .thumb {
+            margin-bottom: 30px;
+        }
+
+        .comment-overflow {
+            font-size: 85%;
+            max-height: 350px;
+            overflow-y: auto;
+        }
     </style>
 
 </head>
@@ -98,7 +108,7 @@
             $('[data-toggle="tooltip"]').tooltip();
             var nanobar = new Nanobar();
             nanobar.go(100);
-        })
+        });
         {% if messages %}
         $(document).ready(function() {
             {% for message in messages %}

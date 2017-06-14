@@ -1,25 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-12">
-    </div>
-</div>
 
 <div class="row">
     <div class="col-lg-12">
         <ol class="breadcrumb">
             <li>
                 <a href="{% url 'gallery:list-by-user' portfolio.gallery.created_by.username %}">
+                    <i class="fa fa-chevron-circle-right"></i>&nbsp; 
                     <em>{{ portfolio.gallery.created_by.get_full_name }}'s Galleries</em>
                 </a>
             </li>
             <li>
                 <a href="{% url 'portfolio:list' portfolio.gallery.slug %}">
+                    <i class="fa fa-chevron-circle-right"></i>&nbsp; 
                     Gallery: <em>{{ portfolio.gallery.name }}</em>
                 </a>
             </li>
-            <li class="active">Portfolio: <em>{{ portfolio.name }}</em></li>
+            <li class="active">
+                <i class="fa fa-chevron-circle-right"></i>&nbsp; 
+                Portfolio: <em>{{ portfolio.name }}</em>
+            </li>
         </ol>
         <h1>{{ portfolio.name }}</h1>
     </div>
@@ -61,22 +62,7 @@
             </div>
         </div>
         <hr>
-        <h4>Comments</h4>
-        <ul class="list-group">
-            <li class="list-group-item">
-                <strong><a href="">@adsfas</a>:</strong> Secret laneway bars movida, rooftop cinema swanston brunswick and brunswick st formula one grand prix naked for satan, pellegrini's MSAC don dons warehouse chic chopper read, chaddie rooftop bars tullamarine trams cookie, melb ball victoria street dodgies
-            </li>
-            <li class="list-group-item">
-                <strong><a href="">@adsfas</a>:</strong> This is something!
-            </li>
-            <li class="list-group-item">
-                <strong><a href="">@adsfas</a>:</strong> Aami park the corner hotel, frankston bogans the crazy wing challenge chopper read avalon is so not melb melbourne central, collins place rooftop cinema essendon bombers middle-aged lycra clad cyclists running the tan, the melbourne cup the saints brunswick st hippy tullamarine melb, chaddie collingwood ferals dame edna
-            </li>
-            <li class="list-group-item">
-                <strong><a href="">@adsfas</a>:</strong> This is something!
-            </li>
-        </ul>
-    </div>
+        {% include 'partials/comment_form.html' with object=portfolio %}
 </div>
 
 <div class="row">

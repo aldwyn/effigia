@@ -18,6 +18,7 @@
 
     <!-- Custom Fonts -->
     <link rel="stylesheet" href="{% static '/font-awesome/css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static '/animate.css/animate.min.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Montserrat:400,700|Artifika" rel="stylesheet" type="text/css">
 
     <!-- Theme CSS -->
@@ -163,6 +164,35 @@
 
     <!-- Theme JavaScript -->
     <script src="{% static '/grayscale/js/grayscale.min.js' %}"></script>
+    <script src="{% static '/nanobar/nanobar.min.js' %}"></script>
+    <script src="{% static '/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            var nanobar = new Nanobar();
+            nanobar.go(100);
+        });
+        {% if messages %}
+        $(document).ready(function() {
+            {% for message in messages %}
+            $.notify({
+                icon: 'fa fa-check-circle',
+                message: "{{ message }}"
+            }, {
+                delay: 5000,
+                placement: {
+                    from: 'bottom',
+                    align: 'center'
+                },
+                animate: {
+                    enter: 'animated zoomInDown',
+                    exit: 'animated zoomOutUp'
+                }
+            });
+            {% endfor %}
+        });
+        {% endif %}
+    </script>
 
 </body>
 

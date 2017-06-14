@@ -13,24 +13,21 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('galleries', '0001_initial'),
+        ('contenttypes', '0002_remove_content_type_name'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Portfolio',
+            name='Comment',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
                 ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
-                ('name', models.CharField(max_length=255)),
-                ('slug', models.SlugField(unique=True)),
-                ('description', models.TextField(blank=True, null=True)),
-                ('image', models.ImageField(upload_to='images/')),
-                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('gallery', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='portfolios', to='galleries.Gallery')),
-                ('likers', models.ManyToManyField(related_name='portfolios_liked', to=settings.AUTH_USER_MODEL)),
+                ('text', models.TextField()),
+                ('object_id', models.PositiveIntegerField()),
+                ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType')),
+                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ['-created'],

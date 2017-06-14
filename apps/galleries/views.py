@@ -12,6 +12,7 @@ from django.views.generic import DeleteView
 from django.utils.text import slugify
 
 from ..categories.models import Category
+from ..comments.forms import CommentForm
 from .models import Gallery
 
 
@@ -63,6 +64,10 @@ class GalleryItemView(DetailView):
     template_name = 'galleries/item.html'
     context_object_name = 'gallery'
     model = Gallery
+
+    def get_context_data(self, **kwargs):
+        kwargs['comment_form'] = CommentForm()
+        return super(GalleryItemView, self).get_context_data(**kwargs)
 
 
 class GalleryCreateView(CreateView):
