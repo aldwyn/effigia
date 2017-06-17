@@ -8,6 +8,7 @@ from django_extensions.db.models import TimeStampedModel
 class Category(TimeStampedModel):
     class Meta:
         ordering = ['name']
+        verbose_name_plural = 'categories'
 
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)

@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^comment/', include('apps.comments.urls', namespace='comment')),
     url(r'^gallery/', include('apps.galleries.urls', namespace='gallery')),
     url(r'^group/', include('apps.groups.urls', namespace='group')),
+    url(r'^chat/', include('apps.chats.urls', namespace='chat')),
     url(r'^portfolio/', include('apps.portfolios.urls', namespace='portfolio')),
     url(r'^post/', include('apps.posts.urls', namespace='post')),
 ]

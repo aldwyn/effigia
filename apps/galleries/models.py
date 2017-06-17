@@ -13,6 +13,7 @@ from ..comments.models import Comment
 class Gallery(TimeStampedModel):
     class Meta:
         ordering = ['-created']
+        verbose_name_plural = 'galleries'
 
     name = models.CharField(max_length=255)
     description = models.TextField()

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'haystack',
     'apps.core',
     'apps.accounts',
+    'apps.chats',
     'apps.comments',
     'apps.dashboard',
     'apps.categories',
