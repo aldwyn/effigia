@@ -42,7 +42,8 @@
 </div>
 <!-- Pagination -->
 {% if all_galleries_count > 15 %}
-    {% include 'partials/pagination.html' with next_url='gallery:list' %}
+    {% url 'gallery:list' as next_url %}
+    {% include 'partials/pagination.html' with next_url=next_url %}
 {% endif %}
 <!-- /.row -->
 {% endblock %}

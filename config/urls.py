@@ -11,8 +11,9 @@ urlpatterns = [
     url(r'^category/', include('apps.categories.urls', namespace='category')),
     url(r'^comment/', include('apps.comments.urls', namespace='comment')),
     url(r'^gallery/', include('apps.galleries.urls', namespace='gallery')),
-    url(r'^portfolio/', include('apps.portfolios.urls', namespace='portfolio')),
     url(r'^group/', include('apps.groups.urls', namespace='group')),
+    url(r'^portfolio/', include('apps.portfolios.urls', namespace='portfolio')),
+    url(r'^post/', include('apps.posts.urls', namespace='post')),
 ]
 
 if settings.DEBUG is True:

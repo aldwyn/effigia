@@ -24,7 +24,8 @@
 {% endfor %}
 <!-- Pagination -->
 {% if all_categories_count > 10 %}
-    {% include 'partials/pagination.html' with next_url='category:list' %}
+    {% url 'category:list' as next_url %}
+    {% include 'partials/pagination.html' with next_url=next_url %}
 {% endif %}
 <!-- /.row -->
 

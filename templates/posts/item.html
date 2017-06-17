@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% load effigia_extras %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <ol class="breadcrumb">
+            <li>
+                <a href="{% url 'group:item' post.group.slug %}">
+                    <i class="fa fa-chevron-circle-right"></i>&nbsp; 
+                    Group: <em>{{ post.group.name }}</em>
+                </a>
+            </li>
+            <li class="active">
+                <i class="fa fa-chevron-circle-right"></i>&nbsp; 
+                @{{ post.created_by }}'s post: <em>{{ post }}...</em>
+            </li>
+        </ol>
+        <h1>{{ portfolio.name }}</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <div class="media">
+            <div class="media-left">
+                <a href="{% url 'gallery:list-by-user' post.created_by %}">
+                    <img src="http://placehold.it/75x75" alt="">
+                </a>
+            </div>
+            <div class="media-body">
+                <em><a href="{% url 'gallery:list-by-user' post.created_by %}">@{{ post.created_by }}</a> posted:</em>
+                <blockquote>{{ post.text|linebreaksbr }}</blockquote>
+                <p class="text-right">
+                    <span class="text-muted">Posted on {{ post.created }}</span>
+                    <a href="" class="spacify-action">
+                        {% if user in post.likers %}
+                        <i class="fa fa-heart"></i>&nbsp; Like
+                        {% else %}
+                        <i class="fa fa-heart-o"></i>&nbsp; Liked
+                        {% endif %}
+                        <span class="badge">{{ post.likers.count }}</span>
+                    </a>
+                    {% if post.created_by == user %}
+                    <a href="" class="spacify-action" data-toggle="modal" data-target="#post-edit">
+                        <i class="fa fa-edit"></i>&nbsp; Edit
+                    </a>
+                    {% endif %}
+                    <a href="" class="spacify-action">
+                        <i class="fa fa-flag"></i>&nbsp; Report
+                    </a>
+                </p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="{% url 'comment:create' 'post' object.pk %}" enctype="multipart/form-data" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {{ comment_form.text|limit_textarea_rows:3 }}
+                            </div>
+                            <div class="form-group text-right">
+                                <button class="btn btn-primary btn-sm"><i class="fa fa-commenting-o"></i>&nbsp; Add Comment</button>
+                            </div>
+                        </form>
+                        <h4>Comments ({{ post.comments.count }})</h4>
+                        {% if post.comments.count > 0 %}
+                            {% for comment in post.comments.all %}
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="{% url 'gallery:list-by-user' comment.created_by %}">
+                                        <img src="http://placehold.it/75x75" alt="">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <em><a href="{% url 'gallery:list-by-user' comment.created_by %}">@{{ comment.created_by }}</a> commented:</em>
+                                    <p>{{ comment.text|linebreaksbr }}</p>
+                                    <p class="text-right">
+                                        <a href="" class="spacify-action">
+                                            {% if user in post.likers.all %}
+                                            <i class="fa fa-heart"></i>&nbsp; Like
+                                            {% else %}
+                                            <i class="fa fa-heart-o"></i>&nbsp; Liked
+                                            {% endif %}
+                                            <span class="badge">{{ comment.likers.count }}</span>
+                                        </a>
+                                        <a href="" class="spacify-action">
+                                            <i class="fa fa-flag"></i>&nbsp; Report
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            {% endfor %}
+                        {% else %}
+                            <li class="list-group-item">
+                                <em class="text-muted">No comments here yet. Be the first.</em>
+                            </li>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if post.created_by == user %}
+<div class="modal fade" id="post-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Edit this Post</h4>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'post:edit' post.pk %}" id="post-form" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ post_edit_form.text|limit_textarea_rows:10 }}
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                <button form="post-form" class="btn btn-danger btn-sm">Post</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

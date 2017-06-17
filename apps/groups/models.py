@@ -18,4 +18,4 @@ class Group(TimeStampedModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('groups:item', args=[self.slug])
+        return reverse('group:item', args=[self.slug])

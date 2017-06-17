@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.auth import get_user_model
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 
@@ -9,6 +10,10 @@ from ..galleries.models import Gallery
 
 class IndexView(TemplateView):
     template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['test_users'] = get_user_model().objects.exclude(username='admin')[:4]
+        return super(IndexView, self).get_context_data(**kwargs)
 
 
 class HomeView(ListView):

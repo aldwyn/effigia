@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'apps.galleries',
     'apps.groups',
     'apps.portfolios',
+    'apps.posts',
 ]
 
 MIDDLEWARE = [

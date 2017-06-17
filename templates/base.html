@@ -28,6 +28,8 @@
     <style>
         body {
             padding-top: 70px;
+            /*background: url({% static '/grayscale/img/intro-bg.jpg' %}) no-repeat center center fixed;
+            background-position: cover;*/
         }
 
         .portfolio-item {
@@ -64,10 +66,18 @@
             margin-bottom: 30px;
         }
 
+        .group-thumb {
+            height: 300px;
+        }
+
         .comment-overflow {
             font-size: 85%;
             max-height: 350px;
             overflow-y: auto;
+        }
+
+        .spacify-action {
+            margin-left: 20px;
         }
     </style>
 
@@ -109,8 +119,8 @@
             var nanobar = new Nanobar();
             nanobar.go(100);
         });
-        {% if messages %}
         $(document).ready(function() {
+        {% if messages %}
             {% for message in messages %}
             $.notify({
                 icon: 'fa fa-check-circle',
@@ -127,8 +137,24 @@
                 }
             });
             {% endfor %}
-        });
         {% endif %}
+        {% if form and form.non_field_errors %}
+            $.notify({
+                message: '{{ form.non_field_errors }}'
+            }, {
+                type: 'danger',
+                delay: 5000,
+                placement: {
+                    from: 'bottom',
+                    align: 'center'
+                },
+                animate: {
+                    enter: 'animated zoomInDown',
+                    exit: 'animated zoomOutUp'
+                }
+            });
+        {% endif %}
+        });
     </script>
 
 </body>

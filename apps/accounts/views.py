@@ -30,10 +30,10 @@ class LoginView(BaseLoginView):
 
 class LogoutView(BaseLogoutView):
 
-    def form_valid(self, form):
+    def get_next_page(self):
         messages.add_message(
             self.request, messages.INFO, 'You successfully logged out.')
-        return super(LogoutView, self).form_valid(form)
+        return super(LogoutView, self).get_next_page()
 
 
 class RegistrationView(FormView):

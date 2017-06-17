@@ -4,22 +4,23 @@
 <ul class="list-group">
     <div class="comment-overflow">
         {% if object.comments.count > 0 %}
-        {% for comment in object.comments.all %}
-        <li class="list-group-item">
-            <strong>
-                <a href="{% url 'gallery:list-by-user' comment.created_by.username %}">@{{ comment.created_by.username }}</a>:
-            </strong>
-            {{ comment.text|linebreaksbr }}
-            <p class="text-right">
-                <a href="">
-                    <i class="fa fa-heart-o"></i>&nbsp; Like <span class="badge">{{ comment.likers.count }}</span>
-                </a>
-            </p>
-        </li>
-        {% endfor %} {% else %}
-        <li class="list-group-item">
-            <em class="text-muted">No comments here yet. Be the first.</em>
-        </li>
+            {% for comment in object.comments.all %}
+            <li class="list-group-item">
+                <strong>
+                    <a href="{% url 'gallery:list-by-user' comment.created_by.username %}">@{{ comment.created_by.username }}</a>:
+                </strong>
+                {{ comment.text|linebreaksbr }}
+                <p class="text-right">
+                    <a href="">
+                        <i class="fa fa-heart-o"></i>&nbsp; Like <span class="badge">{{ comment.likers.count }}</span>
+                    </a>
+                </p>
+            </li>
+            {% endfor %}
+        {% else %}
+            <li class="list-group-item">
+                <em class="text-muted">No comments here yet. Be the first.</em>
+            </li>
         {% endif %}
         <!-- <li class="list-group-item text-center">
             <a href="">See 304 more comments...</a>

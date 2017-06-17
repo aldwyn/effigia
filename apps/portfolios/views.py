@@ -48,6 +48,13 @@ class PortfolioCreateView(CreateView):
     model = Portfolio
     fields = ['name', 'image', 'description', 'gallery']
 
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        portfolio = form.save()
+        messages.add_message(
+            self.request, messages.INFO, 'Successfully created %s.' % portfolio)
+        return super(PortfolioCreateView, self).form_valid(form)
+
 
 class PortfolioBulkCreateView(CreateView):
     template_name = 'portfolios/bulk-create.html'

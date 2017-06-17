@@ -2,11 +2,11 @@
     <ul class="pager">
         {% if page_obj.number >= page_obj.previous_page_number %}
         <li class="previous">
-            <a href="{% url next_url %}?page={{ page_obj.previous_page_number }}"><span aria-hidden="true">&larr;</span> Previous</a></li>
+            <a href="{{ next_url }}?page={{ page_obj.previous_page_number }}"><span aria-hidden="true">&larr;</span> Previous</a></li>
         {% endif %}
         {% if page_obj.number < page_obj.paginator.num_pages %}
         <li class="next">
-            <a href="{% url next_url %}?page={{ page_obj.next_page_number }}">Next <span aria-hidden="true">&rarr;</span></a></li>
+            <a href="{{ next_url }}?page={{ page_obj.next_page_number }}">Next <span aria-hidden="true">&rarr;</span></a></li>
         {% endif %}
     </ul>
 </nav>

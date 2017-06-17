@@ -48,7 +48,7 @@
                         <a href=""><i class="fa fa-bell-o"></i></a>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">@{{ user.username }} &nbsp;<i class="fa fa-caret-down"></i></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><em>@{{ user.username }}</em> &nbsp;<i class="fa fa-caret-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{% url 'dashboard:home' %}"><i class="fa fa-tags"></i>&nbsp; My Galleries</a></li>
                             <li><a href="{% url 'accounts:profile' %}"><i class="fa fa-user-circle-o"></i>&nbsp; My Profile</a></li>
