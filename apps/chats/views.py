@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import modelform_factory
 from django.views.generic import ListView
 
@@ -8,7 +9,7 @@ from .models import Chat
 from .models import Message
 
 
-class ChatListView(ListView):
+class ChatListView(LoginRequiredMixin, ListView):
     template_name = 'chats/list.html'
     context_object_name = 'chats'
     model = Chat

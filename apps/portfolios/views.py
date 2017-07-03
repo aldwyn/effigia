@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView
@@ -43,7 +44,7 @@ class PortfolioItemView(DetailView):
         return super(PortfolioItemView, self).get_context_data(**kwargs)
 
 
-class PortfolioCreateView(CreateView):
+class PortfolioCreateView(LoginRequiredMixin, CreateView):
     template_name = 'portfolios/create.html'
     model = Portfolio
     fields = ['name', 'image', 'description', 'gallery']
@@ -56,7 +57,7 @@ class PortfolioCreateView(CreateView):
         return super(PortfolioCreateView, self).form_valid(form)
 
 
-class PortfolioBulkCreateView(CreateView):
+class PortfolioBulkCreateView(LoginRequiredMixin, CreateView):
     template_name = 'portfolios/bulk-create.html'
 
     def get_context_data(self, **kwargs):
@@ -80,7 +81,7 @@ class PortfolioBulkCreateView(CreateView):
         return redirect(reverse('portfolio:list', kwargs={'slug': gallery.slug}))
 
 
-class PortfolioEditView(UpdateView):
+class PortfolioEditView(LoginRequiredMixin, UpdateView):
     template_name = 'galleries/edit.html'
     context_object_name = 'gallery'
     fields = ['name', 'image', 'description', 'category']
@@ -93,7 +94,7 @@ class PortfolioEditView(UpdateView):
         return super(PortfolioEditView, self).form_valid(form)
 
 
-class PortfolioDeleteView(DeleteView):
+class PortfolioDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('gallery:list')
     model = Gallery
 

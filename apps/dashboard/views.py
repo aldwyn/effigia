@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 
@@ -16,7 +17,7 @@ class IndexView(TemplateView):
         return super(IndexView, self).get_context_data(**kwargs)
 
 
-class HomeView(ListView):
+class HomeView(LoginRequiredMixin, ListView):
     template_name = 'dashboard/home.html'
     context_object_name = 'galleries'
     model = Gallery

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'apps.chats',
     'apps.comments',
     'apps.dashboard',
+    'apps.followings',
     'apps.categories',
     'apps.galleries',
     'apps.groups',

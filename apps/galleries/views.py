@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic import DetailView
@@ -70,7 +71,7 @@ class GalleryItemView(DetailView):
         return super(GalleryItemView, self).get_context_data(**kwargs)
 
 
-class GalleryCreateView(CreateView):
+class GalleryCreateView(LoginRequiredMixin, CreateView):
     template_name = 'galleries/create.html'
     fields = ['name', 'description', 'category', 'cover_image']
     model = Gallery
@@ -90,7 +91,7 @@ class GalleryCreateView(CreateView):
         return super(GalleryCreateView, self).form_valid(form)
 
 
-class GalleryEditView(UpdateView):
+class GalleryEditView(LoginRequiredMixin, UpdateView):
     template_name = 'galleries/edit.html'
     context_object_name = 'gallery'
     fields = ['name', 'description', 'category', 'cover_image']
@@ -103,7 +104,7 @@ class GalleryEditView(UpdateView):
         return super(GalleryEditView, self).form_valid(form)
 
 
-class GalleryDeleteView(DeleteView):
+class GalleryDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('gallery:list')
     model = Gallery
 

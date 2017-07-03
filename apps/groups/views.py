@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import modelform_factory
 from django.views.generic import ListView
 from django.views.generic import CreateView
@@ -34,7 +35,7 @@ class GroupItemView(ListView):
         return super(GroupItemView, self).get_context_data(**kwargs)
 
 
-class GroupCreateView(CreateView):
+class GroupCreateView(LoginRequiredMixin, CreateView):
     template_name = 'groups/create.html'
     model = Group
     fields = ['name', 'description']

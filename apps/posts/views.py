@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import modelform_factory
 from django.views.generic import DetailView
 from django.views.generic import CreateView
@@ -26,7 +27,7 @@ class PostItemView(DetailView):
         return super(PostItemView, self).get_context_data(**kwargs)
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['text']
 
@@ -39,7 +40,7 @@ class PostCreateView(CreateView):
         return super(PostCreateView, self).form_valid(form)
 
 
-class PostEditView(UpdateView):
+class PostEditView(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['text']
 
