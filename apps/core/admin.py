@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+from django.contrib.auth.models import Permission
 
 from ..categories.models import Category
 from ..chats.models import Chat, Message
@@ -11,6 +12,7 @@ from ..groups.models import Group
 from ..portfolios.models import Portfolio
 from ..posts.models import Post
 
+admin.site.register(Permission)
 admin.site.register(Category)
 admin.site.register(Chat)
 admin.site.register(Message)

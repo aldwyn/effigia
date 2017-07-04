@@ -94,11 +94,21 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'effigia',
+        'USER': 'aldwyn',
+        'PASSWORD': 'rootroot',
+        'HOST': '/cloudsql/norse-geode-172713:us-central1:effigia-db',
     }
 }
+
+if not os.getenv('GAE_INSTANCE'):
+    DATABASES['default']['HOST'] = '127.0.0.1'
 
 
 # Password validation
@@ -143,7 +153,8 @@ LOGOUT_URL = reverse_lazy('accounts:logout')
 LOGIN_REDIRECT_URL = reverse_lazy('dashboard:home')
 LOGOUT_REDIRECT_URL = reverse_lazy('dashboard:index')
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
+STATIC_URL = 'http://storage.googleapis.com/effigia/public/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'public/static')
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',

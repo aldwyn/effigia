@@ -20,4 +20,4 @@ class Comment(TimeStampedModel):
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
-        return self.text[:20]
+        return self.text[:20] + '...'

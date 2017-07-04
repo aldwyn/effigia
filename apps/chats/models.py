@@ -20,7 +20,7 @@ class Message(TimeStampedModel):
     chat = models.ForeignKey(Chat)
 
     def __str__(self):
-        return self.body[:50]
+        return self.body[:50] + '...'
 
     def get_absolute_url(self):
         return reverse('chat:list')
