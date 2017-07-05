@@ -17,7 +17,7 @@
                 <a href="{% url 'group:item' group.slug %}"><img src="http://placekitten.com/g/800/500" alt=""></a>
                 <div class="caption">
                     <h3><a href="{% url 'group:item' group.slug %}">{{ group.name }}</a></h3>
-                    <p>{{ group.description|linebreaksbr }}</p>
+                    <p>{{ group.description|slice:':60' }} ...</p>
                 </div>
             </div>
         </div>

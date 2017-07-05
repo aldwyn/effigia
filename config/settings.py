@@ -24,15 +24,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'wdmfxchl(qb-uf-q3g#zbo3*ordjlls1(+6*$rbik(2%((y36#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['ubuntubitch']
+# ALLOWED_HOSTS = ['ubuntubitch', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'wpadmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -101,14 +102,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'effigia',
-        'USER': 'aldwyn',
+        'USER': 'postgres',
         'PASSWORD': 'rootroot',
-        'HOST': '/cloudsql/norse-geode-172713:us-central1:effigia-db',
+        'HOST': '/cloudsql/effigia-172804:us-central1:effigia-db',
     }
 }
 
 if not os.getenv('GAE_INSTANCE'):
     DATABASES['default']['HOST'] = '127.0.0.1'
+    DEBUG = True
 
 
 # Password validation
@@ -154,7 +156,7 @@ LOGIN_REDIRECT_URL = reverse_lazy('dashboard:home')
 LOGOUT_REDIRECT_URL = reverse_lazy('dashboard:index')
 
 # STATIC_URL = '/static/'
-STATIC_URL = 'http://storage.googleapis.com/effigia/public/static/'
+STATIC_URL = 'https://storage.googleapis.com/effigia-172804/public/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'public/static')
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -171,4 +173,18 @@ HAYSTACK_CONNECTIONS = {
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'haystack',
     },
+}
+
+WPADMIN = {
+    'admin': {
+        'title': 'Datafeed',
+        'menu': {
+            'top': 'wpadmin.menu.menus.BasicTopMenu',
+            'left': 'wpadmin.menu.menus.BasicLeftMenu',
+        },
+        'dashboard': {
+            'breadcrumbs': True,
+        },
+        'custom_style': STATIC_URL + 'wpadmin/css/themes/sunrise.css',
+    }
 }

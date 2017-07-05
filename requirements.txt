@@ -9,3 +9,5 @@ elasticsearch==5.4.0
 factory-boy==2.8.1
 gunicorn==19.7.1
 psycopg2==2.7.1
+
+git+https://github.com/leduchuy89vn/django-wpadmin.git#egg=django-wpadmin

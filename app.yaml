@@ -3,7 +3,7 @@ env: flex
 entrypoint: gunicorn -b :$PORT config.wsgi
 
 beta_settings:
-  cloud_sql_instances: norse-geode-172713:us-central1:effigia-db
+  cloud_sql_instances: effigia-172804:us-central1:effigia-db
 
 runtime_config:
   python_version: 2

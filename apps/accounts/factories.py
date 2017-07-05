@@ -11,7 +11,7 @@ class UserFactory(factory.Factory):
         model = get_user_model()
 
     username = factory.LazyAttribute(lambda a: '{}_{}'.format(a.first_name, a.last_name).lower())
-    email = factory.LazyAttribute(lambda a: '{}.{}@wallaby.com'.format(a.first_name, a.last_name).lower())
+    email = factory.LazyAttribute(lambda a: '{}.{}@effigia.com'.format(a.first_name, a.last_name).lower())
     first_name = factory.Faker('first_name')
     last_name = factory.Faker('last_name')
     password = make_password('test1234')
