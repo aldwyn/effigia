@@ -5,14 +5,17 @@
     <div class="comment-overflow">
         {% if object.comments.count > 0 %}
             {% for comment in object.comments.all %}
-            <li class="list-group-item">
+            <li class="list-group-item" data-toggle="tooltip" data-placement="top" title="{{ comment.created }}">
                 <strong>
                     <a href="{% url 'gallery:list-by-user' comment.created_by.username %}">@{{ comment.created_by.username }}</a>:
                 </strong>
                 {{ comment.text|linebreaksbr }}
                 <p class="text-right">
                     <a href="">
-                        <i class="fa fa-heart-o"></i>&nbsp; Like <span class="badge">{{ comment.likers.count }}</span>
+                        <i class="fa fa-heart-o"></i>&nbsp; Like
+                        {% if comment.likes.count > 0 %}
+                        <span class="badge">{{ comment.likes.count }}</span>
+                        {% endif %}
                     </a>
                 </p>
             </li>
@@ -27,7 +30,7 @@
         </li> -->
     </div>
     <li class="list-group-item">
-        <form action="{% url 'comment:create' content_type object.pk %}" enctype="multipart/form-data" method="POST">
+        <form action="{% url 'interaction:comment-create' content_type object.pk %}" enctype="multipart/form-data" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 {{ comment_form.text|limit_textarea_rows:3 }}

@@ -7,7 +7,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.core.urlresolvers import reverse
 from django.db import models
 
-from ..comments.models import Comment
+from ..interactions.models import Comment, Like
 
 
 class Post(TimeStampedModel):
@@ -19,6 +19,7 @@ class Post(TimeStampedModel):
     created_by = models.ForeignKey(get_user_model(), related_name='posts_created')
     likers = models.ManyToManyField(get_user_model(), related_name='posts_liked')
     comments = GenericRelation(Comment, related_query_name='posts')
+    likes = GenericRelation(Like, related_query_name='posts')
 
     def __str__(self):
         return self.text[:50]

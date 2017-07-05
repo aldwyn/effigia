@@ -8,7 +8,7 @@ from django.views.generic import DetailView
 from django.views.generic import CreateView
 from django.views.generic import UpdateView
 
-from ..comments.forms import CommentForm
+from ..interactions.forms import CommentForm
 from ..groups.models import Group
 from .models import Post
 
@@ -36,7 +36,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form.instance.group = Group.objects.get(slug=self.kwargs['slug'])
         post = form.save()
         messages.add_message(
-            self.request, messages.INFO, 'Successfully created %s.' % post)
+            self.request, messages.INFO, 'You created %s.' % post)
         return super(PostCreateView, self).form_valid(form)
 
 
@@ -47,5 +47,5 @@ class PostEditView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.save()
         messages.add_message(
-            self.request, messages.INFO, 'Successfully updated this post.')
+            self.request, messages.INFO, 'You updated this post.')
         return super(PostEditView, self).form_valid(form)

@@ -9,10 +9,10 @@ urlpatterns = [
     url(r'^', include('apps.dashboard.urls', namespace='dashboard')),
     url(r'^accounts/', include('apps.accounts.urls', namespace='accounts')),
     url(r'^category/', include('apps.categories.urls', namespace='category')),
-    url(r'^comment/', include('apps.comments.urls', namespace='comment')),
+    url(r'^chat/', include('apps.chats.urls', namespace='chat')),
+    url(r'^interaction/', include('apps.interactions.urls', namespace='interaction')),
     url(r'^gallery/', include('apps.galleries.urls', namespace='gallery')),
     url(r'^group/', include('apps.groups.urls', namespace='group')),
-    url(r'^chat/', include('apps.chats.urls', namespace='chat')),
     url(r'^portfolio/', include('apps.portfolios.urls', namespace='portfolio')),
     url(r'^post/', include('apps.posts.urls', namespace='post')),
 ]

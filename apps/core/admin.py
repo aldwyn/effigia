@@ -6,18 +6,20 @@ from django.contrib.auth.models import Permission
 
 from ..categories.models import Category
 from ..chats.models import Chat, Message
-from ..comments.models import Comment
 from ..galleries.models import Gallery
 from ..groups.models import Group
 from ..portfolios.models import Portfolio
 from ..posts.models import Post
+from ..interactions.models import Comment, Following, Like
 
 admin.site.register(Permission)
 admin.site.register(Category)
 admin.site.register(Chat)
 admin.site.register(Message)
-admin.site.register(Comment)
 admin.site.register(Gallery)
 admin.site.register(Group)
 admin.site.register(Portfolio)
 admin.site.register(Post)
+admin.site.register(Comment)
+admin.site.register(Following)
+admin.site.register(Like)

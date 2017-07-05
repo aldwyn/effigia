@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic import DetailView
@@ -13,7 +14,8 @@ from django.views.generic import DeleteView
 from django.utils.text import slugify
 
 from ..categories.models import Category
-from ..comments.forms import CommentForm
+from ..interactions.forms import CommentForm
+from ..interactions.models import Following, Like
 from .models import Gallery
 
 
@@ -67,8 +69,18 @@ class GalleryItemView(DetailView):
     model = Gallery
 
     def get_context_data(self, **kwargs):
-        kwargs['comment_form'] = CommentForm()
-        return super(GalleryItemView, self).get_context_data(**kwargs)
+        context = super(GalleryItemView, self).get_context_data(**kwargs)
+        context['comment_form'] = CommentForm()
+        content_type = ContentType.objects.get_for_model(Gallery)
+        context['following'] = Following.objects.filter(
+            follower=self.request.user,
+            content_type=content_type,
+            object_id=context['object'].pk).first()
+        context['liked'] = Like.objects.filter(
+            liker=self.request.user,
+            content_type=content_type,
+            object_id=context['object'].pk).first()
+        return context
 
 
 class GalleryCreateView(LoginRequiredMixin, CreateView):
@@ -87,7 +99,7 @@ class GalleryCreateView(LoginRequiredMixin, CreateView):
         gallery.slug = '{}-{}'.format(slugify(gallery.name), gallery.pk)
         gallery.save()
         messages.add_message(
-            self.request, messages.INFO, 'Successfully created %s.' % gallery.name)
+            self.request, messages.INFO, 'You created %s.' % gallery.name)
         return super(GalleryCreateView, self).form_valid(form)
 
 
@@ -100,7 +112,7 @@ class GalleryEditView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         gallery = form.save()
         messages.add_message(
-            self.request, messages.INFO, 'Successfully updated %s.' % gallery.name)
+            self.request, messages.INFO, 'You updated %s.' % gallery.name)
         return super(GalleryEditView, self).form_valid(form)
 
 
@@ -111,5 +123,5 @@ class GalleryDeleteView(LoginRequiredMixin, DeleteView):
     def form_valid(self, form):
         gallery = Gallery.objects.get(slug=self.kwargs['slug'])
         messages.add_message(
-            self.request, messages.INFO, 'Successfully deleted %s.' % gallery.name)
+            self.request, messages.INFO, 'You deleted %s.' % gallery.name)
         return super(GalleryDeleteView, self).form_valid(form)

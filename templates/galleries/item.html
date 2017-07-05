@@ -20,7 +20,7 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-9">
+    <div class="col-lg-8">
         <h1>{{ gallery.name }}
             {% if gallery.portfolios.count == 0 %}
             <sup data-toggle="tooltip" data-placement="top" title="This gallery is marked as private, because it does not have at least one (1) portfolio yet."><i class="fa fa-lock"></i></sup>
@@ -28,22 +28,65 @@
             <small>by <a href="{% url 'gallery:list-by-user' gallery.created_by %}" title="See {{ gallery.created_by.username }}'s profile">{{ gallery.created_by.get_full_name }}</a></small>
         </h1>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-4">
         {% if user.is_authenticated %}
         <div class="page-header text-right">
-            <a href="" class="btn btn-warning"><i class="fa fa-heart-o"></i>&nbsp; Favorite <span class="badge">{{ gallery.likers.count }}</span></a>
             <div class="btn-group">
-                <button class="dropdown-toggle btn btn-danger" data-toggle="dropdown" role="button" aria-expanded="false">Options &nbsp;&nbsp;<i class="fa fa-ellipsis-v"></i></button>
+                <button class="dropdown-toggle btn btn-sm btn-danger" data-toggle="dropdown" role="button" aria-expanded="false">Options &nbsp;&nbsp;<i class="fa fa-ellipsis-v"></i></button>
                 <ul class="dropdown-menu" role="menu">
                     {% if user == gallery.created_by %}
                     <li><a href="{% url 'gallery:edit' gallery.slug %}"><i class="fa fa-pencil-square-o"></i>&nbsp; Edit</a></li>
                     <li><a href="" data-toggle="modal" data-target="#gallery-delete"><i class="fa fa-trash"></i>&nbsp; Delete</a></li>
                     {% else %}
                     <li><a href="{% url 'gallery:delete' gallery.slug %}"><i class="fa fa-plus-square-o"></i>&nbsp; Add to Collections</a></li>
-                    <li><a href="{% url 'gallery:edit' gallery.slug %}"><i class="fa fa-exclamation-circle"></i>&nbsp; Report as inappropriate</a></li>
+                    <li><a href="{% url 'gallery:edit' gallery.slug %}"><i class="fa fa-exclamation-circle"></i>&nbsp; Report</a></li>
                     {% endif %}
                 </ul>
             </div>
+            {% if gallery.created_by != user %}
+                {% if following %}
+                <form class="follow-form" method="POST" action="{% url 'interaction:following-delete' following.pk %}">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-info">
+                        <i class="fa fa-check"></i>&nbsp; Followed
+                        {% if gallery.followings.count > 0 %}
+                        <span class="badge">{{ gallery.followings.count }}</span>
+                        {% endif %}
+                    </button>
+                </form>
+                {% else %}
+                <form class="follow-form" method="POST" action="{% url 'interaction:following-create' 'gallery' gallery.pk %}">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fa fa-rss"></i>&nbsp; Follow
+                        {% if gallery.followings.count > 0 %}
+                        <span class="badge">{{ gallery.followings.count }}</span>
+                        {% endif %}
+                    </button>
+                </form>
+                {% endif %}
+            {% endif %}
+            {% if liked %}
+            <form class="follow-form" method="POST" action="{% url 'interaction:like-delete' liked.pk %}">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-warning">
+                    <i class="fa fa-heart"></i>&nbsp; Liked
+                    {% if gallery.likes.count > 0 %}
+                    <span class="badge">{{ gallery.likes.count }}</span>
+                    {% endif %}
+                </button>
+            </form>
+            {% else %}
+            <form class="follow-form" method="POST" action="{% url 'interaction:like-create' 'gallery' gallery.pk %}">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-warning">
+                    <i class="fa fa-heart-o"></i>&nbsp; Like
+                    {% if gallery.likes.count > 0 %}
+                    <span class="badge">{{ gallery.likes.count }}</span>
+                    {% endif %}
+                </button>
+            </form>
+            {% endif %}
         </div>
         {% endif %}
     </div>
@@ -101,7 +144,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <p>
+        <p class="text-muted">
             <i class="fa fa-calendar"></i>&nbsp;
             <em>Created at {{ gallery.created }}</em>
         </p>

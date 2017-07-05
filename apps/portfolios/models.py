@@ -7,7 +7,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 
-from ..comments.models import Comment
+from ..interactions.models import Comment, Like
 
 
 class Portfolio(TimeStampedModel):
@@ -20,8 +20,8 @@ class Portfolio(TimeStampedModel):
     image = models.ImageField(upload_to='images/')
     created_by = models.ForeignKey(get_user_model())
     gallery = models.ForeignKey('galleries.Gallery', related_name='portfolios')
-    likers = models.ManyToManyField(get_user_model(), related_name='portfolios_liked')
     comments = GenericRelation(Comment, related_query_name='portfolios')
+    likes = GenericRelation(Like, related_query_name='portfolios')
 
     def __str__(self):
         return self.name

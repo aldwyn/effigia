@@ -14,7 +14,7 @@ from django.shortcuts import redirect
 from django.utils.text import slugify
 
 from ..galleries.models import Gallery
-from ..comments.forms import CommentForm
+from ..interactions.forms import CommentForm
 from .models import Portfolio
 from .forms import PortfolioFormSet
 
@@ -53,7 +53,7 @@ class PortfolioCreateView(LoginRequiredMixin, CreateView):
         form.instance.created_by = self.request.user
         portfolio = form.save()
         messages.add_message(
-            self.request, messages.INFO, 'Successfully created %s.' % portfolio)
+            self.request, messages.INFO, 'You created %s.' % portfolio)
         return super(PortfolioCreateView, self).form_valid(form)
 
 
@@ -90,7 +90,7 @@ class PortfolioEditView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         gallery = form.save()
         messages.add_message(
-            self.request, messages.INFO, 'Successfully updated %s.' % gallery.name)
+            self.request, messages.INFO, 'You updated %s.' % gallery.name)
         return super(PortfolioEditView, self).form_valid(form)
 
 
@@ -101,5 +101,5 @@ class PortfolioDeleteView(LoginRequiredMixin, DeleteView):
     def form_valid(self, form):
         gallery = Gallery.objects.get(slug=self.kwargs['slug'])
         messages.add_message(
-            self.request, messages.INFO, 'Successfully deleted %s.' % gallery.name)
+            self.request, messages.INFO, 'You deleted %s.' % gallery.name)
         return super(PortfolioDeleteView, self).form_valid(form)

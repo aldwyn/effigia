@@ -35,12 +35,14 @@
                 <p class="text-right">
                     <span class="text-muted">Posted on {{ post.created }}</span>
                     <a href="" class="spacify-action">
-                        {% if user in post.likers %}
-                        <i class="fa fa-heart"></i>&nbsp; Like
+                        {% if post.likes %}
+                        <i class="fa fa-heart-o"></i>&nbsp; Like
                         {% else %}
-                        <i class="fa fa-heart-o"></i>&nbsp; Liked
+                        <i class="fa fa-heart"></i>&nbsp; Liked
                         {% endif %}
-                        <span class="badge">{{ post.likers.count }}</span>
+                        {% if post.likes.count > 0 %}
+                        <span class="badge">{{ post.likes.count }}</span>
+                        {% endif %}
                     </a>
                     {% if post.created_by == user %}
                     <a href="" class="spacify-action" data-toggle="modal" data-target="#post-edit">
@@ -53,7 +55,7 @@
                 </p>
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="{% url 'comment:create' 'post' object.pk %}" enctype="multipart/form-data" method="POST">
+                        <form action="{% url 'interaction:comment-create' 'post' object.pk %}" enctype="multipart/form-data" method="POST">
                             {% csrf_token %}
                             <div class="form-group">
                                 {{ comment_form.text|limit_textarea_rows:3 }}
@@ -75,13 +77,15 @@
                                     <em><a href="{% url 'gallery:list-by-user' comment.created_by %}">@{{ comment.created_by }}</a> commented:</em>
                                     <p>{{ comment.text|linebreaksbr }}</p>
                                     <p class="text-right">
-                                        <a href="" class="spacify-action">
-                                            {% if user in post.likers.all %}
-                                            <i class="fa fa-heart"></i>&nbsp; Like
+                                        <a href="" class="spacify-action btn btn-xs">
+                                            {% if post.likes %}
+                                            <i class="fa fa-heart-o"></i>&nbsp; Like
                                             {% else %}
-                                            <i class="fa fa-heart-o"></i>&nbsp; Liked
+                                            <i class="fa fa-heart"></i>&nbsp; Liked
                                             {% endif %}
-                                            <span class="badge">{{ comment.likers.count }}</span>
+                                            {% if post.likes.count > 0 %}
+                                            <span class="badge">{{ comment.likes.count }}</span>
+                                            {% endif %}
                                         </a>
                                         <a href="" class="spacify-action">
                                             <i class="fa fa-flag"></i>&nbsp; Report

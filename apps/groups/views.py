@@ -46,5 +46,5 @@ class GroupCreateView(LoginRequiredMixin, CreateView):
         group.slug = '{}-{}'.format(slugify(group.name), group.pk)
         group.save()
         messages.add_message(
-            self.request, messages.INFO, 'Successfully created %s.' % group)
+            self.request, messages.INFO, 'You created %s.' % group)
         return super(GroupCreateView, self).form_valid(form)
