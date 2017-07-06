@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/darkly/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Artifika">
+    <link rel="stylesheet" href="{% static '/core/styles.css' %}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -24,89 +25,11 @@
         <script src="{% static '/html5shiv/dist/html5shiv.min.js' %}"></script>
         <script src="{% static '/respond/main.js' %}"></script>
     <![endif]-->
-
     <style>
         body {
             padding-top: 70px;
-            /*background: url({% static '/grayscale/img/intro-bg.jpg' %}) no-repeat center center fixed;
-            background-position: cover;*/
-        }
-
-        .portfolio-item {
-            margin-bottom: 25px;
-        }
-
-        footer {
-            margin: 50px 0;
-        }
-
-        .navbar-brand {
-            font-family: 'Artifika', serif;
-            text-transform: lowercase;
-        }
-
-        .nanobar {
-            top: 99%;
-            height: 6px;
-            bottom: 0;
-        }
-
-        .bar {
-            background: #38f;
-            border-radius: 4px;
-            box-shadow: 0 0 10px #59d;
-            margin: 0 auto;
-        }
-
-        .footer-hr {
-            margin-top: 50px;
-        }
-
-        .thumb {
-            margin-bottom: 30px;
-        }
-
-        .group-thumb {
-            height: 300px;
-        }
-
-        .comment-overflow {
-            font-size: 85%;
-            max-height: 350px;
-            overflow-y: auto;
-        }
-
-        .spacify-action {
-            margin-left: 10px;
-        }
-
-        .chat-panel {
-            overflow-y: auto;
-            max-height: 400px;
-        }
-
-        .chat-sidebar-panel {
-            overflow-y: auto;
-            height: 550px;
-        }
-
-        .message-bubble {
-            font-size: 85%;
-        }
-
-        .bubble-gray {
-            background-color: #556677;
-        }
-
-        .bubble-blue {
-            background-color: #375a7f;
-        }
-
-        .follow-form {
-            display: inline;
         }
     </style>
-
 </head>
 
 <body>
@@ -139,12 +62,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="{% static '/nanobar/nanobar.min.js' %}"></script>
     <script src="{% static '/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+    <script src="{% static '/core/index.js' %}"></script>
     <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-            var nanobar = new Nanobar();
-            nanobar.go(100);
-        });
         $(document).ready(function() {
         {% if messages %}
             {% for message in messages %}

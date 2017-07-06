@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Montserrat:400,700|Artifika">
 
     <!-- Theme CSS -->
+    <link rel="stylesheet" href="{% static '/core/styles.css' %}">
     <link rel="stylesheet" href="{% static '/grayscale/css/grayscale.min.css' %}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -27,26 +28,6 @@
         <script src="{% static '/html5shiv/dist/html5shiv.min.js' %}"></script>
         <script src="{% static '/respond/main.js' %}"></script>
     <![endif]-->
-
-    <style>
-        .navbar-brand, .brand-heading {
-            font-family: 'Artifika', serif;
-            text-transform: lowercase;
-        }
-
-        .nanobar {
-            top: 99%;
-            height: 6px;
-            bottom: 0;
-        }
-
-        .bar {
-            background: #38f;
-            border-radius: 4px;
-            box-shadow: 0 0 10px #59d;
-            margin: 0 auto;
-        }
-    </style>
 
 </head>
 
@@ -119,7 +100,7 @@
     <section id="about" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
-                <h2>About Effigia</h2>
+                <h2>Effigia &mdash; For Your Portfolio</h2>
                 <p>Taking inspirations from 500px, Quora, and Wordpress, <em><strong>effigia.com</strong></em> is a portal for galleries that sees significance in every work of art you make, may they be aesthetics from sketches, literature, and photography.
                 </p>
                 <p>You can create some curated galleries out of your favorite portfolios from thousands of artists like you!</p>
@@ -179,12 +160,8 @@
     <script src="{% static '/grayscale/js/grayscale.min.js' %}"></script>
     <script src="{% static '/nanobar/nanobar.min.js' %}"></script>
     <script src="{% static '/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+    <script src="{% static '/core/index.js' %}"></script>
     <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-            var nanobar = new Nanobar();
-            nanobar.go(100);
-        });
         $(document).ready(function() {
             $.notify({
                 icon: 'fa fa-check-circle',
@@ -207,7 +184,7 @@
                 delay: 5000,
                 placement: {
                     from: 'bottom',
-                    align: 'center'
+                    align: 'right'
                 },
                 animate: {
                     enter: 'animated zoomInDown',
