@@ -1,6 +1,7 @@
 import random
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 
@@ -32,6 +33,14 @@ class Command(BaseCommand):
         self.stdout.write('-> "{}"... {}.'.format(data, res))
 
     def handle(self, *args, **kwargs):
+        # Create superuser
+        admin = User(username='admin',
+                     email='admin@effigia.com',
+                     is_superuser=True,
+                     is_staff=True)
+        admin.set_password('test1234')
+        admin.save()
+
         self.load_dummy_categories()
         self.load_dummy_users()
         self.load_dummy_galleries()

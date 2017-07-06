@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load imagekit %}
 
 {% block content %}
 
@@ -97,33 +98,21 @@
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
             <!-- Indicators -->
             <ol class="carousel-indicators">
-                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                {% for portfolio in featured_portfolios %}
+                <li data-target="#carousel-example-generic" data-slide-to="{{ forloop.counter }}" class="{% if forloop.counter == 1 %}active{% endif %}"></li>
+                {% endfor %}
             </ol>
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <img src="{% static '/grayscale/img/intro-bg.jpg' %}" alt="...">
+                {% for portfolio in featured_portfolios %}
+                <div class="item {% if forloop.counter == 1 %}active{% endif %}">
+                    {% generateimage 'effigia:gallery-slideshow' source=portfolio.image %}
                     <div class="carousel-caption">
-                        <h3>All About Tokyo</h3>
-                        <p>The G' spring racing carnival, citylink secret laneway bars the storm spencer st station formula one grand prix, north melbourne shinboners trams ball pellegrini's moomba, bespectacled girls presets melbourne cricket ground kylie minogue the melbourne cup, richmond tigers victory vs heart cookie</p>
+                        <h3>{{ portfolio.name }}</h3>
+                        <p>{{ portfolio.description|slice:':100' }} ... <a href="">See more</a></p>
                     </div>
                 </div>
-                <div class="item">
-                    <img src="{% static '/grayscale/img/intro-bg.jpg' %}" alt="...">
-                    <div class="carousel-caption">
-                        <h3>All About Tokyo</h3>
-                        <p>The melbourne cup the saints, melbourne central the bulldogs the croft institute footy tullamarine, spiegeltent essendon bombers street art warehouse chic chopper read, the storm pellegrini's brunswick st hippy collins place trams, four seasons in one day naked for satan bespectacled girls</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <img src="{% static '/grayscale/img/intro-bg.jpg' %}" alt="...">
-                    <div class="carousel-caption">
-                        <h3>All About Tokyo</h3>
-                        <p>The melbourne cup the saints, melbourne central the bulldogs the croft institute footy tullamarine, spiegeltent essendon bombers street art warehouse chic chopper read, the storm pellegrini's brunswick st hippy collins place trams, four seasons in one day naked for satan bespectacled girls</p>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
             <!-- Controls -->
             <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">

@@ -17,7 +17,7 @@ class Portfolio(TimeStampedModel):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/portfolios/')
     created_by = models.ForeignKey(get_user_model())
     gallery = models.ForeignKey('galleries.Gallery', related_name='portfolios')
     comments = GenericRelation(Comment, related_query_name='portfolios')

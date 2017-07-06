@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_nose',
     'elasticsearch',
     'haystack',
+    'imagekit',
     'apps.core',
     'apps.accounts',
     'apps.chats',
@@ -99,7 +100,7 @@ DATABASES = {
         'NAME': 'effigia',
         'USER': 'postgres',
         'PASSWORD': 'rootroot',
-        'HOST': '/cloudsql/effigia-172804:us-central1:effigia-db',
+        'HOST': '/cloudsql/effigia-172804:us-central1:effigia-db-2',
     }
 }
 

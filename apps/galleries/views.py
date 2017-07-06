@@ -71,6 +71,7 @@ class GalleryItemView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(GalleryItemView, self).get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
+        context['featured_portfolios'] = context['object'].portfolios.all()[:3]
         content_type = ContentType.objects.get_for_model(Gallery)
         context['following'] = Following.objects.filter(
             follower=self.request.user,
