@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-offset-2 col-md-8">
+        <h1 class="page-header">Sign in to your Account </h1>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form class="form-horizontal" action="{% url 'account_login' %}" method="POST">
+                            {% include 'partials/form.html' %}
+                            <div class="row">
+                                <div class="col-md-offset-9 col-md-3 text-right">
+                                    <button class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <p>Or choose from the following:</p>
+                <p>
+                    <a class="btn btn-block btn-default socialaccount_google" href="{% provider_login_url 'google' process=process scope=scope auth_params=auth_params %}"><i class="fa fa-google"></i>&nbsp;&nbsp; Google</a>
+                    <a class="btn btn-block btn-default socialaccount_facebook" href="{% provider_login_url 'facebook' process=process scope=scope auth_params=auth_params %}"><i class="fa fa-facebook"></i>&nbsp;&nbsp; Facebook</a>
+                    <a class="btn btn-block btn-default socialaccount_twitter" href="{% provider_login_url 'twitter' process=process scope=scope auth_params=auth_params %}"><i class="fa fa-twitter"></i>&nbsp;&nbsp; Twitter</a>
+                </p>
+                <p>No account yet? <a href="{{ signup_url }}">Sign up</a> to get started.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

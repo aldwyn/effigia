@@ -13,6 +13,7 @@
 
     <title>Effigia</title>
 
+    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static '/animate.css/animate.min.css' %}">
@@ -25,8 +26,8 @@
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="{% static '/html5shiv/dist/html5shiv.min.js' %}"></script>
-        <script src="{% static '/respond/main.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
 </head>
@@ -59,16 +60,16 @@
                     </li>
                     <li>
                         <!-- <a class="page-scroll" href="#download">Log in</a> -->
-                        <a class="page-scroll" href="{% url 'accounts:logout' %}">Log out</a>
+                        <a class="page-scroll" href="{% url 'account_logout' %}">Log out</a>
                     </li>
                     {% else %}
                     <li>
                         <!-- <a class="page-scroll" href="#download">Log in</a> -->
-                        <a class="page-scroll" href="{% url 'accounts:login' %}">Log in</a>
+                        <a class="page-scroll" href="{% url 'account_login' %}">Log in</a>
                     </li>
                     <li>
                         <!-- <a class="page-scroll" href="#contact">Sign up</a> -->
-                        <a class="page-scroll" href="{% url 'accounts:register' %}">Register</a>
+                        <a class="page-scroll" href="{% url 'account_signup' %}">Register</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -96,11 +97,34 @@
         </div>
     </header>
 
+    <div id="featured" class="container content-section text-center">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="thumbnail">
+                    <img src="{% static '/core/images/artwork_2.jpg' %}" alt="">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="thumbnail">
+                    <img src="{% static '/core/images/artwork_1.jpg' %}" alt="">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="thumbnail">
+                    <img src="{% static '/core/images/artwork_3.jpg' %}" alt="">
+                </div>
+            </div>
+            <p>
+                <em class="text-muted">Artworks by Harumi Hironaka</em>
+            </p>
+        </div>
+    </div>
+
     <!-- About Section -->
     <section id="about" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
-                <h2>Effigia &mdash; For Your Portfolio</h2>
+                <h2>Effigia &mdash; For Your Portfolios</h2>
                 <p>Taking inspirations from 500px, Quora, and Wordpress, <em><strong>effigia.com</strong></em> is a portal for galleries that sees significance in every work of art you make, may they be aesthetics from sketches, literature, and photography.
                 </p>
                 <p>You can create some curated galleries out of your favorite portfolios from thousands of artists like you!</p>
@@ -117,7 +141,7 @@
                 <div class="col-lg-8 col-lg-offset-2">
                     <h2>Try Effigia</h2>
                     <p>Join the community to appreciate how others see aesthetics.</p>
-                    <a href="{% url 'accounts:login' %}" class="btn btn-default btn-lg">Get started</a>
+                    <a href="{% url 'account_login' %}" class="btn btn-default btn-lg">Get started</a>
                 </div>
             </div>
         </div>

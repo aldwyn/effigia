@@ -11,7 +11,18 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse_lazy
+
+
+def get_env_variable(var_name):
+    """ Get the environment variable or return exception """
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable" % var_name
+        raise ImproperlyConfigured(error_msg)
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,9 +54,16 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django_extensions',
     'django_nose',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.twitter',
     'elasticsearch',
     'haystack',
     'imagekit',
+    'termsandconditions',
     'apps.core',
     'apps.accounts',
     'apps.chats',
@@ -66,6 +84,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'termsandconditions.middleware.TermsAndConditionsRedirectMiddleware',
 ]
 
 SITE_ID = 1
@@ -97,10 +116,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'effigia',
-        'USER': 'postgres',
-        'PASSWORD': 'rootroot',
-        'HOST': '/cloudsql/effigia-172804:us-central1:effigia-db-2',
+        'NAME': get_env_variable('DJANGO_DB_NAME'),
+        'USER': get_env_variable('DJANGO_DB_USER'),
+        'PASSWORD': get_env_variable('DJANGO_DB_PASS'),
+        'HOST': get_env_variable('DJANGO_DB_HOST'),
     }
 }
 
@@ -123,6 +142,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -141,13 +165,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
-LOGIN_URL = reverse_lazy('accounts:login')
-LOGOUT_URL = reverse_lazy('accounts:logout')
+LOGIN_URL = reverse_lazy('account_login')
+LOGOUT_URL = reverse_lazy('account_logout')
 LOGIN_REDIRECT_URL = reverse_lazy('dashboard:home')
 LOGOUT_REDIRECT_URL = reverse_lazy('dashboard:index')
 
-STATIC_URL = 'https://storage.googleapis.com/effigia-172804/public/static/'
+STATIC_URL = get_env_variable('DJANGO_STATIC_URL')
 STATIC_ROOT = os.path.join(BASE_DIR, 'public/static')
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -155,8 +178,10 @@ STATICFILES_FINDERS = [
     'npm.finders.NpmFinder',
 ]
 
-MEDIA_URL = '/media/'
+MEDIA_URL = get_env_variable('DJANGO_MEDIA_URL')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'public/media')
+
+DJANGO_ADMIN_PASS = get_env_variable('DJANGO_ADMIN_PASS')
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -180,13 +205,47 @@ WPADMIN = {
     }
 }
 
+# django-allauth
+ACCOUNT_SESSION_REMEMBER = False
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_SUBJECT_PREFIX = '[effigia.com] '
+ACCOUNT_USERNAME_MIN_LENGTH = 4
+ACCOUNT_USERNAME_BLACKLIST = ['admin']
+ACCOUNT_LOGOUT_ON_GET = True
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email', ],
+        'AUTH_PARAMS': {'access_type': 'online'}
+    },
+    'facebook': {
+        'SCOPE': ['email', 'public_profile', 'user_friends'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+    },
+    'twitter': {
+        'SCOPE': ['profile', 'email'],
+    }
+}
+
+GOOGLE_OAUTH2_CLIENT_ID = get_env_variable('GOOGLE_OAUTH2_CLIENT_ID')
+GOOGLE_OAUTH2_CLIENT_SECRET = get_env_variable('GOOGLE_OAUTH2_CLIENT_SECRET')
+
+FACEBOOK_OAUTH2_CLIENT_ID = get_env_variable('FACEBOOK_OAUTH2_CLIENT_ID')
+FACEBOOK_OAUTH2_CLIENT_SECRET = get_env_variable('FACEBOOK_OAUTH2_CLIENT_SECRET')
+
+TWITTER_OAUTH2_CLIENT_ID = get_env_variable('TWITTER_OAUTH2_CLIENT_ID')
+TWITTER_OAUTH2_CLIENT_SECRET = get_env_variable('TWITTER_OAUTH2_CLIENT_SECRET')
+
+
 if not os.getenv('GAE_INSTANCE'):
     DEBUG = True
     STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
     # DATABASES['default']['HOST'] = '127.0.0.1'

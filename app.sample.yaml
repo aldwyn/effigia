@@ -1,0 +1,27 @@
+runtime: python
+env: flex
+entrypoint: gunicorn -b :$PORT config.wsgi
+
+beta_settings:
+  cloud_sql_instances: <provide here>
+
+runtime_config:
+  python_version: 2
+
+# env_variables:
+#   DJANGO_ADMIN_PASS: <provide here>
+#   DJANGO_DB_NAME: <provide here>
+#   DJANGO_DB_USER: <provide here>
+#   DJANGO_DB_PASS: <provide here>
+#   DJANGO_DB_HOST: <provide here>
+#   DJANGO_STATIC_URL: <provide here>
+#   DJANGO_MEDIA_URL: <provide here>
+  
+#   GOOGLE_OAUTH2_CLIENT_ID: <provide here>
+#   GOOGLE_OAUTH2_CLIENT_SECRET: <provide here>
+  
+#   FACEBOOK_OAUTH2_CLIENT_ID: <provide here>
+#   FACEBOOK_OAUTH2_CLIENT_SECRET: <provide here>
+  
+#   TWITTER_OAUTH2_CLIENT_ID: <provide here>
+#   TWITTER_OAUTH2_CLIENT_SECRET: <provide here>

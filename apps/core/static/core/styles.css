@@ -71,3 +71,16 @@ footer {
 .follow-form {
     display: inline;
 }
+
+.socialaccount_google {
+    background-color: #db4437;
+}
+
+.socialaccount_facebook {
+    background-color: #4267b2;
+}
+
+.socialaccount_twitter {
+    background-color: #0088cc;
+}
+

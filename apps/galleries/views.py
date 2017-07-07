@@ -73,14 +73,15 @@ class GalleryItemView(DetailView):
         context['comment_form'] = CommentForm()
         context['featured_portfolios'] = context['object'].portfolios.all()[:3]
         content_type = ContentType.objects.get_for_model(Gallery)
-        context['following'] = Following.objects.filter(
-            follower=self.request.user,
-            content_type=content_type,
-            object_id=context['object'].pk).first()
-        context['liked'] = Like.objects.filter(
-            liker=self.request.user,
-            content_type=content_type,
-            object_id=context['object'].pk).first()
+        if self.request.user.is_authenticated():
+            context['following'] = Following.objects.filter(
+                follower=self.request.user,
+                content_type=content_type,
+                object_id=context['object'].pk).first()
+            context['liked'] = Like.objects.filter(
+                liker=self.request.user,
+                content_type=content_type,
+                object_id=context['object'].pk).first()
         return context
 
 

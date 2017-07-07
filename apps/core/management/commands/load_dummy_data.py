@@ -1,6 +1,9 @@
 import random
 
+from allauth.socialaccount.models import SocialApp
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.sites.models import Site
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 
@@ -37,9 +40,10 @@ class Command(BaseCommand):
                      email='admin@effigia.com',
                      is_superuser=True,
                      is_staff=True)
-        admin.set_password('test1234')
+        admin.set_password(settings.DJANGO_ADMIN_PASS)
         admin.save()
 
+        self.load_social_providers()
         self.load_dummy_categories()
         self.load_dummy_users()
         self.load_dummy_galleries()
@@ -49,6 +53,30 @@ class Command(BaseCommand):
         self.load_dummy_comments(self.galleries)
         self.load_dummy_comments(self.portfolios)
         self.load_dummy_comments(self.posts)
+
+    def load_social_providers(self):
+        current_site = Site.objects.get_current()
+        current_site.domain = 'effigia.com'
+        current_site.name = 'Effigia'
+        current_site.save()
+        google_app = SocialApp.objects.create(
+            name='Google',
+            provider='google',
+            client_id=settings.GOOGLE_OAUTH2_CLIENT_ID,
+            secret=settings.GOOGLE_OAUTH2_CLIENT_SECRET)
+        facebook_app = SocialApp.objects.create(
+            name='Facebook',
+            provider='facebook',
+            client_id=settings.FACEBOOK_OAUTH2_CLIENT_ID,
+            secret=settings.FACEBOOK_OAUTH2_CLIENT_SECRET)
+        twitter_app = SocialApp.objects.create(
+            name='Twitter',
+            provider='twitter',
+            client_id=settings.TWITTER_OAUTH2_CLIENT_ID,
+            secret=settings.TWITTER_OAUTH2_CLIENT_SECRET)
+        google_app.sites.add(current_site)
+        facebook_app.sites.add(current_site)
+        twitter_app.sites.add(current_site)
 
     def load_dummy_categories(self):
         categories = [

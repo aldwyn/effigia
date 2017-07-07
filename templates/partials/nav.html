@@ -51,11 +51,11 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><em>@{{ user.username }}</em> &nbsp;<i class="fa fa-caret-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{% url 'dashboard:home' %}"><i class="fa fa-tags"></i>&nbsp; My Galleries</a></li>
-                            <li><a href="{% url 'accounts:profile' %}"><i class="fa fa-user-circle-o"></i>&nbsp; My Profile</a></li>
+                            <li><a href="{% url 'dashboard:home' %}"><i class="fa fa-user-circle-o"></i>&nbsp; My Profile</a></li>
                             <li><a href="#"><i class="fa fa-tasks"></i>&nbsp; Manage Portfolios</a></li>
                             <li class="divider"></li>
                             <li><a href="#"><i class="fa fa-gears"></i>&nbsp; Account Settings</a></li>
-                            <li><a href="{% url 'accounts:logout' %}"><i class="fa fa-sign-out"></i>&nbsp; Log out</a></li>
+                            <li><a href="{% url 'account_logout' %}"><i class="fa fa-sign-out"></i>&nbsp; Log out</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -64,10 +64,10 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="{% url 'accounts:login' %}">Log in</a>
+                        <a href="{% url 'account_login' %}">Log in</a>
                     </li>
                     <li>
-                        <a href="{% url 'accounts:register' %}">Register</a>
+                        <a href="{% url 'account_signup' %}">Register</a>
                     </li>
                     <li>
                         <a href="#">About</a>
