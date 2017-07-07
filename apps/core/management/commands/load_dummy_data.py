@@ -1,7 +1,6 @@
 import random
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 
@@ -71,7 +70,7 @@ class Command(BaseCommand):
         self.__log_info('Creating {} users...'.format(default_user_count))
         users = []
         for i in xrange(default_user_count):
-            user = UserFactory.create()
+            user = UserFactory.build()
             users.append(user)
             self.__log_result(user.get_full_name())
         User.objects.bulk_create(users)
@@ -81,7 +80,7 @@ class Command(BaseCommand):
         self.__log_info('Creating {} galleries...'.format(default_gallery_count))
         galleries = []
         for i in xrange(default_gallery_count):
-            gallery = GalleryFactory.create(
+            gallery = GalleryFactory.build(
                 created_by=random.choice(self.users),
                 category=random.choice(self.categories),
                 slug='gallery-%s' % i,
@@ -100,7 +99,7 @@ class Command(BaseCommand):
         portfolios = []
         for i in xrange(default_portfolio_count):
             gallery = random.choice(self.galleries)
-            portfolio = PortfolioFactory.create(
+            portfolio = PortfolioFactory.build(
                 gallery=gallery,
                 created_by=gallery.created_by,
                 slug='portfolio-%s' % i
@@ -118,7 +117,7 @@ class Command(BaseCommand):
         self.__log_info('Creating {} groups...'.format(default_group_count))
         groups = []
         for i in xrange(default_group_count):
-            group = GroupFactory.create(
+            group = GroupFactory.build(
                 created_by=random.choice(self.users),
                 slug='group-%s' % i
             )
@@ -134,7 +133,7 @@ class Command(BaseCommand):
         self.__log_info('Creating {} posts...'.format(default_post_count))
         posts = []
         for i in xrange(default_post_count):
-            post = PostFactory.create(
+            post = PostFactory.build(
                 group=random.choice(self.groups),
                 created_by=random.choice(self.users),
             )
@@ -148,7 +147,7 @@ class Command(BaseCommand):
 
     def load_dummy_comments(self, obj_list, default_max_count=15):
         self.__log_info('Creating comments on `{}`...'.format(obj_list[0].__class__))
-        comments_pool = [CommentFactory.create() for _ in xrange(100)]
+        comments_pool = [CommentFactory.build() for _ in xrange(100)]
         comments_batch = []
         for obj in obj_list:
             counts = random.randint(1, default_max_count)

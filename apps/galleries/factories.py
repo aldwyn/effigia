@@ -10,7 +10,7 @@ from ..accounts.factories import UserFactory
 from .models import Gallery
 
 
-class GalleryFactory(factory.Factory):
+class GalleryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Gallery
 

@@ -7,7 +7,7 @@ from ..accounts.factories import UserFactory
 from .models import Post
 
 
-class PostFactory(factory.Factory):
+class PostFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Post
 

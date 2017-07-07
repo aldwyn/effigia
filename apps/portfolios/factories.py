@@ -11,7 +11,7 @@ from ..accounts.factories import UserFactory
 from .models import Portfolio
 
 
-class PortfolioFactory(factory.Factory):
+class PortfolioFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Portfolio
 

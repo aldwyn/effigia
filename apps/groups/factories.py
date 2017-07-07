@@ -9,7 +9,7 @@ from ..accounts.factories import UserFactory
 from .models import Group
 
 
-class GroupFactory(factory.Factory):
+class GroupFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Group
 

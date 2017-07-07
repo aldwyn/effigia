@@ -7,7 +7,7 @@ from ..accounts.factories import UserFactory
 from .models import Comment
 
 
-class CommentFactory(factory.Factory):
+class CommentFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Comment
 
