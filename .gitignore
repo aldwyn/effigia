@@ -1,9 +1,9 @@
 .env
-app.yaml
 node_modules/
 public/media/
 public/static/
 .coverage
+.app.yaml
 debug.log
 db.sqlite3
 *.pyc
