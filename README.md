@@ -12,6 +12,8 @@ Y8b.     888    888    888 Y88b 888 888 888  888 d8b Y88b.    Y88..88P 888  888 
                             "Y88P"                                                   
 ```
 
+[![Requirements Status](https://requires.io/github/aldwyn/effigia/requirements.svg?branch=master)](https://requires.io/github/aldwyn/effigia/requirements/?branch=master)
+
 # *effigia.com* - For Your Portfolios
 
 Taking inspirations from 500px, Quora, and Wordpress, ***effigia.com*** is a portal for galleries that sees significance in every work of art you make, may they be aesthetics from sketches, literature, and photography.
