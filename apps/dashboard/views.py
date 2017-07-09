@@ -31,6 +31,20 @@ class HomeView(LoginRequiredMixin, ListView):
         return super(HomeView, self).get_context_data(**kwargs)
 
 
+class FollowingView(LoginRequiredMixin, ListView):
+    template_name = 'dashboard/home.html'
+    context_object_name = 'galleries'
+    model = Gallery
+    paginate_by = 15
+
+    def get_queryset(self):
+        return self.request.user.followed.all()
+
+    def get_context_data(self, **kwargs):
+        kwargs['all_galleries_count'] = self.get_queryset().count()
+        return super(FollowingView, self).get_context_data(**kwargs)
+
+
 class NotificationsView(TemplateView):
     template_name = 'dashboard/notifications.html'
 

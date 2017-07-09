@@ -63,7 +63,7 @@ INSTALLED_APPS = [
     'elasticsearch',
     'haystack',
     'imagekit',
-    'termsandconditions',
+    'storages',
     'apps.core',
     'apps.accounts',
     'apps.chats',
@@ -84,7 +84,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'termsandconditions.middleware.TermsAndConditionsRedirectMiddleware',
 ]
 
 SITE_ID = 1
@@ -115,7 +114,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': get_env_variable('DJANGO_DB_NAME'),
         'USER': get_env_variable('DJANGO_DB_USER'),
         'PASSWORD': get_env_variable('DJANGO_DB_PASS'),
@@ -171,15 +170,19 @@ LOGIN_REDIRECT_URL = reverse_lazy('dashboard:home')
 LOGOUT_REDIRECT_URL = reverse_lazy('dashboard:index')
 
 STATIC_URL = get_env_variable('DJANGO_STATIC_URL')
-STATIC_ROOT = os.path.join(BASE_DIR, 'public/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'npm.finders.NpmFinder',
 ]
 
 MEDIA_URL = get_env_variable('DJANGO_MEDIA_URL')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'public/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DEFAULT_FILE_STORAGE = get_env_variable('DJANGO_FILE_STORAGE_BACKEND')
+
+GS_BUCKET_NAME = get_env_variable('GS_BUCKET_NAME')
+GS_FILE_OVERWRITE = False
 
 DJANGO_ADMIN_PASS = get_env_variable('DJANGO_ADMIN_PASS')
 
@@ -236,16 +239,12 @@ FACEBOOK_OAUTH2_CLIENT_SECRET = get_env_variable('FACEBOOK_OAUTH2_CLIENT_SECRET'
 TWITTER_OAUTH2_CLIENT_ID = get_env_variable('TWITTER_OAUTH2_CLIENT_ID')
 TWITTER_OAUTH2_CLIENT_SECRET = get_env_variable('TWITTER_OAUTH2_CLIENT_SECRET')
 
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = get_env_variable('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = get_env_variable('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
 
 if not os.getenv('GAE_INSTANCE'):
     DEBUG = True
-    STATIC_URL = '/static/'
-    MEDIA_URL = '/media/'
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
     EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
-    # DATABASES['default']['HOST'] = '127.0.0.1'

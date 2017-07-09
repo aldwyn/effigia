@@ -1,5 +1,5 @@
 from imagekit import ImageSpec, register
-from imagekit.processors import ResizeToFill
+from imagekit.processors import ResizeToFill, ResizeToFit
 
 
 class GallerySlideshowImage(ImageSpec):
@@ -20,6 +20,13 @@ class PortfolioThumbnail(ImageSpec):
     options = {'quality': 60}
 
 
+class PortfolioItemImage(ImageSpec):
+    processors = [ResizeToFit(700, 500)]
+    format = 'JPEG'
+    options = {'quality': 60}
+
+
 register.generator('effigia:gallery-slideshow', GallerySlideshowImage)
 register.generator('effigia:gallery-thumbnail', GalleryCoverThumbnail)
 register.generator('effigia:portfolio-thumbnail', PortfolioThumbnail)
+register.generator('effigia:portfolio-item', PortfolioItemImage)

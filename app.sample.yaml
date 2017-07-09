@@ -16,6 +16,15 @@ runtime_config:
 #   DJANGO_DB_HOST: <provide here>
 #   DJANGO_STATIC_URL: <provide here>
 #   DJANGO_MEDIA_URL: <provide here>
+#   DJANGO_FILE_STORAGE_BACKEND: <provide here>
+
+#   EMAIL_HOST: <provide here>
+#   EMAIL_PORT: <provide here>
+#   EMAIL_HOST_USER: <provide here>
+#   EMAIL_HOST_PASSWORD: <provide here>
+#   EMAIL_USE_TLS: <provide here>
+
+#   GS_BUCKET_NAME: <provide here>
   
 #   GOOGLE_OAUTH2_CLIENT_ID: <provide here>
 #   GOOGLE_OAUTH2_CLIENT_SECRET: <provide here>
