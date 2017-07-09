@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     'haystack',
     'imagekit',
     'storages',
-    'apps.core',
+    'core',
     'apps.accounts',
     'apps.chats',
     'apps.dashboard',
@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'apps.interactions',
     'apps.portfolios',
     'apps.posts',
+    'actstream',
 ]
 
 MIDDLEWARE = [

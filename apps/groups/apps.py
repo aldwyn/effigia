@@ -5,4 +5,8 @@ from django.apps import AppConfig
 
 
 class GroupsConfig(AppConfig):
-    name = 'groups'
+    name = 'apps.groups'
+
+    def ready(self):
+        from actstream import registry
+        registry.register(*self.get_models())

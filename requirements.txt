@@ -5,6 +5,7 @@ django-extensions==1.7.8
 django-guardian==1.4.8
 django-haystack==2.5.1
 django-imagekit==4.0.1
+django-jsonfield==1.0.1
 django-nose==1.4.4
 elasticsearch==5.4.0
 factory-boy==2.8.1
@@ -14,5 +15,6 @@ pilkit==2.0
 Pillow==4.1.1
 psycopg2==2.7.1
 
--e git+https://github.com/leduchuy89vn/django-wpadmin.git#egg=django-wpadmin
+-e git+https://github.com/justquick/django-activity-stream.git#egg=actstream
 -e git+https://github.com/jschneier/django-storages.git#egg=django-storages
+-e git+https://github.com/leduchuy89vn/django-wpadmin.git#egg=django-wpadmin

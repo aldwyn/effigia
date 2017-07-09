@@ -5,4 +5,8 @@ from django.apps import AppConfig
 
 
 class InteractionsConfig(AppConfig):
-    name = 'interactions'
+    name = 'apps.interactions'
+
+    def ready(self):
+        from actstream import registry
+        registry.register(*self.get_models())

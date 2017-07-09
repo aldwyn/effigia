@@ -58,8 +58,7 @@ class FollowingCreateView(LoginRequiredMixin, CreateView):
         form.instance.follower = self.request.user
         form.instance.content_object = obj
         form.save()
-        messages.add_message(
-            self.request, messages.INFO, 'You followed %s.' % obj)
+        messages.add_message(self.request, messages.INFO, 'You followed %s.' % obj)
         self.success_url = obj.get_absolute_url()
         return super(FollowingCreateView, self).form_valid(form)
 

@@ -5,4 +5,8 @@ from django.apps import AppConfig
 
 
 class ChatsConfig(AppConfig):
-    name = 'chats'
+    name = 'apps.chats'
+
+    def ready(self):
+        from actstream import registry
+        registry.register(*self.get_models())

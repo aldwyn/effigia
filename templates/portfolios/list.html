@@ -28,7 +28,7 @@
         {% for portfolio in portfolios %}
         <div class="col-lg-3 col-md-4 col-xs-6 thumb">
             <a class="thumbnail" href="{% url 'portfolio:item' portfolio.slug %}">
-                {% generateimage 'effigia:gallery-thumbnail' source=portfolio.image -- class="img-responsive" alt=portfolio.name %}
+                {% generateimage 'gallery-thumbnail' source=portfolio.image -- class="img-responsive" alt=portfolio.name %}
                 <span class="caption">{{ portfolio.name }}</span>
                 <br>
                 <em><small class="caption">{{ portfolio.created }}</small></em>

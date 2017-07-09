@@ -106,7 +106,7 @@
             <div class="carousel-inner" role="listbox">
                 {% for portfolio in featured_portfolios %}
                 <div class="item {% if forloop.counter == 1 %}active{% endif %}">
-                    {% generateimage 'effigia:gallery-slideshow' source=portfolio.image %}
+                    {% generateimage 'gallery-slideshow' source=portfolio.image %}
                     <div class="carousel-caption">
                         <h3>{{ portfolio.name }}</h3>
                         <p>{{ portfolio.description|slice:':100' }} ... <a href="">See more</a></p>
