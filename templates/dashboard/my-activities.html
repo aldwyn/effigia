@@ -13,7 +13,7 @@
         <ul class="list-group">
         {% for action in user.actor_actions.all %}
             <li class="list-group-item">
-                You {{ action.verb }} <a href="{{ action }}">{{ action.target }}</a> {{ action.timesince }} ago.
+                You {{ action.verb }} <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a> {{ action.timesince }} ago.
             </li>
         {% empty %}
             <li class="list-group-item">

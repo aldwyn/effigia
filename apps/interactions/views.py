@@ -13,7 +13,6 @@ from django.views.generic import DeleteView
 from django.views.generic import RedirectView
 
 from .models import Comment
-from .models import Following
 from .models import Like
 from ..galleries.models import Gallery
 from ..groups.models import Group

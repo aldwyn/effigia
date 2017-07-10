@@ -31,3 +31,4 @@ def get_image(source):
         return source.image
     elif isinstance(source, get_user_model()):
         return source.avatar
+    return None

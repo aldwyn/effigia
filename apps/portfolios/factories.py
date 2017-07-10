@@ -5,7 +5,6 @@ import factory
 import random
 from faker import Faker
 from django.core.files.base import ContentFile
-from django.utils.text import slugify
 
 from ..accounts.factories import UserFactory
 from .models import Portfolio
@@ -25,5 +24,4 @@ class PortfolioFactory(factory.django.DjangoModelFactory):
             ), 'example.jpg'
         )
     )
-    slug = factory.LazyAttribute(lambda a: slugify(a.name))
     created_by = UserFactory()

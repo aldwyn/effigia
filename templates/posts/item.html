@@ -32,7 +32,7 @@
                 </div>
                 <div class="media-body">
                     <em><a href="{% url 'gallery:list-by-user' post.created_by %}">@{{ post.created_by }}</a> posted:</em>
-                    <blockquote>{{ post.text|linebreaksbr }}</blockquote>
+                    <blockquote>{{ post.description|linebreaksbr }}</blockquote>
                     <p class="text-right">
                         <span class="text-muted">Posted on {{ post.created }}</span>
                         <a href="" class="spacify-action">
@@ -120,7 +120,7 @@
                     <form action="{% url 'post:edit' post.pk %}" id="post-form" method="POST">
                         {% csrf_token %}
                         <div class="form-group">
-                            {{ post_edit_form.text|limit_textarea_rows:10 }}
+                            {{ post_edit_form.description|limit_textarea_rows:10 }}
                         </div>
                     </form>
                 </div>

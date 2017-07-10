@@ -24,7 +24,7 @@ class PostItemView(DetailView):
             'content_object': self.get_object(),
             'created_by': self.request.user,
         })
-        kwargs['post_edit_form'] = modelform_factory(Post, fields=('text',))(instance=self.get_object())
+        kwargs['post_edit_form'] = modelform_factory(Post, fields=('description',))(instance=self.get_object())
         return super(PostItemView, self).get_context_data(**kwargs)
 
 

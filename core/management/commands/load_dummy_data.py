@@ -106,16 +106,14 @@ class Command(BaseCommand):
 
     def load_dummy_galleries(self, default_gallery_count=40):
         self.__log_info('Creating {} galleries...'.format(default_gallery_count))
-        galleries = []
         for i in xrange(default_gallery_count):
             gallery = GalleryFactory.build(
                 created_by=random.choice(self.users),
                 category=random.choice(self.categories),
                 slug='gallery-%s' % i,
             )
-            galleries.append(gallery)
+            gallery.save()
             self.__log_result(gallery.name)
-        Gallery.objects.bulk_create(galleries)
         self.galleries = Gallery.objects.all()
         # self.__log_info('Creating random likers on Galleries...')
         # for gallery in self.galleries:
@@ -124,7 +122,6 @@ class Command(BaseCommand):
 
     def load_dummy_portfolios(self, default_portfolio_count=100):
         self.__log_info('Creating {} portfolios...'.format(default_portfolio_count))
-        portfolios = []
         for i in xrange(default_portfolio_count):
             gallery = random.choice(self.galleries)
             portfolio = PortfolioFactory.build(
@@ -132,9 +129,8 @@ class Command(BaseCommand):
                 created_by=gallery.created_by,
                 slug='portfolio-%s' % i
             )
-            portfolios.append(portfolio)
             self.__log_result(portfolio.name)
-        Portfolio.objects.bulk_create(portfolios)
+            portfolio.save()
         self.portfolios = Portfolio.objects.all()
         # self.__log_info('Creating random likers on Portfolios...')
         # for portfolio in self.portfolios:
@@ -143,31 +139,28 @@ class Command(BaseCommand):
 
     def load_dummy_groups(self, default_group_count=30):
         self.__log_info('Creating {} groups...'.format(default_group_count))
-        groups = []
         for i in xrange(default_group_count):
             group = GroupFactory.build(
                 created_by=random.choice(self.users),
                 slug='group-%s' % i
             )
-            groups.append(group)
             self.__log_result(group.name)
-        Group.objects.bulk_create(groups)
+            group.save()
         self.groups = Group.objects.all()
         # for group in self.groups:
         #     group.members.add(
         #         *random.sample(self.users, random.randint(1, len(self.users))))
 
-    def load_dummy_posts(self, default_post_count=500):
+    def load_dummy_posts(self, default_post_count=200):
         self.__log_info('Creating {} posts...'.format(default_post_count))
-        posts = []
         for i in xrange(default_post_count):
             post = PostFactory.build(
                 group=random.choice(self.groups),
                 created_by=random.choice(self.users),
+                slug='post-%s' % i,
             )
-            posts.append(post)
-            self.__log_result(post.text[:50])
-        Post.objects.bulk_create(posts)
+            self.__log_result(post.name)
+            post.save()
         self.posts = Post.objects.all()
         # for posts in self.posts:
         #     posts.likers.add(
@@ -176,15 +169,13 @@ class Command(BaseCommand):
     def load_dummy_comments(self, obj_list, default_max_count=15):
         self.__log_info('Creating comments on `{}`...'.format(obj_list[0].__class__))
         comments_pool = [CommentFactory.build() for _ in xrange(100)]
-        comments_batch = []
         for obj in obj_list:
             counts = random.randint(1, default_max_count)
             self.__log_result('%s: %s comments' % (obj, counts))
             for comment in random.sample(comments_pool, counts):
                 comment.content_object = obj
                 comment.created_by = random.choice(self.users)
-                comments_batch.append(comment)
-        Comment.objects.bulk_create(comments_batch)
+                comment.save()
         # self.__log_info('Creating random likers on Comments...')
         # for obj in obj_list:
         #     for comment in obj.comments.all():

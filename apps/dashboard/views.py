@@ -75,7 +75,7 @@ class FollowingView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(FollowingView, self).get_context_data(**kwargs)
-        context['all_followings_count'] = self.get_queryset().count()
+        context['all_actions_count'] = self.get_queryset().count()
         return context
 
 

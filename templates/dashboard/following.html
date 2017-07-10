@@ -26,11 +26,13 @@
                     <div class="feed-card panel panel-default">
                         <div class="panel-body">
                             <div class="media">
-                                <div class="media-left">
-                                    {% with source=action.target|get_image %}
-                                        {% generateimage 'feed-card-thumbnail' source=source -- alt=action.target %}
-                                    {% endwith %}
-                                </div>
+                                {% with source=action.target|get_image %}
+                                    {% if source %}
+                                        <div class="media-left">
+                                            {% generateimage 'feed-card-thumbnail' source=source -- alt=action.target %}
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
                                 <div class="media-body">
                                     <span class="h4">
                                         {{ action.target }}
@@ -64,10 +66,5 @@
         {% endif %}
     </div>
 </div>
-
-{% if all_actions_count > 15 %}
-    {% url 'gallery:list' as next_url %}
-    {% include 'partials/pagination.html' with next_url=next_url %}
-{% endif %}
 
 {% endblock %}

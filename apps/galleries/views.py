@@ -16,7 +16,7 @@ from django.utils.text import slugify
 
 from ..categories.models import Category
 from ..interactions.forms import CommentForm
-from ..interactions.models import Following, Like
+from ..interactions.models import Like
 from .models import Gallery
 
 
@@ -75,10 +75,6 @@ class GalleryItemView(DetailView):
         context['featured_portfolios'] = context['object'].portfolios.all()[:3]
         content_type = ContentType.objects.get_for_model(Gallery)
         if self.request.user.is_authenticated():
-            context['following'] = Following.objects.filter(
-                follower=self.request.user,
-                content_type=content_type,
-                object_id=context['object'].pk).first()
             context['liked'] = Like.objects.filter(
                 liker=self.request.user,
                 content_type=content_type,
@@ -101,7 +97,6 @@ class GalleryCreateView(LoginRequiredMixin, CreateView):
         gallery = form.save()
         gallery.slug = '{}-{}'.format(slugify(gallery.name), gallery.pk)
         gallery.save()
-        action.send(self.request.user, verb='created a gallery', target=gallery)
         messages.add_message(
             self.request, messages.INFO, 'You created %s.' % gallery.name)
         return super(GalleryCreateView, self).form_valid(form)
