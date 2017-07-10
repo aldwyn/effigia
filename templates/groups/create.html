@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-offset-2 col-md-8">
-        <h1>Create a Group</h1>
-        <hr>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <form class="form-horizontal" action="{% url 'group:create' %}" enctype="multipart/form-data" method="POST">
-                    {% include 'partials/form.html' %}
-                    <div class="row">
-                        <div class="col-md-offset-9 col-md-3 text-right">
-                            <button class="btn btn-primary">Submit</button>
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <h1>Create a Group</h1>
+            <hr>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal" action="{% url 'group:create' %}" enctype="multipart/form-data" method="POST">
+                        {% include 'partials/form.html' %}
+                        <div class="row">
+                            <div class="col-md-offset-9 col-md-3 text-right">
+                                <button class="btn btn-primary">Submit</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

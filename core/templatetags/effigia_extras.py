@@ -1,4 +1,8 @@
 from django import template
+from django.contrib.auth import get_user_model
+
+from apps.galleries.models import Gallery
+from apps.portfolios.models import Portfolio
 
 register = template.Library()
 
@@ -17,3 +21,13 @@ def limit_textarea_rows(field, num_rows):
         'placeholder': 'Write something...',
         'rows': num_rows,
     })
+
+
+@register.filter
+def get_image(source):
+    if isinstance(source, Gallery):
+        return source.cover_image
+    elif isinstance(source, Portfolio):
+        return source.image
+    elif isinstance(source, get_user_model()):
+        return source.avatar

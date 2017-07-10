@@ -2,94 +2,116 @@
 {% load imagekit %}
 
 {% block content %}
-
-<div class="row">
-    <div class="col-lg-12">
-        <ol class="breadcrumb">
-            <li>
-                <a href="{% url 'gallery:list-by-user' portfolio.gallery.created_by.username %}">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{% url 'gallery:list-by-user' portfolio.gallery.created_by.username %}">
+                        <i class="fa fa-chevron-circle-right"></i>&nbsp; 
+                        <em>{{ portfolio.gallery.created_by.get_full_name }}'s Galleries</em>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'portfolio:list' portfolio.gallery.slug %}">
+                        <i class="fa fa-chevron-circle-right"></i>&nbsp; 
+                        Gallery: <em>{{ portfolio.gallery.name }}</em>
+                    </a>
+                </li>
+                <li class="active">
                     <i class="fa fa-chevron-circle-right"></i>&nbsp; 
-                    <em>{{ portfolio.gallery.created_by.get_full_name }}'s Galleries</em>
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'portfolio:list' portfolio.gallery.slug %}">
-                    <i class="fa fa-chevron-circle-right"></i>&nbsp; 
-                    Gallery: <em>{{ portfolio.gallery.name }}</em>
-                </a>
-            </li>
-            <li class="active">
-                <i class="fa fa-chevron-circle-right"></i>&nbsp; 
-                Portfolio: <em>{{ portfolio.name }}</em>
-            </li>
-        </ol>
-        <h1>{{ portfolio.name }}</h1>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-8">
-        <div class="thumbnail">
-            {% generateimage 'portfolio-item' source=portfolio.image -- class="img-responsive" alt=portfolio.name %}
+                    Portfolio: <em>{{ portfolio.name }}</em>
+                </li>
+            </ol>
+            <h1>{{ portfolio.name }}</h1>
         </div>
-        <p class="text-muted">
-            <i class="fa fa-calendar"></i>&nbsp;
-            <em>Created at {{ portfolio.created }}</em>
-        </p>
-        <p>
-            <i class="fa fa-play-circle"></i>&nbsp;
-            {% if portfolio.description %}
-                {{ portfolio.description|linebreaksbr }}
-            {% else %}
-                <em class="text-muted">No description was provided.</em>
-            {% endif %}
-        </p>
-        <div class="text-right">
-            <a href="" class="btn btn-warning btn-sm"><i class="fa fa-heart-o"></i>&nbsp; Like <span class="badge">{{ portfolio.likers.count }}</span></a>
-            <a href="" class="btn btn-info btn-sm"><i class="fa fa-download"></i>&nbsp; Download</a>
-            <div class="btn-group">
-                <button class="dropdown-toggle btn btn-danger btn-sm" data-toggle="dropdown" role="button" aria-expanded="false">Options &nbsp;&nbsp;<i class="fa fa-ellipsis-v"></i></button>
-                <ul class="dropdown-menu" role="menu">
-                    {% if user == portfolio.created_by %}
-                    <li><a href="{% url 'portfolio:edit' portfolio.slug %}"><i class="fa fa-pencil-square-o"></i>&nbsp; Edit</a></li>
-                    <li><a href="" data-toggle="modal" data-target="#gallery-delete"><i class="fa fa-trash"></i>&nbsp; Delete</a></li>
-                    {% else %}
-                    <li><a href="{% url 'portfolio:delete' portfolio.slug %}"><i class="fa fa-plus-square-o"></i>&nbsp; Add to Collections</a></li>
-                    <li><a href="{% url 'portfolio:edit' portfolio.slug %}"><i class="fa fa-exclamation-circle"></i>&nbsp; Report as inappropriate</a></li>
-                    {% endif %}
-                </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="thumbnail">
+                {% generateimage 'portfolio-item' source=portfolio.image -- class="img-responsive" alt=portfolio.name %}
+            </div>
+            <p class="text-muted">
+                <i class="fa fa-calendar"></i>&nbsp;
+                <em>Created at {{ portfolio.created }}</em>
+            </p>
+            <p>
+                <i class="fa fa-play-circle"></i>&nbsp;
+                {% if portfolio.description %}
+                    {{ portfolio.description|linebreaksbr }}
+                {% else %}
+                    <em class="text-muted">No description was provided.</em>
+                {% endif %}
+            </p>
+            <div class="text-right">
+                {% if liked %}
+                <form class="follow-form" method="POST" action="{% url 'interaction:like-delete' liked.pk %}">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-warning">
+                        <i class="fa fa-heart"></i>&nbsp;
+                        <span>Liked</span>
+                        {% if portfolio.likes.count > 0 %}
+                        <span class="badge">{{ portfolio.likes.count }}</span>
+                        {% endif %}
+                    </button>
+                </form>
+                {% else %}
+                <form class="follow-form" method="POST" action="{% url 'interaction:like-create' 'portfolio' portfolio.pk %}">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-warning">
+                        <i class="fa fa-heart-o"></i>&nbsp;
+                        <span>Like</span>
+                        {% if portfolio.likes.count > 0 %}
+                        <span class="badge">{{ portfolio.likes.count }}</span>
+                        {% endif %}
+                    </button>
+                </form>
+                {% endif %}
+                <a href="" class="btn btn-info btn-sm"><i class="fa fa-download"></i>&nbsp; Download</a>
+                <div class="btn-group">
+                    <button class="dropdown-toggle btn btn-danger btn-sm" data-toggle="dropdown" role="button" aria-expanded="false">Options &nbsp;&nbsp;<i class="fa fa-ellipsis-v"></i></button>
+                    <ul class="dropdown-menu" role="menu">
+                        {% if user == portfolio.created_by %}
+                        <li><a href="{% url 'portfolio:edit' portfolio.slug %}"><i class="fa fa-pencil-square-o"></i>&nbsp; Edit</a></li>
+                        <li><a href="" data-toggle="modal" data-target="#gallery-delete"><i class="fa fa-trash"></i>&nbsp; Delete</a></li>
+                        {% else %}
+                        <li><a href="{% url 'portfolio:delete' portfolio.slug %}"><i class="fa fa-plus-square-o"></i>&nbsp; Add to Collections</a></li>
+                        <li><a href="{% url 'portfolio:edit' portfolio.slug %}"><i class="fa fa-exclamation-circle"></i>&nbsp; Report as inappropriate</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
         </div>
+        <div class="col-md-4">
+            {% include 'partials/comment_form.html' with content_type='portfolio' object=portfolio %}
+        </div>
     </div>
-    <div class="col-md-4">
-        {% include 'partials/comment_form.html' with content_type='portfolio' object=portfolio %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">Related Projects</h3>
+        </div>
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <img class="img-responsive portfolio-item" src="https://placehold.it/500x300" alt="">
+            </a>
+        </div>
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <img class="img-responsive portfolio-item" src="https://placehold.it/500x300" alt="">
+            </a>
+        </div>
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <img class="img-responsive portfolio-item" src="https://placehold.it/500x300" alt="">
+            </a>
+        </div>
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <img class="img-responsive portfolio-item" src="https://placehold.it/500x300" alt="">
+            </a>
+        </div>
     </div>
 </div>
-
-<div class="row">
-    <div class="col-lg-12">
-        <h3 class="page-header">Related Projects</h3>
-    </div>
-    <div class="col-sm-3 col-xs-6">
-        <a href="#">
-            <img class="img-responsive portfolio-item" src="https://placehold.it/500x300" alt="">
-        </a>
-    </div>
-    <div class="col-sm-3 col-xs-6">
-        <a href="#">
-            <img class="img-responsive portfolio-item" src="https://placehold.it/500x300" alt="">
-        </a>
-    </div>
-    <div class="col-sm-3 col-xs-6">
-        <a href="#">
-            <img class="img-responsive portfolio-item" src="https://placehold.it/500x300" alt="">
-        </a>
-    </div>
-    <div class="col-sm-3 col-xs-6">
-        <a href="#">
-            <img class="img-responsive portfolio-item" src="https://placehold.it/500x300" alt="">
-        </a>
-    </div>
-</div>
-
 {% endblock %}

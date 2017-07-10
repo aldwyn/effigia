@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from actstream import action
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -100,6 +101,7 @@ class GalleryCreateView(LoginRequiredMixin, CreateView):
         gallery = form.save()
         gallery.slug = '{}-{}'.format(slugify(gallery.name), gallery.pk)
         gallery.save()
+        action.send(self.request.user, verb='created a gallery', target=gallery)
         messages.add_message(
             self.request, messages.INFO, 'You created %s.' % gallery.name)
         return super(GalleryCreateView, self).form_valid(form)
@@ -113,6 +115,7 @@ class GalleryEditView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         gallery = form.save()
+        action.send(self.request.user, verb='updated a gallery', target=gallery)
         messages.add_message(
             self.request, messages.INFO, 'You updated %s.' % gallery.name)
         return super(GalleryEditView, self).form_valid(form)
@@ -124,6 +127,7 @@ class GalleryDeleteView(LoginRequiredMixin, DeleteView):
 
     def form_valid(self, form):
         gallery = Gallery.objects.get(slug=self.kwargs['slug'])
+        action.send(self.request.user, verb='removed a gallery', target=gallery)
         messages.add_message(
             self.request, messages.INFO, 'You deleted %s.' % gallery.name)
         return super(GalleryDeleteView, self).form_valid(form)

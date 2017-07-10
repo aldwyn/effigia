@@ -3,59 +3,65 @@
 {% load imagekit %}
 
 {% block content %}
-<div class="row">
-    {% if page_header == 'All Galleries' %}
-    <div class="col-lg-6">
-        <h1 class="page-header">{{ page_header }}
-            <small>({{ all_galleries_count }} galleries)</small>
-        </h1>
-    </div>
-    <div class="col-lg-6">
-        <div class="page-header text-right">
-            <div class="row">
-                <div class="col-md-8">
-                    <form role="search">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
-                                <input type="text" class="form-control" placeholder="Search for galleries..." aria-describedby="basic-addon1">
+<div class="container">
+    <div class="row">
+        {% if page_header == 'All Galleries' %}
+        <div class="col-lg-6">
+            <h1 class="page-header">{{ page_header }}
+                <small>({{ all_galleries_count }} galleries)</small>
+            </h1>
+        </div>
+        <div class="col-lg-6">
+            <div class="page-header text-right">
+                <div class="row">
+                    <div class="col-md-8">
+                        <form role="search">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Search for galleries..." aria-describedby="basic-addon1">
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-md-4">
-                    <a href="{% url 'gallery:create' %}" class="btn btn-warning"><i class="fa fa-plus-square"></i>&nbsp; Create your own</a>
+                        </form>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{% url 'gallery:create' %}" class="btn btn-warning"><i class="fa fa-plus-square"></i>&nbsp; Create your own</a>
+                    </div>
                 </div>
             </div>
         </div>
+        {% else %}
+        <div class="col-lg-12">
+            <h1 class="page-header">{{ page_header }}
+                <small>({{ all_galleries_count }} galleries)</small>
+            </h1>
+        </div>
+        {% endif %}
     </div>
-    {% else %}
-    <div class="col-lg-12">
-        <h1 class="page-header">{{ page_header }}
-            <small>({{ all_galleries_count }} galleries)</small>
-        </h1>
+
+    <div class="row">
+        {% for gallery in galleries %}
+        <div class="col-md-4 portfolio-item">
+            <a href="{% url 'gallery:item' gallery.slug %}">
+                {% generateimage 'gallery-thumbnail' source=gallery.cover_image -- class="img-responsive" alt=gallery.name %}
+            </a>
+            <h3>
+                <i class="fa fa-chevron-circle-right"></i>&nbsp;
+                <a href="{% url 'gallery:item' gallery.slug %}">{{ gallery.name }}</a>
+            </h3>
+            <p>Curated {{ gallery.portfolios.count }} portfolios by <a href="">{{ gallery.created_by.get_full_name }}</a></p>
+        </div>
+        {% empty %}
+        <div class="col-md-4">
+            <em class="text-muted">No galleries to show here yet.</em>
+        </div>
+        {% endfor %}
     </div>
+
+    {% if all_galleries_count > 15 %}
+        {% url 'gallery:list' as next_url %}
+        {% include 'partials/pagination.html' with next_url=next_url %}
     {% endif %}
+
 </div>
-
-<div class="row">
-    {% for gallery in galleries %}
-    <div class="col-md-4 portfolio-item">
-        <a href="{% url 'gallery:item' gallery.slug %}">
-            {% generateimage 'gallery-thumbnail' source=gallery.cover_image -- class="img-responsive" alt=gallery.name %}
-        </a>
-        <h3>
-            <i class="fa fa-chevron-circle-right"></i>&nbsp;
-            <a href="{% url 'gallery:item' gallery.slug %}">{{ gallery.name }}</a>
-        </h3>
-        <p>Curated {{ gallery.portfolios.count }} portfolios by <a href="">{{ gallery.created_by.get_full_name }}</a></p>
-    </div>
-    {% endfor %}
-</div>
-
-{% if all_galleries_count > 15 %}
-    {% url 'gallery:list' as next_url %}
-    {% include 'partials/pagination.html' with next_url=next_url %}
-{% endif %}
-
 {% endblock %}

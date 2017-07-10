@@ -1,32 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-offset-2 col-md-8">
-        <h1>
-            <small>Add Portfolios to Gallery</small><br>
-            <em>{{ gallery.name }}</em>
-        </h1>
-        <hr>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <form class="form-horizontal" action="{% url 'portfolio:bulk-create' gallery.slug %}" enctype="multipart/form-data" method="POST">
-                    {{ form.management_form }}
-                    {% for f in form %}
-                        <div class="col-md-12">
-                            <span class="h4 text-right">Portfolio {{ forloop.counter }}</span>
-                        </div>
-                        {{ f.hidden_fields.as_p }}
-                        {% include 'partials/form.html' with form=f.visible_fields %}
-                        <hr class="style-one">
-                    {% endfor %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <h1>
+                <small>Add Portfolios to Gallery</small><br>
+                <em>{{ gallery.name }}</em>
+            </h1>
+            <hr>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal" action="{% url 'portfolio:bulk-create' gallery.slug %}" enctype="multipart/form-data" method="POST">
+                        {{ form.management_form }}
+                        {% for f in form %}
+                            <div class="col-md-12">
+                                <span class="h4 text-right">Portfolio {{ forloop.counter }}</span>
+                            </div>
+                            {{ f.hidden_fields.as_p }}
+                            {% include 'partials/form.html' with form=f.visible_fields %}
+                            <hr class="style-one">
+                        {% endfor %}
 
-                    <div class="row">
-                        <div class="col-md-offset-10 col-md-2 text-right">
-                            <button class="btn btn-primary">Submit</button>
+                        <div class="row">
+                            <div class="col-md-offset-10 col-md-2 text-right">
+                                <button class="btn btn-primary">Submit</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

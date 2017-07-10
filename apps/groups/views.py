@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from actstream import action
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import modelform_factory
@@ -45,6 +46,7 @@ class GroupCreateView(LoginRequiredMixin, CreateView):
         group = form.save()
         group.slug = '{}-{}'.format(slugify(group.name), group.pk)
         group.save()
+        action.send(self.request.user, verb='created a portfolio', target=group)
         messages.add_message(
             self.request, messages.INFO, 'You created %s.' % group)
         return super(GroupCreateView, self).form_valid(form)

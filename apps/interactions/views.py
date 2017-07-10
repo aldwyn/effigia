@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from actstream.actions import follow
+from actstream.actions import unfollow
+from actstream.signals import action
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -38,6 +41,8 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         form.instance.created_by = self.request.user
         form.instance.content_object = obj
         form.save()
+        verb = 'posted a comment on a ' + self.kwargs['content_type']
+        action.send(self.request.user, verb=verb, target=obj)
         messages.add_message(
             self.request, messages.INFO, 'You posted a comment on %s.' % obj)
         self.success_url = obj.get_absolute_url()
@@ -47,30 +52,35 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 class CommentDeleteView(LoginRequiredMixin, DeleteView):
     model = Comment
 
+    def delete(self, request, *args, **kwargs):
+        comment = Comment.objects.get(pk=self.kwargs['pk'])
+        obj = comment.content_object
+        self.success_url = obj.get_absolute_url()
+        comment.delete()
+        verb = 'removed a comment from a ' + self.kwargs['content_type']
+        action.send(self.request.user, verb=verb, target=obj)
+        messages.add_message(self.request, messages.INFO, 'You removed a comment from %s.' % obj)
+        return redirect(obj.get_absolute_url())
 
-class FollowingCreateView(LoginRequiredMixin, CreateView):
-    model = Following
-    fields = []
 
-    def form_valid(self, form):
+class FollowingCreateView(LoginRequiredMixin, RedirectView):
+
+    def get(self, request, *args, **kwargs):
         model_name = CONTENT_TYPES_MODEL[self.kwargs['content_type']]
         obj = model_name.objects.get(pk=self.kwargs['pk'])
-        form.instance.follower = self.request.user
-        form.instance.content_object = obj
-        form.save()
+        follow(self.request.user, obj)
+        self.url = obj.get_absolute_url()
         messages.add_message(self.request, messages.INFO, 'You followed %s.' % obj)
-        self.success_url = obj.get_absolute_url()
-        return super(FollowingCreateView, self).form_valid(form)
+        return super(FollowingCreateView, self).get(request, *args, **kwargs)
 
 
-class FollowingDeleteView(LoginRequiredMixin, DeleteView):
-    model = Following
+class FollowingDeleteView(LoginRequiredMixin, RedirectView):
 
-    def delete(self, request, *args, **kwargs):
-        following = Following.objects.get(pk=self.kwargs['pk'])
-        obj = following.content_object
-        self.success_url = obj.get_absolute_url()
-        following.delete()
+    def get(self, request, *args, **kwargs):
+        model_name = CONTENT_TYPES_MODEL[self.kwargs['content_type']]
+        obj = model_name.objects.get(pk=self.kwargs['pk'])
+        unfollow(self.request.user, obj)
+        self.url = obj.get_absolute_url()
         messages.add_message(self.request, messages.INFO, 'You unfollowed %s.' % obj)
         return redirect(obj.get_absolute_url())
 
@@ -85,8 +95,8 @@ class LikeCreateView(LoginRequiredMixin, CreateView):
         form.instance.liker = self.request.user
         form.instance.content_object = obj
         form.save()
-        messages.add_message(
-            self.request, messages.INFO, 'You liked %s.' % obj)
+        action.send(self.request.user, verb='liked a ' + self.kwargs['content_type'], target=obj)
+        messages.add_message(self.request, messages.INFO, 'You liked %s.' % obj)
         self.success_url = obj.get_absolute_url()
         return super(LikeCreateView, self).form_valid(form)
 
@@ -99,6 +109,7 @@ class LikeDeleteView(LoginRequiredMixin, DeleteView):
         obj = like.content_object
         self.success_url = obj.get_absolute_url()
         like.delete()
+        action.send(self.request.user, verb='liked a ' + self.kwargs['content_type'], target=obj)
         messages.add_message(self.request, messages.INFO, 'You unliked %s.' % obj)
         return redirect(obj.get_absolute_url())
 

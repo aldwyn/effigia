@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-offset-3 col-md-6">
-        <h1>
-            <small>Edit</small><br>
-            <em>{{ portfolio.name }}</em>
-        </h1>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <form class="form-horizontal" action="{% url 'portfolio:edit' portfolio.slug %}" method="POST">
-                    {% include 'partials/form.html' %}
-                    <div class="row">
-                        <div class="col-md-offset-9 col-md-3 text-right">
-                            <button class="btn btn-primary">Submit</button>
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <h1>
+                <small>Edit</small><br>
+                <em>{{ portfolio.name }}</em>
+            </h1>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal" action="{% url 'portfolio:edit' portfolio.slug %}" enctype="multipart/form-data" method="POST">
+                        {% include 'partials/form.html' %}
+                        <div class="row">
+                            <div class="col-md-offset-9 col-md-3 text-right">
+                                <button class="btn btn-primary">Submit</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

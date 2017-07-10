@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from actstream import action
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import modelform_factory
@@ -35,6 +36,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form.instance.created_by = self.request.user
         form.instance.group = Group.objects.get(slug=self.kwargs['slug'])
         post = form.save()
+        action.send(self.request.user, verb='created', target=post)
         messages.add_message(
             self.request, messages.INFO, 'You created %s.' % post)
         return super(PostCreateView, self).form_valid(form)

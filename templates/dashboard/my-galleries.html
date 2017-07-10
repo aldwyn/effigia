@@ -1,15 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'dashboard/base.html' %}
 {% load imagekit %}
 
-{% block content %}
-<div class="row">
-    <ul class="nav nav-tabs text-right">
-      <li role="presentation" class="active"><a href="{% url 'dashboard:home' %}">My Galleries</a></li>
-      <li role="presentation"><a href="{% url 'dashboard:following' %}">Following</a></li>
-      <li role="presentation"><a href="#">Trending</a></li>
-      <li role="presentation"><a href="#">Fresh</a></li>
-    </ul>
-</div>
+{% block dashboard %}
 <div class="row">
     <div class="col-lg-6">
         <h1 class="page-header">My Galleries
@@ -39,12 +31,18 @@
         </h3>
         <p>Curated {{ gallery.portfolios.count }} portfolios by <a href="">{{ gallery.created_by.get_full_name }}</a></p>
     </div>
+    {% empty %}
+    <div class="col-md-4">
+        <div class="well">
+            <em class="text-muted">No galleries to show here yet.</em>
+        </div>
+    </div>
     {% endfor %}
 </div>
-<!-- Pagination -->
+
 {% if all_galleries_count > 15 %}
     {% url 'gallery:list' as next_url %}
     {% include 'partials/pagination.html' with next_url=next_url %}
 {% endif %}
-<!-- /.row -->
+
 {% endblock %}

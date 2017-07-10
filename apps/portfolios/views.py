@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from actstream import action
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView
@@ -15,6 +17,7 @@ from django.utils.text import slugify
 
 from ..galleries.models import Gallery
 from ..interactions.forms import CommentForm
+from ..interactions.models import Like
 from .models import Portfolio
 from .forms import PortfolioFormSet
 
@@ -27,8 +30,9 @@ class PortfolioListView(ListView):
         return Gallery.objects.get(slug=self.kwargs.get('slug')).portfolios.all()
 
     def get_context_data(self, **kwargs):
-        kwargs['gallery'] = Gallery.objects.get(slug=self.kwargs.get('slug'))
-        return super(PortfolioListView, self).get_context_data(**kwargs)
+        context = super(PortfolioListView, self).get_context_data(**kwargs)
+        context['gallery'] = Gallery.objects.get(slug=self.kwargs.get('slug'))
+        return context
 
 
 class PortfolioItemView(DetailView):
@@ -37,11 +41,18 @@ class PortfolioItemView(DetailView):
     model = Portfolio
 
     def get_context_data(self, **kwargs):
-        kwargs['comment_form'] = CommentForm(initial={
+        context = super(PortfolioItemView, self).get_context_data(**kwargs)
+        context['comment_form'] = CommentForm(initial={
             'content_object': self.get_object(),
             'created_by': self.request.user,
         })
-        return super(PortfolioItemView, self).get_context_data(**kwargs)
+        content_type = ContentType.objects.get_for_model(Portfolio)
+        if self.request.user.is_authenticated():
+            context['liked'] = Like.objects.filter(
+                liker=self.request.user,
+                content_type=content_type,
+                object_id=context['object'].pk).first()
+        return context
 
 
 class PortfolioCreateView(LoginRequiredMixin, CreateView):
@@ -52,6 +63,7 @@ class PortfolioCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         portfolio = form.save()
+        action.send(self.request.user, verb='created', target=portfolio)
         messages.add_message(
             self.request, messages.INFO, 'You created %s.' % portfolio)
         return super(PortfolioCreateView, self).form_valid(form)
@@ -82,10 +94,10 @@ class PortfolioBulkCreateView(LoginRequiredMixin, CreateView):
 
 
 class PortfolioEditView(LoginRequiredMixin, UpdateView):
-    template_name = 'galleries/edit.html'
-    context_object_name = 'gallery'
-    fields = ['name', 'image', 'description', 'category']
-    model = Gallery
+    template_name = 'portfolios/edit.html'
+    context_object_name = 'portfolio'
+    fields = ['name', 'image', 'description']
+    model = Portfolio
 
     def form_valid(self, form):
         gallery = form.save()

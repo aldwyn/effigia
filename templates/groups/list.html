@@ -1,33 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- Title -->
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header">All Groups</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">All Groups</h1>
+        </div>
     </div>
-</div>
-<!-- /.row -->
-<!-- Page Features -->
-<div class="row text-center">
-    {% if groups.count > 0 %}
-        {% for group in groups %}
-        <div class="col-md-3 col-sm-6">
-            <div class="thumbnail group-thumb">
-                <a href="{% url 'group:item' group.slug %}"><img src="https://placekitten.com/g/800/500" alt=""></a>
-                <div class="caption">
-                    <h3><a href="{% url 'group:item' group.slug %}">{{ group.name }}</a></h3>
-                    <p>{{ group.description|slice:':60' }} ...</p>
+
+    <div class="row text-center">
+        {% if groups.count > 0 %}
+            {% for group in groups %}
+            <div class="col-md-3 col-sm-6">
+                <div class="thumbnail group-thumb">
+                    <a href="{% url 'group:item' group.slug %}"><img src="https://placekitten.com/g/800/500" alt=""></a>
+                    <div class="caption">
+                        <h3><a href="{% url 'group:item' group.slug %}">{{ group.name }}</a></h3>
+                        <p>{{ group.description|slice:':60' }} ...</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
-    {% else %}
-        <div class="col-md-3 col-sm-6">
-            <div class="well">
-                <em>No groups to display yet.</em>
+            {% endfor %}
+        {% else %}
+            <div class="col-md-3 col-sm-6">
+                <div class="well">
+                    <em>No groups to display yet.</em>
+                </div>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
