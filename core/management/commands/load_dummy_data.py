@@ -7,7 +7,7 @@ from django.contrib.sites.models import Site
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 
-from apps.categories.models import Category
+from core.models import Category
 from apps.interactions.factories import CommentFactory
 from apps.interactions.models import Comment
 from apps.accounts.factories import UserFactory
@@ -35,6 +35,9 @@ class Command(BaseCommand):
         self.stdout.write('-> "{}"... {}.'.format(data, res))
 
     def handle(self, *args, **kwargs):
+        self.load_social_providers()
+        self.load_dummy_categories()
+
         # Create superuser
         admin = User(username='admin',
                      email='admin@effigia.com',
@@ -43,8 +46,6 @@ class Command(BaseCommand):
         admin.set_password(settings.DJANGO_ADMIN_PASS)
         admin.save()
 
-        self.load_social_providers()
-        self.load_dummy_categories()
         self.load_dummy_users()
         self.load_dummy_galleries()
         self.load_dummy_portfolios()
@@ -96,12 +97,10 @@ class Command(BaseCommand):
 
     def load_dummy_users(self, default_user_count=30):
         self.__log_info('Creating {} users...'.format(default_user_count))
-        users = []
         for i in xrange(default_user_count):
             user = UserFactory.build()
-            users.append(user)
+            user.save()
             self.__log_result(user.get_full_name())
-        User.objects.bulk_create(users)
         self.users = User.objects.exclude(username='admin')
 
     def load_dummy_galleries(self, default_gallery_count=40):
@@ -115,10 +114,6 @@ class Command(BaseCommand):
             gallery.save()
             self.__log_result(gallery.name)
         self.galleries = Gallery.objects.all()
-        # self.__log_info('Creating random likers on Galleries...')
-        # for gallery in self.galleries:
-        #     gallery.likers.add(
-        #         *random.sample(self.users, random.randint(1, len(self.users))))
 
     def load_dummy_portfolios(self, default_portfolio_count=100):
         self.__log_info('Creating {} portfolios...'.format(default_portfolio_count))
@@ -132,10 +127,6 @@ class Command(BaseCommand):
             self.__log_result(portfolio.name)
             portfolio.save()
         self.portfolios = Portfolio.objects.all()
-        # self.__log_info('Creating random likers on Portfolios...')
-        # for portfolio in self.portfolios:
-        #     portfolio.likers.add(
-        #         *random.sample(self.users, random.randint(1, len(self.users))))
 
     def load_dummy_groups(self, default_group_count=30):
         self.__log_info('Creating {} groups...'.format(default_group_count))
@@ -147,11 +138,8 @@ class Command(BaseCommand):
             self.__log_result(group.name)
             group.save()
         self.groups = Group.objects.all()
-        # for group in self.groups:
-        #     group.members.add(
-        #         *random.sample(self.users, random.randint(1, len(self.users))))
 
-    def load_dummy_posts(self, default_post_count=200):
+    def load_dummy_posts(self, default_post_count=100):
         self.__log_info('Creating {} posts...'.format(default_post_count))
         for i in xrange(default_post_count):
             post = PostFactory.build(
@@ -162,9 +150,6 @@ class Command(BaseCommand):
             self.__log_result(post.name)
             post.save()
         self.posts = Post.objects.all()
-        # for posts in self.posts:
-        #     posts.likers.add(
-        #         *random.sample(self.users, random.randint(1, len(self.users))))
 
     def load_dummy_comments(self, obj_list, default_max_count=15):
         self.__log_info('Creating comments on `{}`...'.format(obj_list[0].__class__))
@@ -176,8 +161,3 @@ class Command(BaseCommand):
                 comment.content_object = obj
                 comment.created_by = random.choice(self.users)
                 comment.save()
-        # self.__log_info('Creating random likers on Comments...')
-        # for obj in obj_list:
-        #     for comment in obj.comments.all():
-        #         comment.likers.add(
-        #             *random.sample(self.users, random.randint(0, len(self.users))))

@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from actstream.actions import follow
 from actstream.actions import unfollow
-from actstream.signals import action
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -40,8 +39,6 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         form.instance.created_by = self.request.user
         form.instance.content_object = obj
         form.save()
-        verb = 'posted a comment on a ' + self.kwargs['content_type']
-        action.send(self.request.user, verb=verb, target=obj)
         messages.add_message(
             self.request, messages.INFO, 'You posted a comment on %s.' % obj)
         self.success_url = obj.get_absolute_url()
@@ -56,8 +53,6 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
         obj = comment.content_object
         self.success_url = obj.get_absolute_url()
         comment.delete()
-        verb = 'removed a comment from a ' + self.kwargs['content_type']
-        action.send(self.request.user, verb=verb, target=obj)
         messages.add_message(self.request, messages.INFO, 'You removed a comment from %s.' % obj)
         return redirect(obj.get_absolute_url())
 
@@ -94,7 +89,6 @@ class LikeCreateView(LoginRequiredMixin, CreateView):
         form.instance.liker = self.request.user
         form.instance.content_object = obj
         form.save()
-        action.send(self.request.user, verb='liked a ' + self.kwargs['content_type'], target=obj)
         messages.add_message(self.request, messages.INFO, 'You liked %s.' % obj)
         self.success_url = obj.get_absolute_url()
         return super(LikeCreateView, self).form_valid(form)
@@ -108,7 +102,6 @@ class LikeDeleteView(LoginRequiredMixin, DeleteView):
         obj = like.content_object
         self.success_url = obj.get_absolute_url()
         like.delete()
-        action.send(self.request.user, verb='liked a ' + self.kwargs['content_type'], target=obj)
         messages.add_message(self.request, messages.INFO, 'You unliked %s.' % obj)
         return redirect(obj.get_absolute_url())
 

@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from actstream.models import Action
+from actstream.models import actor_stream
 from actstream.models import user_stream
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -56,7 +57,7 @@ class MyActiviesView(LoginRequiredMixin, ListView):
     paginate_by = 15
 
     def get_queryset(self):
-        return self.request.user.actor_actions.all()
+        return actor_stream(self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super(MyActiviesView, self).get_context_data(**kwargs)
@@ -71,7 +72,7 @@ class FollowingView(LoginRequiredMixin, ListView):
     paginate_by = 15
 
     def get_queryset(self):
-        return user_stream(self.request.user, with_user_activity=True)
+        return user_stream(self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super(FollowingView, self).get_context_data(**kwargs)

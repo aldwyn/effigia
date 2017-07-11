@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 import factory
 from faker import Faker
 
-from ..accounts.factories import UserFactory
 from .models import Group
 
 
@@ -14,4 +13,3 @@ class GroupFactory(factory.django.DjangoModelFactory):
 
     name = factory.LazyAttribute(lambda a: Faker().word().title())
     description = factory.Faker('sentence')
-    created_by = UserFactory()

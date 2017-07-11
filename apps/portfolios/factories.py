@@ -6,7 +6,6 @@ import random
 from faker import Faker
 from django.core.files.base import ContentFile
 
-from ..accounts.factories import UserFactory
 from .models import Portfolio
 
 
@@ -24,4 +23,3 @@ class PortfolioFactory(factory.django.DjangoModelFactory):
             ), 'example.jpg'
         )
     )
-    created_by = UserFactory()

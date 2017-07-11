@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from actstream import action
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,9 +11,8 @@ from django.views.generic import DetailView
 from django.views.generic import CreateView
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
-from django.utils.text import slugify
 
-from ..categories.models import Category
+from core.models import Category
 from ..interactions.forms import CommentForm
 from ..interactions.models import Like
 from .models import Gallery
@@ -95,8 +93,6 @@ class GalleryCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         gallery = form.save()
-        gallery.slug = '{}-{}'.format(slugify(gallery.name), gallery.pk)
-        gallery.save()
         messages.add_message(
             self.request, messages.INFO, 'You created %s.' % gallery.name)
         return super(GalleryCreateView, self).form_valid(form)
@@ -110,7 +106,6 @@ class GalleryEditView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         gallery = form.save()
-        action.send(self.request.user, verb='updated a gallery', target=gallery)
         messages.add_message(
             self.request, messages.INFO, 'You updated %s.' % gallery.name)
         return super(GalleryEditView, self).form_valid(form)
@@ -122,7 +117,6 @@ class GalleryDeleteView(LoginRequiredMixin, DeleteView):
 
     def form_valid(self, form):
         gallery = Gallery.objects.get(slug=self.kwargs['slug'])
-        action.send(self.request.user, verb='removed a gallery', target=gallery)
         messages.add_message(
             self.request, messages.INFO, 'You deleted %s.' % gallery.name)
         return super(GalleryDeleteView, self).form_valid(form)

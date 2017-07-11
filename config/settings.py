@@ -52,14 +52,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'django_extensions',
-    'django_nose',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
+    'avatar',
+    'django_countries',
+    'django_extensions',
+    'django_nose',
     'elasticsearch',
     'haystack',
     'imagekit',
@@ -68,7 +70,6 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.chats',
     'apps.dashboard',
-    'apps.categories',
     'apps.galleries',
     'apps.groups',
     'apps.interactions',
@@ -146,6 +147,14 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+]
 
 
 # Internationalization

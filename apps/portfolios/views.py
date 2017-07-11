@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from actstream import action
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
@@ -63,7 +62,6 @@ class PortfolioCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         portfolio = form.save()
-        action.send(self.request.user, verb='created', target=portfolio)
         messages.add_message(
             self.request, messages.INFO, 'You created %s.' % portfolio)
         return super(PortfolioCreateView, self).form_valid(form)
@@ -87,8 +85,6 @@ class PortfolioBulkCreateView(LoginRequiredMixin, CreateView):
         instances = form.save(commit=False)
         for portfolio in instances:
             portfolio.created_by = portfolio.gallery.created_by
-            portfolio.save()
-            portfolio.slug = '{}-{}'.format(slugify(portfolio.name), portfolio.pk)
             portfolio.save()
         return redirect(reverse('portfolio:list', kwargs={'slug': gallery.slug}))
 

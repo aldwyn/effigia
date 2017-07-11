@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load avatar_tags %}
 {% load effigia_extras %}
 
 {% block content %}
@@ -30,12 +30,12 @@
                 <div class="media">
                     <div class="media-left">
                         <a href="{% url 'gallery:list-by-user' post.created_by %}">
-                            <img src="https://placehold.it/75x75" alt="">
+                            {% avatar post.created_by 65 class='avatar-circle' %}
                         </a>
                     </div>
                     <div class="media-body">
                         <em><a href="{% url 'gallery:list-by-user' post.created_by %}">@{{ post.created_by }}</a> posted:</em>
-                        <p>{{ post.text|linebreaksbr }}</p>
+                        <p>{{ post.description|linebreaksbr }}</p>
                         <p class="text-right">
                             <span class="text-muted">Posted on {{ post.created }}</span>
                             <a href="" class="spacify-action btn btn-xs">
@@ -48,7 +48,7 @@
                                 <span class="badge">{{ post.likers.count }}</span>
                                 {% endif %}
                             </a>
-                            <a href="{% url 'post:item' post.pk %}" class="spacify-action btn btn-xs">
+                            <a href="{% url 'post:item' post.slug %}" class="spacify-action btn btn-xs">
                                 <i class="fa fa-commenting-o"></i>&nbsp; Comments
                                 {% if post.comments.count > 0 %}
                                 <span class="badge">{{ post.comments.count }}</span>
@@ -86,7 +86,7 @@
                     <form action="{% url 'post:create' group.slug %}" id="post-form" method="POST">
                         {% csrf_token %}
                         <div class="form-group">
-                            {{ post_create_form.text|limit_textarea_rows:10 }}
+                            {{ post_create_form.description|limit_textarea_rows:10 }}
                         </div>
                     </form>
                 </div>

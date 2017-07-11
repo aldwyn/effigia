@@ -1,5 +1,6 @@
 {% extends 'dashboard/base.html' %}
 {% load imagekit %}
+{% load avatar_tags %}
 {% load effigia_extras %}
 
 {% block dashboard %}
@@ -16,7 +17,7 @@
             <div class="media">
                 <div class="media-left">
                     <a href="{% url 'gallery:list-by-user' action.actor %}">
-                        <img src="https://placehold.it/75x75" alt="">
+                        {% avatar action.actor 65 class='avatar-circle' %}
                     </a>
                 </div>
                 <div class="media-body">

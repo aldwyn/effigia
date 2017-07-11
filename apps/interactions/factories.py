@@ -12,4 +12,3 @@ class CommentFactory(factory.django.DjangoModelFactory):
         model = Comment
 
     text = factory.Faker('text')
-    created_by = UserFactory()

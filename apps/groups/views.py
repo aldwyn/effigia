@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from actstream import action
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import modelform_factory
 from django.views.generic import ListView
 from django.views.generic import CreateView
-from django.utils.text import slugify
 
 from ..posts.models import Post
 from .models import Group
@@ -32,7 +30,7 @@ class GroupItemView(ListView):
     def get_context_data(self, **kwargs):
         kwargs['all_posts_count'] = self.get_queryset().count()
         kwargs['group'] = Group.objects.get(slug=self.kwargs['slug'])
-        kwargs['post_create_form'] = modelform_factory(Post, fields=['text'])
+        kwargs['post_create_form'] = modelform_factory(Post, fields=['description'])
         return super(GroupItemView, self).get_context_data(**kwargs)
 
 
@@ -44,8 +42,6 @@ class GroupCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         group = form.save()
-        group.slug = '{}-{}'.format(slugify(group.name), group.pk)
-        group.save()
         messages.add_message(
             self.request, messages.INFO, 'You created %s.' % group)
         return super(GroupCreateView, self).form_valid(form)

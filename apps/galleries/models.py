@@ -13,6 +13,6 @@ class Gallery(EffigiaModel):
         verbose_name_plural = 'galleries'
 
     cover_image = models.ImageField(upload_to='covers/gallery/')
-    category = models.ForeignKey('categories.Category', related_name='galleries')
+    category = models.ForeignKey('core.Category', related_name='galleries')
     comments = GenericRelation(Comment, related_query_name='galleries')
     likes = GenericRelation(Like, related_query_name='galleries')
