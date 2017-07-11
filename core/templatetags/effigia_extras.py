@@ -30,5 +30,5 @@ def get_image(source):
     elif isinstance(source, Portfolio):
         return source.image
     elif isinstance(source, get_user_model()):
-        return source.avatar
+        return source.profile.avatar
     return None

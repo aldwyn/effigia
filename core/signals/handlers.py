@@ -19,6 +19,7 @@ def user_created(sender, instance, created, **kwargs):
         UserProfile.objects.create(user=instance)
         Gallery.objects.create(
             name='Default',
+            is_default=True,
             slug=slugify('default-gallery-by-%s' % instance),
             created_by=instance,
             description=('This is the gallery intended for your default portfolio storage. '

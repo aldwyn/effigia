@@ -1,5 +1,6 @@
 import random
 
+from actstream.actions import follow
 from allauth.socialaccount.models import SocialApp
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -9,7 +10,6 @@ from django.utils.text import slugify
 
 from core.models import Category
 from apps.interactions.factories import CommentFactory
-from apps.interactions.models import Comment
 from apps.accounts.factories import UserFactory
 from apps.galleries.factories import GalleryFactory
 from apps.galleries.models import Gallery
@@ -54,6 +54,9 @@ class Command(BaseCommand):
         self.load_dummy_comments(self.galleries)
         self.load_dummy_comments(self.portfolios)
         self.load_dummy_comments(self.posts)
+        self.load_dummy_followings(self.users)
+        self.load_dummy_followings(self.galleries)
+        self.load_dummy_followings(self.groups)
 
     def load_social_providers(self):
         current_site = Site.objects.get_current()
@@ -113,7 +116,7 @@ class Command(BaseCommand):
             )
             gallery.save()
             self.__log_result(gallery.name)
-        self.galleries = Gallery.objects.all()
+        self.galleries = Gallery.objects.exclude(is_default=True)
 
     def load_dummy_portfolios(self, default_portfolio_count=100):
         self.__log_info('Creating {} portfolios...'.format(default_portfolio_count))
@@ -161,3 +164,9 @@ class Command(BaseCommand):
                 comment.content_object = obj
                 comment.created_by = random.choice(self.users)
                 comment.save()
+
+    def load_dummy_followings(self, obj_list, default_max_count=10):
+        self.__log_info('Creating followings on `{}`...'.format(obj_list[0].__class__))
+        for user in self.users:
+            for obj in random.sample(obj_list, random.randint(1, default_max_count)):
+                follow(user, obj)

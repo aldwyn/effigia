@@ -20,6 +20,6 @@ class PortfolioFactory(factory.django.DjangoModelFactory):
         lambda _: ContentFile(
             factory.django.ImageField()._make_data(
                 {'width': 1024, 'height': 768}
-            ), 'example.jpg'
+            ), 'portfolio.jpg'
         )
     )
