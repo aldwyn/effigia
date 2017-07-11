@@ -42,7 +42,7 @@ class MyGalleriesView(LoginRequiredMixin, ListView):
     paginate_by = 15
 
     def get_queryset(self):
-        return Gallery.objects.filter(created_by=self.request.user)
+        return Gallery.objects.filter(created_by=self.request.user).order_by('-is_default')
 
     def get_context_data(self, **kwargs):
         context = super(MyGalleriesView, self).get_context_data(**kwargs)

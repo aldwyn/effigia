@@ -63,7 +63,10 @@ class FollowingCreateView(LoginRequiredMixin, RedirectView):
         model_name = CONTENT_TYPES_MODEL[self.kwargs['content_type']]
         obj = model_name.objects.get(pk=self.kwargs['pk'])
         follow(self.request.user, obj)
-        self.url = obj.get_absolute_url()
+        if not isinstance(obj, get_user_model()):
+            self.url = obj.get_absolute_url()
+        else:
+            self.url = obj.profile.get_absolute_url()
         messages.add_message(self.request, messages.INFO, 'You followed %s.' % obj)
         return super(FollowingCreateView, self).get(request, *args, **kwargs)
 
@@ -74,9 +77,12 @@ class FollowingDeleteView(LoginRequiredMixin, RedirectView):
         model_name = CONTENT_TYPES_MODEL[self.kwargs['content_type']]
         obj = model_name.objects.get(pk=self.kwargs['pk'])
         unfollow(self.request.user, obj)
-        self.url = obj.get_absolute_url()
+        if not isinstance(obj, get_user_model()):
+            self.url = obj.get_absolute_url()
+        else:
+            self.url = obj.profile.get_absolute_url()
         messages.add_message(self.request, messages.INFO, 'You unfollowed %s.' % obj)
-        return redirect(obj.get_absolute_url())
+        return super(FollowingDeleteView, self).get(request, *args, **kwargs)
 
 
 class LikeCreateView(LoginRequiredMixin, CreateView):

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.core.urlresolvers import reverse
 from django_countries.fields import CountryField
 from django_extensions.db.models import TimeStampedModel
 
@@ -12,3 +13,6 @@ class UserProfile(TimeStampedModel):
     avatar = models.ImageField(upload_to='userprofiles/avatars')
     country = CountryField()
     bio = models.TextField()
+
+    def get_absolute_url(self):
+        return reverse('account_profile', args=[self.user])

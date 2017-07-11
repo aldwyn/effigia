@@ -4,10 +4,14 @@ from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 
+from apps.accounts.views import ProfileView
+
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^activity/', include('actstream.urls')),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^profile/(?P<slug>[\w\-]+)$', ProfileView.as_view(), name='account_profile'),
     url(r'^', include('apps.dashboard.urls', namespace='dashboard')),
     url(r'^category/', include('core.urls', namespace='category')),
     url(r'^chat/', include('apps.chats.urls', namespace='chat')),

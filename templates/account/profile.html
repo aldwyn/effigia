@@ -1,9 +1,26 @@
 {% extends 'base.html' %}
+{% load activity_tags %}
 
 {% block content %}
 <div class="container">
     <div class="row">
-        <h1 class="page-header">Profile</h1>
+        <div class="col-lg-8">
+            <h1 class="page-header">
+                {{ profile.user.get_full_name }}
+                <small>(@{{ profile.user }})</small>
+            </h1>
+            {% if profile.user != user %}
+                {% with followed=user|is_following:profile.user %}
+                    <a href="{% url followed|yesno:'interaction:unfollow,interaction:follow' 'user' profile.user.pk %}" class="btn {{ followed|yesno:'btn-info,btn-primary' }}">
+                        <i class="fa fa-{{ followed|yesno:'check,rss' }}"></i>&nbsp;
+                        <span>{{ followed|yesno:'Following,Follow' }}</span>
+                        {% if gallery.followings.count > 0 %}
+                        <span class="badge">{{ gallery.followings.count }}</span>
+                        {% endif %}
+                    </a>
+                {% endwith %}
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

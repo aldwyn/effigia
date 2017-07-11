@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse_lazy
+from django.db.models import Count
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.views.generic import CreateView
@@ -18,48 +19,51 @@ from ..interactions.models import Like
 from .models import Gallery
 
 
-class GalleryListView(ListView):
+class BaseGalleryListView(ListView):
     template_name = 'galleries/list.html'
     context_object_name = 'galleries'
     model = Gallery
     paginate_by = 15
-
-    def get_context_data(self, **kwargs):
-        kwargs['all_galleries_count'] = self.get_queryset().count()
-        kwargs['page_header'] = 'All Galleries'
-        return super(GalleryListView, self).get_context_data(**kwargs)
-
-
-class GalleryByCategoryListView(ListView):
-    template_name = 'galleries/list.html'
-    context_object_name = 'galleries'
-    model = Gallery
-    paginate_by = 15
+    include_defaults = False
 
     def get_queryset(self):
-        return Gallery.objects.filter(category__slug=self.kwargs['slug'])
+        return Gallery.objects.annotate(num_portfolios=Count('portfolios')) \
+            .filter(num_portfolios__gt=0)
 
     def get_context_data(self, **kwargs):
-        category = Category.objects.get(slug=self.kwargs['slug'])
-        kwargs['all_galleries_count'] = self.get_queryset().count()
-        kwargs['page_header'] = category.name
-        return super(GalleryByCategoryListView, self).get_context_data(**kwargs)
+        context = super(BaseGalleryListView, self).get_context_data(**kwargs)
+        context['all_galleries_count'] = self.get_queryset().count()
+        context['page_header'] = 'All Galleries'
+        return context
 
 
-class GalleryByUserListView(ListView):
-    template_name = 'galleries/list.html'
-    context_object_name = 'galleries'
-    model = Gallery
-    paginate_by = 15
+class GalleryListView(BaseGalleryListView):
+    pass
+
+
+class GalleryByCategoryListView(BaseGalleryListView):
 
     def get_queryset(self):
-        return Gallery.objects.filter(created_by__username=self.kwargs['slug'])
+        return super(GalleryByCategoryListView, self).get_queryset() \
+            .filter(category__slug=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
+        context = super(GalleryByCategoryListView, self).get_context_data(**kwargs)
+        context['page_header'] = Category.objects.get(slug=self.kwargs['slug']).name
+        return context
+
+
+class GalleryByUserListView(BaseGalleryListView):
+
+    def get_queryset(self):
+        return super(GalleryByUserListView, self).get_queryset() \
+            .filter(created_by__username=self.kwargs['slug'])
+
+    def get_context_data(self, **kwargs):
+        context = super(GalleryByUserListView, self).get_context_data(**kwargs)
         user = get_user_model().objects.get(username=self.kwargs['slug'])
-        kwargs['all_galleries_count'] = self.get_queryset().count()
-        kwargs['page_header'] = "%s's Galleries" % user.get_full_name()
-        return super(GalleryByUserListView, self).get_context_data(**kwargs)
+        context['page_header'] = "%s's Galleries" % user.get_full_name()
+        return context
 
 
 class GalleryItemView(DetailView):
