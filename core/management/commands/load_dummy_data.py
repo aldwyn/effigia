@@ -49,14 +49,14 @@ class Command(BaseCommand):
         self.load_dummy_users()
         self.load_dummy_galleries()
         self.load_dummy_portfolios()
-        self.load_dummy_groups()
+        # self.load_dummy_groups()
         self.load_dummy_posts()
         self.load_dummy_comments(self.galleries)
         self.load_dummy_comments(self.portfolios)
         self.load_dummy_comments(self.posts)
         self.load_dummy_followings(self.users)
         self.load_dummy_followings(self.galleries)
-        self.load_dummy_followings(self.groups)
+        # self.load_dummy_followings(self.groups)
 
     def load_social_providers(self):
         current_site = Site.objects.get_current()

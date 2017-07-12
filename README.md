@@ -26,6 +26,6 @@ If you're into forums and discussions, you can join some active groups or create
 
 PS. *effigia* means an *ideal, image, likeness, and effigy* in Latin.
 
-[Click here to see live host here on Google App Angine](https://effigia-172804.appspot.com)
+[Click here to see live host on Google App Angine](https://effigia-172804.appspot.com)
 
 **Disclaimer**: *The site is still in alpha (i.e. the development is on progress and it still has to take a lot of acceptance testing). You can sign-in via the provided usernames and password on the main page.*
