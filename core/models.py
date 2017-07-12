@@ -14,6 +14,7 @@ class EffigiaModel(TimeStampedModel):
         abstract = True
 
     name = models.CharField(max_length=255)
+    is_private = models.BooleanField(default=False)
     description = models.TextField()
     slug = models.SlugField(unique=True)
     created_by = models.ForeignKey(get_user_model())

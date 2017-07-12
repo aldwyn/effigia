@@ -9,7 +9,6 @@ from apps.accounts.views import ProfileView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^activity/', include('actstream.urls')),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^profile/(?P<slug>[\w\-]+)$', ProfileView.as_view(), name='account_profile'),
     url(r'^', include('apps.dashboard.urls', namespace='dashboard')),
