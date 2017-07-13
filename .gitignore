@@ -2,6 +2,7 @@
 media/*
 static/*
 .coverage
+.Dockerfile
 Dockerfile
 docker-compose.yml
 elasticsearch.yml

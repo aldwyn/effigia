@@ -52,8 +52,8 @@
             </div>
             <div class="panel-body">
                 <blockquote class="blockquote-reverse">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                    <footer>Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                    <p>{{ random_quote.text }}</p>
+                    <footer><cite>{{ random_quote.author }}</cite></footer>
                 </blockquote>
             </div>
         </div>
@@ -129,7 +129,7 @@
                 {% endfor %}
             </ul>
             <div class="panel-footer text-right">
-                <a href="">See more people</a>
+                <a href="">See more people &nbsp;<i class="fa fa-arrow-right"></i></a>
             </div>
         </div>
     </div>

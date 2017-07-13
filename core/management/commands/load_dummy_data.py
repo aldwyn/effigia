@@ -9,6 +9,7 @@ from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 
 from core.models import Category
+from core.models import Quote
 from apps.interactions.factories import CommentFactory
 from apps.accounts.factories import UserFactory
 from apps.galleries.factories import GalleryFactory
@@ -49,14 +50,16 @@ class Command(BaseCommand):
         self.load_dummy_users()
         self.load_dummy_galleries()
         self.load_dummy_portfolios()
-        # self.load_dummy_groups()
+        self.load_dummy_groups()
         self.load_dummy_posts()
         self.load_dummy_comments(self.galleries)
         self.load_dummy_comments(self.portfolios)
         self.load_dummy_comments(self.posts)
         self.load_dummy_followings(self.users)
         self.load_dummy_followings(self.galleries)
-        # self.load_dummy_followings(self.groups)
+        self.load_dummy_followings(self.groups)
+        self.load_quotes()
+        self.__log_info('LOADING DUMMY DATA: FINISHED.')
 
     def load_social_providers(self):
         current_site = Site.objects.get_current()
@@ -170,3 +173,13 @@ class Command(BaseCommand):
         for user in self.users:
             for obj in random.sample(obj_list, random.randint(1, default_max_count)):
                 follow(user, obj)
+
+    def load_quotes(self, max_len=1000):
+        self.__log_info('Loading {} random quotes ...'.format(max_len))
+        with open('core/resources/quotes.txt') as f:
+            quote_lines = f.readlines()[:max_len]
+            quotes = []
+            for quote in random.sample(quote_lines, max_len):
+                author, text = quote.split('\t', 1)
+                quotes.append(Quote(text=text.strip(), author=author))
+            Quote.objects.bulk_create(quotes)

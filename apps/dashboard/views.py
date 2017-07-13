@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import random
 
 from actstream.models import Action
 from actstream.models import actor_stream
@@ -11,6 +12,7 @@ from django.views.generic import TemplateView
 from django.views.generic import RedirectView
 from django.views.generic import ListView
 
+from core.models import Quote
 from ..galleries.models import Gallery
 
 
@@ -61,6 +63,7 @@ class FollowingView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(FollowingView, self).get_context_data(**kwargs)
         context['all_actions_count'] = self.get_queryset().count()
+        context['random_quote'] = Quote.objects.all()[random.randint(0, 1000)]
         context['people_you_may_follow'] = get_user_model().objects.exclude(username='admin')[:6]
         return context
 
