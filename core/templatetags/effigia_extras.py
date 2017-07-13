@@ -32,3 +32,8 @@ def get_image(source):
     elif isinstance(source, get_user_model()):
         return source.profile.avatar
     return None
+
+
+@register.filter
+def startswith(text, substr):
+    return isinstance(text, basestring) and text.startswith(substr)

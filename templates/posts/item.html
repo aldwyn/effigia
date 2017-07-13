@@ -9,12 +9,12 @@
             <ol class="breadcrumb">
                 <li>
                     <a href="{% url 'group:item' post.group.slug %}">
-                        <i class="fa fa-chevron-circle-right"></i>&nbsp; 
+                        <i class="fa fa-chevron-circle-right"></i>
                         Group: <em>{{ post.group.name }}</em>
                     </a>
                 </li>
                 <li class="active">
-                    <i class="fa fa-chevron-circle-right"></i>&nbsp; 
+                    <i class="fa fa-chevron-circle-right"></i>
                     @{{ post.created_by }}'s post: <em>{{ post }}...</em>
                 </li>
             </ol>
@@ -37,9 +37,9 @@
                         <span class="text-muted">Posted on {{ post.created }}</span>
                         <a href="" class="spacify-action">
                             {% if post.likes %}
-                            <i class="fa fa-heart-o"></i>&nbsp; Like
+                            <i class="fa fa-heart-o"></i>Like
                             {% else %}
-                            <i class="fa fa-heart"></i>&nbsp; Liked
+                            <i class="fa fa-heart"></i>Liked
                             {% endif %}
                             {% if post.likes.count > 0 %}
                             <span class="badge">{{ post.likes.count }}</span>
@@ -47,11 +47,11 @@
                         </a>
                         {% if post.created_by == user %}
                         <a href="" class="spacify-action" data-toggle="modal" data-target="#post-edit">
-                            <i class="fa fa-edit"></i>&nbsp; Edit
+                            <i class="fa fa-edit"></i>Edit
                         </a>
                         {% endif %}
                         <a href="" class="spacify-action">
-                            <i class="fa fa-flag"></i>&nbsp; Report
+                            <i class="fa fa-flag"></i>Report
                         </a>
                     </p>
                     <div class="row">
@@ -62,7 +62,7 @@
                                     {{ comment_form.text|limit_textarea_rows:3 }}
                                 </div>
                                 <div class="form-group text-right">
-                                    <button class="btn btn-primary btn-sm"><i class="fa fa-commenting-o"></i>&nbsp; Add Comment</button>
+                                    <button class="btn btn-primary btn-sm"><i class="fa fa-commenting-o"></i>Add Comment</button>
                                 </div>
                             </form>
                             <h4>Comments ({{ post.comments.count }})</h4>
@@ -80,16 +80,16 @@
                                         <p class="text-right">
                                             <a href="" class="spacify-action btn btn-xs">
                                                 {% if post.likes %}
-                                                <i class="fa fa-heart-o"></i>&nbsp; Like
+                                                <i class="fa fa-heart-o"></i>Like
                                                 {% else %}
-                                                <i class="fa fa-heart"></i>&nbsp; Liked
+                                                <i class="fa fa-heart"></i>Liked
                                                 {% endif %}
                                                 {% if post.likes.count > 0 %}
                                                 <span class="badge">{{ comment.likes.count }}</span>
                                                 {% endif %}
                                             </a>
                                             <a href="" class="spacify-action">
-                                                <i class="fa fa-flag"></i>&nbsp; Report
+                                                <i class="fa fa-flag"></i>Report
                                             </a>
                                         </p>
                                     </div>

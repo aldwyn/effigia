@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.auth import get_user_model
+from django.core.urlresolvers import reverse
+from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.shortcuts import render_to_response
+from django.shortcuts import redirect
 from django.template import RequestContext
 
 from .models import Category
@@ -34,6 +38,20 @@ def handler500(request):
                                   context_instance=RequestContext(request))
     response.status_code = 500
     return response
+
+
+class IndexView(TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context['test_users'] = get_user_model().objects.exclude(username='admin')[:4]
+        return context
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return redirect(reverse('dashboard:home'))
+        return super(IndexView, self).get(request, *args, **kwargs)
 
 
 class CategoryListView(ListView):

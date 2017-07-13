@@ -4,16 +4,63 @@
 {% load effigia_extras %}
 
 {% block dashboard %}
+<!--
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">Feeds</h1>
     </div>
 </div>
-
+-->
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-sm-3">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="active">
+                <a href="">
+                    <i class="fa fa-circle"></i>All
+                    <span class="badge pull-right">12</span>
+                </a>
+            </li>
+            <li role="presentation" class="">
+                <a href="">
+                    <i class="fa fa-circle"></i>Galleries
+                    <span class="badge pull-right">12</span>
+                </a>
+            </li>
+            <li role="presentation" class="">
+                <a href="">
+                    <i class="fa fa-circle"></i>Groups
+                    <span class="badge pull-right">12</span>
+                </a>
+            </li>
+            <li role="presentation" class="">
+                <a href="">
+                    <i class="fa fa-circle"></i>Following
+                    <span class="badge pull-right">12</span>
+                </a>
+            </li>
+            <li role="presentation" class="">
+                <a href="">
+                    <i class="fa fa-circle"></i>Followers
+                    <span class="badge pull-right">12</span>
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-quote-left"></i>Random Quotes
+            </div>
+            <div class="panel-body">
+                <blockquote class="blockquote-reverse">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                    <footer>Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
         {% for action in actions %}
-        <div class="well">
+        <div class="well well-sm">
             <div class="media">
                 <div class="media-left">
                     <a href="{% url 'gallery:list-by-user' action.actor %}">
@@ -65,6 +112,26 @@
             {% url 'group:item' group.slug as next_url %}
             {% include 'partials/pagination.html' with next_url=next_url %}
         {% endif %}
+    </div>
+    <div class="col-sm-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-user-circle-o"></i>People you may follow
+            </div>
+            <ul class="list-group">
+                {% for people in people_you_may_follow %}
+                    <li class="list-group-item">
+                        <a href="{% url 'gallery:list-by-user' people %}">{{ people.get_full_name }}</a>
+                        <em class="text-muted">@{{ people }}</em>
+                        <br>
+                        <em class="text-muted">{{ people.follow_set.count }} followers | {{ people.gallery_set.count }} galleries</em>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="panel-footer text-right">
+                <a href="">See more people</a>
+            </div>
+        </div>
     </div>
 </div>
 

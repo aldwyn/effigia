@@ -1,12 +1,26 @@
 <nav aria-label="...">
     <ul class="pager">
         {% if page_obj.number >= page_obj.previous_page_number %}
-        <li class="previous">
-            <a href="{{ next_url }}?page={{ page_obj.previous_page_number }}"><span aria-hidden="true">&larr;</span> Previous</a></li>
+            {% if query %}
+                <li class="previous">
+                    <a href="{{ next_url }}?q={{ query }}&page={{ page_obj.previous_page_number }}"><span aria-hidden="true">&larr;</span> Previous</a>
+                </li>
+            {% else %}
+                <li class="previous">
+                    <a href="{{ next_url }}?page={{ page_obj.previous_page_number }}"><span aria-hidden="true">&larr;</span> Previous</a>
+                </li>
+            {% endif %}
         {% endif %}
         {% if page_obj.number < page_obj.paginator.num_pages %}
-        <li class="next">
-            <a href="{{ next_url }}?page={{ page_obj.next_page_number }}">Next <span aria-hidden="true">&rarr;</span></a></li>
+            {% if query %}
+                <li class="next">
+                    <a href="{{ next_url }}?q={{ query }}&page={{ page_obj.next_page_number }}">Next <span aria-hidden="true">&rarr;</span></a>
+                </li>
+            {% else %}
+                <li class="next">
+                    <a href="{{ next_url }}?page={{ page_obj.next_page_number }}">Next <span aria-hidden="true">&rarr;</span></a>
+                </li>
+            {% endif %}
         {% endif %}
     </ul>
 </nav>

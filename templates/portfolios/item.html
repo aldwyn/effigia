@@ -8,18 +8,18 @@
             <ol class="breadcrumb">
                 <li>
                     <a href="{% url 'gallery:list-by-user' portfolio.gallery.created_by.username %}">
-                        <i class="fa fa-chevron-circle-right"></i>&nbsp; 
+                        <i class="fa fa-chevron-circle-right"></i>
                         <em>{{ portfolio.gallery.created_by.get_full_name }}'s Galleries</em>
                     </a>
                 </li>
                 <li>
                     <a href="{% url 'portfolio:list' portfolio.gallery.slug %}">
-                        <i class="fa fa-chevron-circle-right"></i>&nbsp; 
+                        <i class="fa fa-chevron-circle-right"></i>
                         Gallery: <em>{{ portfolio.gallery.name }}</em>
                     </a>
                 </li>
                 <li class="active">
-                    <i class="fa fa-chevron-circle-right"></i>&nbsp; 
+                    <i class="fa fa-chevron-circle-right"></i>
                     Portfolio: <em>{{ portfolio.name }}</em>
                 </li>
             </ol>
@@ -70,16 +70,16 @@
                     </button>
                 </form>
                 {% endif %}
-                <a href="" class="btn btn-info btn-sm"><i class="fa fa-download"></i>&nbsp; Download</a>
+                <a href="" class="btn btn-info btn-sm"><i class="fa fa-download"></i>Download</a>
                 <div class="btn-group">
                     <button class="dropdown-toggle btn btn-danger btn-sm" data-toggle="dropdown" role="button" aria-expanded="false">Options &nbsp;&nbsp;<i class="fa fa-ellipsis-v"></i></button>
                     <ul class="dropdown-menu" role="menu">
                         {% if user == portfolio.created_by %}
-                        <li><a href="{% url 'portfolio:edit' portfolio.slug %}"><i class="fa fa-pencil-square-o"></i>&nbsp; Edit</a></li>
-                        <li><a href="" data-toggle="modal" data-target="#gallery-delete"><i class="fa fa-trash"></i>&nbsp; Delete</a></li>
+                        <li><a href="{% url 'portfolio:edit' portfolio.slug %}"><i class="fa fa-pencil-square-o"></i>Edit</a></li>
+                        <li><a href="" data-toggle="modal" data-target="#gallery-delete"><i class="fa fa-trash"></i>Delete</a></li>
                         {% else %}
-                        <li><a href="{% url 'portfolio:delete' portfolio.slug %}"><i class="fa fa-plus-square-o"></i>&nbsp; Add to Collections</a></li>
-                        <li><a href="{% url 'portfolio:edit' portfolio.slug %}"><i class="fa fa-exclamation-circle"></i>&nbsp; Report as inappropriate</a></li>
+                        <li><a href="{% url 'portfolio:delete' portfolio.slug %}"><i class="fa fa-plus-square-o"></i>Add to Collections</a></li>
+                        <li><a href="{% url 'portfolio:edit' portfolio.slug %}"><i class="fa fa-exclamation-circle"></i>Report as inappropriate</a></li>
                         {% endif %}
                     </ul>
                 </div>

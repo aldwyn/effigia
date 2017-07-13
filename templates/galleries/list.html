@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
-
+{% load highlight %}
 {% load imagekit %}
 
 {% block content %}
 <div class="container">
     <div class="row">
-        {% if page_header == 'All Galleries' %}
         <div class="col-lg-6">
             <h1 class="page-header">{{ page_header }}
                 <small>({{ all_galleries_count }} galleries)</small>
@@ -15,57 +14,72 @@
             <div class="page-header text-right">
                 <div class="row">
                     <div class="col-md-8">
-                        <form role="search">
+                        <form role="search" action="">
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
-                                    <input type="text" class="form-control" placeholder="Search for galleries..." aria-describedby="basic-addon1">
+                                    <input type="text" class="form-control" name="q" value="{{ query }}" placeholder="Search for galleries..." aria-describedby="basic-addon1">
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="col-md-4">
-                        <a href="{% url 'gallery:create' %}" class="btn btn-warning"><i class="fa fa-plus-square"></i>&nbsp; Create your own</a>
+                        <a href="{% url 'gallery:create' %}" class="btn btn-block btn-warning"><i class="fa fa-plus-square"></i>Create your own</a>
                     </div>
                 </div>
             </div>
         </div>
-        {% else %}
-        <div class="col-lg-12">
-            <h1 class="page-header">{{ page_header }}
-                <small>({{ all_galleries_count }} galleries)</small>
-            </h1>
-        </div>
-        {% endif %}
     </div>
 
     <div class="row">
-        {% for gallery in galleries %}
-            {% generateimage 'gallery-thumbnail' source=gallery.cover_image as gallery_cover %}
-            <div class="col-sm-4">
-                <div class="gallery-card slide-up">
-                    <div class="gallery-card-image" style="background-image: url({{ gallery_cover.url }})">
-                        <strong>{{ gallery.name }}</strong> by <em>@{{ gallery.created_by }}</em>
-                    </div>
-                    <div class="gallery-card-caption">
-                        <a href="{% url 'gallery:item' gallery.slug %}">
-                            <h4>
-                                <i class="fa fa-chevron-circle-right"></i>&nbsp;
+        {% for result in galleries %}
+            {% with gallery=result.object %}
+                {% generateimage 'gallery-thumbnail' source=gallery.cover_image as gallery_cover %}
+                <div class="col-sm-4">
+                    <div class="gallery-card slide-up">
+                        <div class="gallery-card-image" style="background-image: url({{ gallery_cover.url }})">
+                            {% if query %}
+                                <strong>
+                                    {% highlight gallery.name with query css_class 'search-highlight' %}
+                                </strong>
+                                by <em>@{% highlight gallery.created_by with query css_class 'search-highlight' %}</em>
+                            {% else %}
                                 <strong>{{ gallery.name }}</strong>
-                            </h4>
-                        </a>
-                        <div class="gallery-card-caption-desc">
-                            Curated by  <a href="">@{{ gallery.created_by }}</a> | {{ gallery.portfolios.count }} portfolios
-                            <p class="text-muted">
-                                {{ gallery.description }}
-                            </p>
+                                by <em>@{{ gallery.created_by }}</em>
+                            {% endif %}
+                        </div>
+                        <div class="gallery-card-caption">
+                            <a href="{% url 'gallery:item' gallery.slug %}">
+                                <h4>
+                                    <i class="fa fa-chevron-circle-right"></i>&nbsp;
+                                    <strong>
+                                        {% if query %}
+                                            {% highlight gallery.name with query css_class 'search-highlight' %}
+                                        {% else %}
+                                            {{ gallery.name }}
+                                        {% endif %}
+                                    </strong>
+                                </h4>
+                            </a>
+                            <div class="gallery-card-caption-desc">
+                                Curated by  <a href="{% url 'gallery:list-by-user' gallery.created_by %}">@{{ gallery.created_by }}</a> | {{ gallery.portfolios.count }} portfolios
+                                <p>
+                                    {% if query %}
+                                        {% highlight gallery.description with query html_div 'span' css_class 'search-highlight' %}
+                                    {% else %}
+                                        {{ gallery.description }}
+                                    {% endif %}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endwith %}
         {% empty %}
             <div class="col-md-4">
-                <em class="text-muted">No galleries to show here yet.</em>
+                <div class="well">
+                    <em class="text-muted">No galleries to show here yet.</em>
+                </div>
             </div>
         {% endfor %}
     </div>

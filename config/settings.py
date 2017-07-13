@@ -177,7 +177,7 @@ USE_TZ = True
 LOGIN_URL = reverse_lazy('account_login')
 LOGOUT_URL = reverse_lazy('account_logout')
 LOGIN_REDIRECT_URL = reverse_lazy('dashboard:home')
-LOGOUT_REDIRECT_URL = reverse_lazy('dashboard:index')
+LOGOUT_REDIRECT_URL = reverse_lazy('core:index')
 
 STATIC_URL = get_env_variable('DJANGO_STATIC_URL')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -198,7 +198,7 @@ DJANGO_ADMIN_PASS = get_env_variable('DJANGO_ADMIN_PASS')
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'haystack',
     },

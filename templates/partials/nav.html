@@ -1,3 +1,5 @@
+{% load effigia_extras %}
+
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -8,29 +10,29 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% url 'dashboard:index' %}"><i class="fa fa-chevron-circle-right"></i> Effigia</a>
+            <a class="navbar-brand" href="{% url 'core:index' %}"><i class="fa fa-chevron-circle-right"></i> Effigia</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         {% if user.is_authenticated %}
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="active">
+                    <li class="{% if request.path|startswith:'/dashboard' %}active{% endif %}">
                         <a href="{% url 'dashboard:home' %}">Home</a>
                     </li>
                     <!--
                     <li class="dropdown">
                         <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Groups &nbsp;<i class="fa fa-caret-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{% url 'group:list' %}"><i class="fa fa-chevron-circle-right"></i>&nbsp; Browse Groups</a></li>
-                            <li><a href="{% url 'group:create' %}"><i class="fa fa-plus-square"></i>&nbsp; Create a Group</a></li>
+                            <li><a href="{% url 'group:list' %}"><i class="fa fa-chevron-circle-right"></i>Browse Groups</a></li>
+                            <li><a href="{% url 'group:create' %}"><i class="fa fa-plus-square"></i>Create a Group</a></li>
                         </ul>
                     </li>
                     -->
-                    <li class="dropdown">
+                    <li class="{% if request.path|startswith:'/gallery' %}active{% endif %} dropdown">
                         <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Galleries &nbsp;<i class="fa fa-caret-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{% url 'gallery:list' %}"><i class="fa fa-chevron-circle-right"></i>&nbsp; Browse Galleries</a></li>
-                            <li><a href="{% url 'gallery:create' %}"><i class="fa fa-plus-square"></i>&nbsp; Create a Gallery</a></li>
+                            <li><a href="{% url 'gallery:list' %}"><i class="fa fa-chevron-circle-right"></i>Browse Galleries</a></li>
+                            <li><a href="{% url 'gallery:create' %}"><i class="fa fa-plus-square"></i>Create a Gallery</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -49,12 +51,12 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><em>@{{ user.username }}</em> &nbsp;<i class="fa fa-caret-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{% url 'dashboard:home' %}"><i class="fa fa-tags"></i>&nbsp; My Galleries</a></li>
-                            <li><a href="{% url 'account_profile' user %}"><i class="fa fa-user-circle-o"></i>&nbsp; My Profile</a></li>
-                            <li><a href="#"><i class="fa fa-tasks"></i>&nbsp; Manage Portfolios</a></li>
+                            <li><a href="{% url 'dashboard:home' %}"><i class="fa fa-tags"></i>My Galleries</a></li>
+                            <li><a href="{% url 'account_profile' user %}"><i class="fa fa-user-circle-o"></i>My Profile</a></li>
+                            <li><a href="#"><i class="fa fa-tasks"></i>Manage Portfolios</a></li>
                             <li class="divider"></li>
-                            <li><a href="#"><i class="fa fa-gears"></i>&nbsp; Account Settings</a></li>
-                            <li><a href="{% url 'account_logout' %}"><i class="fa fa-sign-out"></i>&nbsp; Log out</a></li>
+                            <li><a href="#"><i class="fa fa-gears"></i>Account Settings</a></li>
+                            <li><a href="{% url 'account_logout' %}"><i class="fa fa-sign-out"></i>Log out</a></li>
                         </ul>
                     </li>
                 </ul>

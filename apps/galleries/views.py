@@ -12,6 +12,7 @@ from django.views.generic import DetailView
 from django.views.generic import CreateView
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
+from haystack.generic_views import SearchView
 
 from core.models import Category
 from ..interactions.forms import CommentForm
@@ -19,16 +20,20 @@ from ..interactions.models import Like
 from .models import Gallery
 
 
-class BaseGalleryListView(ListView):
+class GalleryListQuerySetMixin(object):
+
+    def get_queryset(self):
+        return super(GalleryListQuerySetMixin, self).get_queryset() \
+            .annotate(num_portfolios=Count('portfolios')) \
+            .filter(num_portfolios__gt=0)
+
+
+class BaseGalleryListView(GalleryListQuerySetMixin, ListView):
     template_name = 'galleries/list.html'
     context_object_name = 'galleries'
     model = Gallery
     paginate_by = 15
     include_defaults = False
-
-    def get_queryset(self):
-        return Gallery.objects.annotate(num_portfolios=Count('portfolios')) \
-            .filter(num_portfolios__gt=0)
 
     def get_context_data(self, **kwargs):
         context = super(BaseGalleryListView, self).get_context_data(**kwargs)
@@ -37,8 +42,19 @@ class BaseGalleryListView(ListView):
         return context
 
 
-class GalleryListView(BaseGalleryListView):
-    pass
+class GalleryListView(SearchView):
+    template_name = 'galleries/list.html'
+    context_object_name = 'galleries'
+    # model = Gallery
+    paginate_by = 15
+
+    def get_context_data(self, **kwargs):
+        context = super(GalleryListView, self).get_context_data(**kwargs)
+        context['all_galleries_count'] = self.get_queryset().count()
+        context['page_header'] = 'All Galleries'
+        if self.request.GET.get('q'):
+            context['page_header'] = 'Results for "%s"' % self.request.GET.get('q')
+        return context
 
 
 class GalleryByCategoryListView(BaseGalleryListView):

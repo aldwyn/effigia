@@ -6,33 +6,17 @@ from actstream.models import actor_stream
 from actstream.models import user_stream
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
 from django.views.generic import ListView
-from django.shortcuts import redirect
 
 from ..galleries.models import Gallery
 
 
-class IndexView(TemplateView):
-    template_name = 'index.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(IndexView, self).get_context_data(**kwargs)
-        context['test_users'] = get_user_model().objects.exclude(username='admin')[:4]
-        return context
-
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
-            return redirect(reverse('dashboard:home'))
-        return super(IndexView, self).get(request, *args, **kwargs)
-
-
 class HomeView(LoginRequiredMixin, RedirectView):
     permanent = True
-    url = reverse_lazy('dashboard:my-galleries')
+    url = reverse_lazy('dashboard:following')
 
 
 class MyGalleriesView(LoginRequiredMixin, ListView):
@@ -77,6 +61,7 @@ class FollowingView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(FollowingView, self).get_context_data(**kwargs)
         context['all_actions_count'] = self.get_queryset().count()
+        context['people_you_may_follow'] = get_user_model().objects.exclude(username='admin')[:6]
         return context
 
 

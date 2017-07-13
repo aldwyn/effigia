@@ -8,11 +8,11 @@ from apps.accounts.views import ProfileView
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^admin/', admin.site.urls),
+    url(r'^', include('core.urls', namespace='core')),
     url(r'^profile/(?P<slug>[\w\-]+)$', ProfileView.as_view(), name='account_profile'),
-    url(r'^', include('apps.dashboard.urls', namespace='dashboard')),
-    url(r'^category/', include('core.urls', namespace='category')),
+    url(r'^dashboard/', include('apps.dashboard.urls', namespace='dashboard')),
     url(r'^chat/', include('apps.chats.urls', namespace='chat')),
     url(r'^interaction/', include('apps.interactions.urls', namespace='interaction')),
     url(r'^gallery/', include('apps.galleries.urls', namespace='gallery')),

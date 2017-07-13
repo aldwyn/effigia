@@ -1,24 +1,22 @@
 {% extends 'base.html' %}
+{% load effigia_extras %}
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        {% with path=request.path %}
-        <ul class="nav nav-tabs text-right">
-            <li role="presentation" class="{% if path == '/my-galleries' %}active{% endif %}">
-                <a href="{% url 'dashboard:my-galleries' %}">My Galleries</a>
-            </li>
-            <li role="presentation" class="{% if path == '/following' %}active{% endif %}">
-                <a href="{% url 'dashboard:following' %}">Following</a>
-            </li>
-            <li role="presentation" class="{% if path == '/my-activities' %}active{% endif %}">
-                <a href="{% url 'dashboard:my-activities' %}">My Activities</a>
-            </li>
-            <li role="presentation" class="{% if path == '/fresh' %}active{% endif %}">
-                <a href="#">Fresh</a>
-            </li>
-        </ul>
-        {% endwith %}
+    <div id="dashboard-tab" class="row">
+        <div class="col-lg-12">
+            <ul class="nav nav-tabs text-right">
+                <li role="presentation" class="{% if request.path|startswith:'/dashboard/my-galleries' %}active{% endif %}">
+                    <a href="{% url 'dashboard:my-galleries' %}">My Creations</a>
+                </li>
+                <li role="presentation" class="{% if request.path|startswith:'/dashboard/following' %}active{% endif %}">
+                    <a href="{% url 'dashboard:following' %}">Following</a>
+                </li>
+                <li role="presentation" class="{% if request.path|startswith:'/dashboard/my-activities' %}active{% endif %}">
+                    <a href="{% url 'dashboard:my-activities' %}">My Activities</a>
+                </li>
+            </ul>
+        </div>
     </div>
     {% block dashboard %}{% endblock %}
 </div>

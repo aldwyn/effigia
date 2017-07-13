@@ -2,6 +2,9 @@
 media/*
 static/*
 .coverage
+Dockerfile
+docker-compose.yml
+elasticsearch.yml
 app.yaml
 debug.log
 db.sqlite3
