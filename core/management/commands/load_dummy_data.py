@@ -11,6 +11,7 @@ from django.utils.text import slugify
 from core.models import Category
 from core.models import Quote
 from apps.interactions.factories import CommentFactory
+from apps.accounts.models import UserProfile
 from apps.accounts.factories import UserFactory
 from apps.galleries.factories import GalleryFactory
 from apps.galleries.models import Gallery
@@ -47,6 +48,7 @@ class Command(BaseCommand):
         admin.set_password(settings.DJANGO_ADMIN_PASS)
         admin.save()
 
+        self.load_quotes()
         self.load_dummy_users()
         self.load_dummy_galleries()
         self.load_dummy_portfolios()
@@ -58,7 +60,6 @@ class Command(BaseCommand):
         self.load_dummy_followings(self.users)
         self.load_dummy_followings(self.galleries)
         self.load_dummy_followings(self.groups)
-        self.load_quotes()
         self.__log_info('LOADING DUMMY DATA: FINISHED.')
 
     def load_social_providers(self):
@@ -106,6 +107,8 @@ class Command(BaseCommand):
         for i in xrange(default_user_count):
             user = UserFactory.build()
             user.save()
+            user.profile.is_test_user = True
+            user.profile.save()
             self.__log_result(user.get_full_name())
         self.users = User.objects.exclude(username='admin')
 

@@ -5,6 +5,7 @@ import random
 from actstream.models import Action
 from actstream.models import actor_stream
 from actstream.models import user_stream
+from actstream.models import target_stream
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
@@ -18,7 +19,7 @@ from ..galleries.models import Gallery
 
 class HomeView(LoginRequiredMixin, RedirectView):
     permanent = True
-    url = reverse_lazy('dashboard:following')
+    url = reverse_lazy('dashboard:following-all')
 
 
 class MyGalleriesView(LoginRequiredMixin, ListView):
@@ -51,26 +52,48 @@ class MyActiviesView(LoginRequiredMixin, ListView):
         return context
 
 
-class FollowingView(LoginRequiredMixin, ListView):
+class BaseFollowingView(LoginRequiredMixin, ListView):
     template_name = 'dashboard/following.html'
     context_object_name = 'actions'
     model = Action
-    paginate_by = 15
+    paginate_by = 30
 
     def get_queryset(self):
         return user_stream(self.request.user)
 
     def get_context_data(self, **kwargs):
-        context = super(FollowingView, self).get_context_data(**kwargs)
+        context = super(BaseFollowingView, self).get_context_data(**kwargs)
         context['all_actions_count'] = self.get_queryset().count()
         context['random_quote'] = Quote.objects.all()[random.randint(0, 1000)]
-        context['people_you_may_follow'] = get_user_model().objects.exclude(username='admin')[:6]
+        context['people_you_may_follow'] = get_user_model().objects.exclude(username='admin')[:5]
         return context
 
 
-class NotificationsView(TemplateView):
+class FollowingAllView(BaseFollowingView):
+    pass
+
+
+class FollowingGalleriesView(BaseFollowingView):
+
+    def get_queryset(self):
+        return target_stream(self.request.user)
+
+
+class FollowingGroupsView(BaseFollowingView):
+
+    def get_queryset(self):
+        return user_stream(self.request.user)
+
+
+class FollowingFollowersView(BaseFollowingView):
+
+    def get_queryset(self):
+        return target_stream(self.request.user)
+
+
+class NotificationsView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/notifications.html'
 
 
-class SettingsView(TemplateView):
+class SettingsView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/settings.html'

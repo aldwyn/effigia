@@ -7,7 +7,7 @@
         <div class="col-lg-8">
             <h1 class="page-header">
                 {{ profile.user.get_full_name }}
-                <small>(@{{ profile.user }})</small>
+                <small>({{ profile.user }})</small>
             </h1>
             {% if profile.user != user %}
                 {% with followed=user|is_following:profile.user %}

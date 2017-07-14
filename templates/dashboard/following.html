@@ -4,83 +4,82 @@
 {% load effigia_extras %}
 
 {% block dashboard %}
-<!--
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header">Feeds</h1>
-    </div>
-</div>
--->
 <div class="row">
     <div class="col-sm-3">
         <ul class="nav nav-pills nav-stacked">
-            <li role="presentation" class="active">
-                <a href="">
+            {% url 'dashboard:following-all' as following_all_url %}
+            {% url 'dashboard:following-galleries' as following_galleries_url %}
+            {% url 'dashboard:following-groups' as following_groups_url %}
+            {% url 'dashboard:following-followers' as following_followers_url %}
+            <li role="presentation" class="{% if request.path == following_all_url %}active{% endif %}">
+                <a href="{{ following_all_url }}">
                     <i class="fa fa-circle"></i>All
-                    <span class="badge pull-right">12</span>
+                    <span class="badge pull-right">{{ all_actions_count }}</span>
                 </a>
             </li>
-            <li role="presentation" class="">
-                <a href="">
+            <li role="presentation" class="{% if request.path == following_galleries_url %}active{% endif %}">
+                <a href="{{ following_galleries_url }}">
                     <i class="fa fa-circle"></i>Galleries
                     <span class="badge pull-right">12</span>
                 </a>
             </li>
-            <li role="presentation" class="">
-                <a href="">
+            <li role="presentation" class="{% if request.path == following_groups_url %}active{% endif %}">
+                <a href="{{ following_groups_url }}">
                     <i class="fa fa-circle"></i>Groups
                     <span class="badge pull-right">12</span>
                 </a>
             </li>
-            <li role="presentation" class="">
-                <a href="">
-                    <i class="fa fa-circle"></i>Following
-                    <span class="badge pull-right">12</span>
-                </a>
-            </li>
-            <li role="presentation" class="">
-                <a href="">
+            <li role="presentation" class="{% if request.path == following_followers_url %}active{% endif %}">
+                <a href="{{ following_followers_url }}">
                     <i class="fa fa-circle"></i>Followers
                     <span class="badge pull-right">12</span>
                 </a>
             </li>
         </ul>
         <hr>
-        <div class="panel panel-default">
+        <div id="random-quote" class="panel panel-default">
             <div class="panel-heading">
                 <i class="fa fa-quote-left"></i>Random Quotes
             </div>
             <div class="panel-body">
                 <blockquote class="blockquote-reverse">
                     <p>{{ random_quote.text }}</p>
-                    <footer><cite>{{ random_quote.author }}</cite></footer>
+                    <footer>
+                        <cite>{{ random_quote.author }}</cite>
+                    </footer>
                 </blockquote>
             </div>
         </div>
     </div>
     <div class="col-sm-6">
         {% for action in actions %}
-        <div class="well well-sm">
+        <div class="dashboard-card well well-sm">
             <div class="media">
                 <div class="media-left">
                     <a href="{% url 'gallery:list-by-user' action.actor %}">
                         {% avatar action.actor 65 class='avatar-circle' %}
                     </a>
                 </div>
-                <div class="media-body">
+                <div class="media-body media-middle">
                     <p>
-                        <a href="{% url 'gallery:list-by-user' action.actor %}">@{{ action.actor }}</a> {{ action.verb }} <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a> {{ action.timesince }} ago.
+                        <a href="{% url 'gallery:list-by-user' action.actor %}">@{{ action.actor }}</a>
+                        {{ action.verb }}
+                        {% if action.target != user %}
+                            <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
+                        {% else %}
+                            you
+                        {% endif %}
+                        {{ action.timesince }} ago.
                     </p>
+                    {% if action.target.created_by %}
                     <div class="feed-card panel panel-default">
                         <div class="panel-body">
                             <div class="media">
-                                {% with source=action.target|get_image %}
-                                    {% if source %}
-                                        <div class="media-left">
-                                            {% generateimage 'feed-card-thumbnail' source=source -- alt=action.target %}
-                                        </div>
-                                    {% endif %}
-                                {% endwith %}
+                                {% with source=action.target|get_image %} {% if source %}
+                                <div class="media-left">
+                                    {% generateimage 'feed-card-thumbnail' source=source -- alt=action.target %}
+                                </div>
+                                {% endif %} {% endwith %}
                                 <div class="media-body">
                                     <span class="h4">
                                         {{ action.target }}
@@ -100,32 +99,38 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
         {% empty %}
-            <div class="well">
-                <em class="text-muted">No activities to display here yet. Be the first.</em>
-            </div>
+        <div class="well">
+            <em class="text-muted">No activities to display here yet. Be the first.</em>
+        </div>
         {% endfor %}
+        {% if all_actions_count > 0 and page_obj.number == page_obj.paginator.num_pages %}
+        <div class="well well-sm text-center text-muted">
+            <span>End of results.</span>
+        </div>
+        {% endif %}
         {% if all_actions_count > 20 %}
             {% url 'group:item' group.slug as next_url %}
             {% include 'partials/pagination.html' with next_url=next_url %}
         {% endif %}
     </div>
     <div class="col-sm-3">
-        <div class="panel panel-default">
+        <div id="people-you-may-follow" class="panel panel-default">
             <div class="panel-heading">
                 <i class="fa fa-user-circle-o"></i>People you may follow
             </div>
             <ul class="list-group">
                 {% for people in people_you_may_follow %}
-                    <li class="list-group-item">
-                        <a href="{% url 'gallery:list-by-user' people %}">{{ people.get_full_name }}</a>
-                        <em class="text-muted">@{{ people }}</em>
-                        <br>
-                        <em class="text-muted">{{ people.follow_set.count }} followers | {{ people.gallery_set.count }} galleries</em>
-                    </li>
+                <li class="list-group-item">
+                    <a href="{% url 'gallery:list-by-user' people %}">{{ people.get_full_name }}</a>
+                    <em class="text-muted">@{{ people }}</em>
+                    <br>
+                    <em class="text-muted">{{ people.follow_set.count }} followers | {{ people.gallery_set.count }} galleries</em>
+                </li>
                 {% endfor %}
             </ul>
             <div class="panel-footer text-right">

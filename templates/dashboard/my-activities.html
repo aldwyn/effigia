@@ -4,9 +4,48 @@
 {% block dashboard %}
 
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-sm-3">
+        <ul class="nav nav-pills nav-stacked">
+            {% url 'dashboard:following-all' as following_all_url %}
+            {% url 'dashboard:following-galleries' as following_galleries_url %}
+            {% url 'dashboard:following-groups' as following_groups_url %}
+            {% url 'dashboard:following-following' as following_following_url %}
+            {% url 'dashboard:following-followers' as following_followers_url %}
+            <li role="presentation" class="{% if request.path == following_all_url %}active{% endif %}">
+                <a href="{{ following_all_url }}">
+                    <i class="fa fa-circle"></i>All
+                    <span class="badge pull-right">12</span>
+                </a>
+            </li>
+            <li role="presentation" class="{% if request.path == following_groups_url %}active{% endif %}">
+                <a href="{{ following_groups_url }}">
+                    <i class="fa fa-circle"></i>Followings
+                    <span class="badge pull-right">12</span>
+                </a>
+            </li>
+            <li role="presentation" class="{% if request.path == following_groups_url %}active{% endif %}">
+                <a href="{{ following_groups_url }}">
+                    <i class="fa fa-circle"></i>Likes
+                    <span class="badge pull-right">12</span>
+                </a>
+            </li>
+            <li role="presentation" class="{% if request.path == following_following_url %}active{% endif %}">
+                <a href="{{ following_following_url }}">
+                    <i class="fa fa-circle"></i>Comments
+                    <span class="badge pull-right">12</span>
+                </a>
+            </li>
+            <li role="presentation" class="{% if request.path == following_galleries_url %}active{% endif %}">
+                <a href="{{ following_galleries_url }}">
+                    <i class="fa fa-circle"></i>Visits
+                    <span class="badge pull-right">12</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-sm-9">
         <ul class="list-group">
-        {% for action in user.actor_actions.all %}
+        {% for action in actions %}
             <li class="list-group-item">
                 <i class="fa fa-circle"></i>You {{ action.verb }} <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a> {{ action.timesince }} ago.
             </li>
