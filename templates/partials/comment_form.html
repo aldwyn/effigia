@@ -7,7 +7,7 @@
             {% for comment in object.comments.all %}
             <li class="list-group-item" data-toggle="tooltip" data-placement="top" title="{{ comment.created }}">
                 <strong>
-                    <a href="{% url 'gallery:list-by-user' comment.created_by.username %}">@{{ comment.created_by.username }}</a>:
+                    <a href="{% url 'account_profile' comment.created_by.username %}">@{{ comment.created_by.username }}</a>:
                 </strong>
                 {{ comment.text|linebreaksbr }}
                 <p class="text-right">

@@ -12,7 +12,6 @@ from django.views.generic import CreateView
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.shortcuts import redirect
-from django.utils.text import slugify
 
 from ..galleries.models import Gallery
 from ..interactions.forms import CommentForm
@@ -24,12 +23,15 @@ from .forms import PortfolioFormSet
 class PortfolioListView(ListView):
     template_name = 'portfolios/list.html'
     context_object_name = 'portfolios'
+    model = Portfolio
+    paginate_by = 20
 
     def get_queryset(self):
         return Gallery.objects.get(slug=self.kwargs.get('slug')).portfolios.all()
 
     def get_context_data(self, **kwargs):
         context = super(PortfolioListView, self).get_context_data(**kwargs)
+        context['all_portfolios_count'] = len(self.get_queryset())
         context['gallery'] = Gallery.objects.get(slug=self.kwargs.get('slug'))
         return context
 

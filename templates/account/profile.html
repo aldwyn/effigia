@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 {% load activity_tags %}
+{% load imagekit %}
 
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-lg-8">
-            <h1 class="page-header">
+        <div class="col-lg-9">
+            <h1 class="">
                 {{ profile.user.get_full_name }}
                 <small>({{ profile.user }})</small>
             </h1>
             {% if profile.user != user %}
                 {% with followed=user|is_following:profile.user %}
-                    <a href="{% url followed|yesno:'interaction:unfollow,interaction:follow' 'user' profile.user.pk %}" class="btn {{ followed|yesno:'btn-info,btn-primary' }}">
+                    <a href="{% url followed|yesno:'interaction:unfollow,interaction:follow' 'user' profile.user.pk %}" class="btn btn-sm pull-right {{ followed|yesno:'btn-info,btn-primary' }}">
                         <i class="fa fa-{{ followed|yesno:'check,rss' }}"></i>&nbsp;
                         <span>{{ followed|yesno:'Following,Follow' }}</span>
                         {% if gallery.followings.count > 0 %}
@@ -20,6 +21,106 @@
                     </a>
                 {% endwith %}
             {% endif %}
+            <div>
+                {% if profile.user|is_following:user %}
+                    <span class="label label-sm label-warning text-uppercase">Follows you</span>
+                {% endif %}
+                <p class="text-muted">
+                    <em>{% firstof profile.bio 'No profile bio provided.' %}</em>
+                </p>
+            </div>
+            <div class="row">
+                {% with galleries=profile.user.gallery_set.all %}
+                    <div class="col-md-12">
+                        <h3>Galleries <small>({{ galleries.count }})</small></h3>
+                        <hr>
+                    </div>
+                    {% for gallery in galleries %}
+                        <div class="col-sm-6">
+                            <div class="feed-card well well-sm">
+                                <div class="media">
+                                    <div class="media-left">
+                                        {% generateimage 'feed-card-thumbnail' source=gallery.cover_image -- width=100 alt=gallery.name %}
+                                    </div>
+                                    <div class="media-body media-middle">
+                                        <a href="{{ gallery.get_absolute_url }}">
+                                            <h4>{{ gallery.name }}</h4>
+                                        </a>
+                                        <p class="media-card-description text-muted">
+                                            {% firstof gallery.description|slice:':100' 'No description was provided.' %}
+                                            <a href="{{ gallery.get_absolute_url }}">See more...</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="col-sm-6">
+                            <div class="well well-sm">
+                                <em class="text-muted">
+                                    No galleries here to display yet.
+                                </em>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+            </div>
+            <div class="row">
+                {% with groups=profile.user.group_set.all %}
+                    <div class="col-md-12">
+                        <h3>Groups <small>({{ groups.count }})</small></h3>
+                        <hr>
+                    </div>
+                    {% for gallery in groups %}
+                        <div class="col-sm-6">
+                            <div class="feed-card well well-sm">
+                                <div class="media">
+                                    <div class="media-left">
+                                        {% generateimage 'feed-card-thumbnail' source=gallery.cover_image -- width=80 alt=gallery.name %}
+                                    </div>
+                                    <div class="media-body media-middle">
+                                        <a href="{{ gallery.get_absolute_url }}">
+                                            <h4>{{ gallery.name }}</h4>
+                                        </a>
+                                        <p class="media-card-description text-muted">
+                                            {% firstof gallery.description|slice:':100' 'No description was provided.' %}
+                                            <a href="{{ gallery.get_absolute_url }}">See more...</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="col-sm-6">
+                            <div class="well well-sm">
+                                <em class="text-muted">
+                                No groups here to display yet.
+                            </em>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div id="people-you-may-follow" class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-user-circle-o"></i>People you may follow
+                </div>
+                <ul class="list-group">
+                    {% for people in people_you_may_follow %}
+                    <li class="list-group-item">
+                        <a href="{% url 'account_profile' people %}">{{ people.get_full_name }}</a>
+                        <em class="text-muted">@{{ people }}</em>
+                        <br>
+                        <em class="text-muted">{{ people.follow_set.count }} followers | {{ people.gallery_set.count }} galleries</em>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="panel-footer text-right">
+                    <a href="">See more people &nbsp;<i class="fa fa-arrow-right"></i></a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

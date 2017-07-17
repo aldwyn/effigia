@@ -1,0 +1,48 @@
+{% load imagekit %}
+{% load avatar_tags %}
+{% load activity_tags %}
+{% load effigia_extras %}
+
+<div class="col-sm-6">
+    <div class="feed-card well well-sm">
+        <div class="media">
+            {% if obj.username %}
+                <div class="media-left">
+                    <a href="{{ obj.get_absolute_url }}">
+                        {% avatar obj 65 class='avatar-circle' %}
+                    </a>
+                </div>
+                <div class="media-body media-middle">
+                    <a class="h5" href="{{ obj.get_absolute_url }}">{{ obj.get_full_name }}</a>
+                    <br>
+                    <em class="text-muted">{{ obj }}</em>  
+                    {% if obj|is_following:user %}
+                        &nbsp;<span class="label label-primary text-uppercase">Follows you</span>
+                    {% endif %}
+                    {% if obj.profile.bio %}
+                        <p>{{ obj.profile.bio }}</p>
+                    {% endif %}
+                </div>
+            {% else %}
+                {% with source=obj|get_image %}
+                    {% if source %}
+                        <div class="media-left">
+                            <a href="{{ obj.get_absolute_url }}">
+                                {% generateimage 'feed-card-thumbnail' source=source -- width=80 alt=obj %}
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                <div class="media-body media-middle">
+                    <a class="h5" href="{{ obj.get_absolute_url }}">
+                        {{ obj.name }}
+                    </a>
+                    <em class="text-muted">by <a href="{{ obj.created_by.get_absolute_url }}">{{ obj.created_by }}</a></em>
+                    {% if obj.description %}
+                        <p class="media-card-description text-muted">{{ obj.description|slice:':50' }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

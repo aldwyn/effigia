@@ -4,19 +4,23 @@
 {% block content %}
 <div class="container">
     <div id="dashboard-tab" class="row">
-        <div class="col-lg-12">
-            <ul class="nav nav-tabs text-right">
+        <div class="col-xs-12">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
                 {% url 'dashboard:my-galleries' as my_galleries_url %}
+                {% url 'dashboard:feeds-all' as feeds_all_url %}
+                {% url 'dashboard:followings-users' as followings_users_url %}
                 {% url 'dashboard:my-activities' as my_activities_url %}
-                {% url 'dashboard:following-all' as following_all_url %}
+                <li role="presentation" class="{% if request.path|startswith:feeds_all_url %}active{% endif %}">
+                    <a href="{{ feeds_all_url }}">Feeds</a>
+                </li>
                 <li role="presentation" class="{% if request.path == my_galleries_url %}active{% endif %}">
-                    <a href="{{ my_galleries_url }}">My Creations</a>
+                    <a href="{{ my_galleries_url }}">My Galleries</a>
                 </li>
-                <li role="presentation" class="{% if request.path|startswith:following_all_url %}active{% endif %}">
-                    <a href="{{ following_all_url }}">Following</a>
+                <li role="presentation" class="{% if request.path|startswith:followings_users_url %}active{% endif %}">
+                    <a href="{{ followings_users_url }}">Followings</a>
                 </li>
-                <li role="presentation" class="{% if request.path|startswith:'/dashboard/my-activities' %}active{% endif %}">
-                    <a href="{% url 'dashboard:my-activities' %}">My Activities</a>
+                <li role="presentation" class="{% if request.path|startswith:my_activities_url %}active{% endif %}">
+                    <a href="{{ my_activities_url }}">My Activities</a>
                 </li>
             </ul>
         </div>

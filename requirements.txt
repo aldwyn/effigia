@@ -4,12 +4,14 @@ Django==1.11.3
 django-allauth==0.32.0
 django-avatar==4.0.0
 django-countries==4.6.1
-django-extensions==1.8.1
+django-debug-toolbar==1.8
 django-guardian==1.4.9
 django-haystack==2.6.1
 django-imagekit==4.0.1
 django-jsonfield==1.0.1
+django-model-utils==3.0.0
 django-nose==1.4.4
+django-ordered-model==1.4.1
 elasticsearch==2.4.1
 factory-boy==2.8.1
 google-cloud-storage==1.2.0
@@ -18,6 +20,6 @@ pilkit==2.0
 Pillow==4.2.1
 psycopg2==2.7.1
 
--e git+https://github.com/justquick/django-activity-stream.git#egg=actstream
--e git+https://github.com/jschneier/django-storages.git#egg=django-storages
--e git+https://github.com/leduchuy89vn/django-wpadmin.git#egg=django-wpadmin
+-e git+https://github.com/justquick/django-activity-stream.git@1cd38f2#egg=actstream
+-e git+https://github.com/jschneier/django-storages.git@e88dd98#egg=django-storages
+-e git+https://github.com/leduchuy89vn/django-wpadmin.git@caf80d8#egg=django-wpadmin

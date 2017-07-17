@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django_extensions.db.models import TimeStampedModel
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
+from model_utils.models import TimeStampedModel
 
 
 class Chat(TimeStampedModel):

@@ -6,13 +6,10 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.urlresolvers import reverse
 from django_countries.fields import CountryField
-from django_extensions.db.models import TimeStampedModel
+from model_utils.models import TimeStampedModel
 
 
 class User(AbstractUser):
-
-    def __str__(self):
-        return '@%s' % self.username
 
     def get_absolute_url(self):
         return reverse('account_profile', args=[self])

@@ -11,7 +11,6 @@ from django.utils.text import slugify
 from core.models import Category
 from core.models import Quote
 from apps.interactions.factories import CommentFactory
-from apps.accounts.models import UserProfile
 from apps.accounts.factories import UserFactory
 from apps.galleries.factories import GalleryFactory
 from apps.galleries.models import Gallery
@@ -175,7 +174,8 @@ class Command(BaseCommand):
         self.__log_info('Creating followings on `{}`...'.format(obj_list[0].__class__))
         for user in self.users:
             for obj in random.sample(obj_list, random.randint(1, default_max_count)):
-                follow(user, obj)
+                if obj != user:
+                    follow(user, obj)
 
     def load_quotes(self, max_len=1000):
         self.__log_info('Loading {} random quotes ...'.format(max_len))

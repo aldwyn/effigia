@@ -77,16 +77,21 @@ i.fa {
     display: inline;
 }
 
-.feed-card {
-    margin-bottom: 0;
-}
-
 #dashboard-tab {
     margin-bottom: 30px;
 }
 
-.dashboard-card {
+.feed-card {
     margin-bottom: 7px;
+}
+
+.media-card {
+    margin-bottom: 0;
+}
+
+.media-card-description {
+    font-size: 90%;
+    font-style: italic;
 }
 
 .socialaccount_google {

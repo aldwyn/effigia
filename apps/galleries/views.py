@@ -5,8 +5,10 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Count
+from django.shortcuts import redirect
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.views.generic import CreateView
@@ -66,19 +68,6 @@ class GalleryByCategoryListView(BaseGalleryListView):
     def get_context_data(self, **kwargs):
         context = super(GalleryByCategoryListView, self).get_context_data(**kwargs)
         context['page_header'] = Category.objects.get(slug=self.kwargs['slug']).name
-        return context
-
-
-class GalleryByUserListView(BaseGalleryListView):
-
-    def get_queryset(self):
-        return super(GalleryByUserListView, self).get_queryset() \
-            .filter(created_by__username=self.kwargs['slug'])
-
-    def get_context_data(self, **kwargs):
-        context = super(GalleryByUserListView, self).get_context_data(**kwargs)
-        user = get_user_model().objects.get(username=self.kwargs['slug'])
-        context['page_header'] = "%s's Galleries" % user.get_full_name()
         return context
 
 

@@ -40,6 +40,8 @@ DEBUG = False
 # ALLOWED_HOSTS = ['ubuntubitch', 'localhost', '127.0.0.1']
 ALLOWED_HOSTS = ['*']
 
+INTERNAL_IPS = ['127.0.0.1']
+
 
 # Application definition
 
@@ -59,12 +61,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
     'avatar',
+    'debug_toolbar',
     'django_countries',
-    'django_extensions',
     'django_nose',
     'elasticsearch',
     'haystack',
     'imagekit',
+    'ordered_model',
     'storages',
     'core',
     'apps.accounts',
@@ -86,6 +89,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'core.middlewares.common.EffigiaVisitMiddleware',
 ]
 
@@ -196,6 +200,10 @@ GS_FILE_OVERWRITE = False
 
 DJANGO_ADMIN_PASS = get_env_variable('DJANGO_ADMIN_PASS')
 
+# ACTSTREAM_SETTINGS = {
+#     'MANAGER': 'core.managers.EffigiaActionManager'
+# }
+
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
@@ -255,6 +263,6 @@ EMAIL_HOST_USER = get_env_variable('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = get_env_variable('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
+DEBUG = True
 if not os.getenv('GAE_INSTANCE'):
-    DEBUG = True
     EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'

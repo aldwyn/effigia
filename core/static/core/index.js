@@ -14,7 +14,7 @@
 })(jQuery);
 
 function animateCardSlideInUp() {
-    $('.dashboard-card').each(function(i, el) {
+    $('.feed-card').each(function(i, el) {
         if ($(el).visible(true)) {
             $(el).addClass('animated slideInUp');
         }
@@ -28,8 +28,6 @@ $(function() {
         autoplay: true,
         autoplayTimeout: 2000,
         lazyLoad: true,
-        // autoplayHoverPause: 3000,
-        // center: true,
         items: 1,
         rtl: true,
         loop: true,

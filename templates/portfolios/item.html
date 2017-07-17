@@ -7,7 +7,7 @@
         <div class="col-lg-12">
             <ol class="breadcrumb">
                 <li>
-                    <a href="{% url 'gallery:list-by-user' portfolio.gallery.created_by.username %}">
+                    <a href="{% url 'account_profile' portfolio.gallery.created_by.username %}">
                         <i class="fa fa-chevron-circle-right"></i>
                         <em>{{ portfolio.gallery.created_by.get_full_name }}'s Galleries</em>
                     </a>
@@ -34,6 +34,12 @@
             <div class="thumbnail">
                 {% generateimage 'portfolio-item' source=portfolio.image -- class="img-responsive" alt=portfolio.name %}
             </div>
+            <nav aria-label="...">
+                <ul class="pager">
+                    <li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Previous</a></li>
+                    <li class="next"><a href="#">Next <span aria-hidden="true">&rarr;</span></a></li>
+                </ul>
+            </nav>
             <p class="text-muted">
                 <i class="fa fa-calendar"></i>&nbsp;
                 <em>Created at {{ portfolio.created }}</em>

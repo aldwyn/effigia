@@ -29,12 +29,12 @@
                 <hr>
                 <div class="media">
                     <div class="media-left">
-                        <a href="{% url 'gallery:list-by-user' post.created_by %}">
+                        <a href="{% url 'account_profile' post.created_by %}">
                             {% avatar post.created_by 65 class='avatar-circle' %}
                         </a>
                     </div>
                     <div class="media-body">
-                        <em><a href="{% url 'gallery:list-by-user' post.created_by %}">@{{ post.created_by }}</a> posted:</em>
+                        <em><a href="{% url 'account_profile' post.created_by %}">@{{ post.created_by }}</a> posted:</em>
                         <p>{{ post.description|linebreaksbr }}</p>
                         <p class="text-right">
                             <span class="text-muted">Posted on {{ post.created }}</span>
@@ -63,7 +63,7 @@
                     <em class="text-muted">No posts to display here yet. Be the first.</em>
                 </div>
             {% endif %}
-            {% if all_posts_count > 20 %}
+            {% if all_posts_count > page_obj.paginator.per_page %}
                 {% url 'group:item' group.slug as next_url %}
                 {% include 'partials/pagination.html' with next_url=next_url %}
             {% endif %}

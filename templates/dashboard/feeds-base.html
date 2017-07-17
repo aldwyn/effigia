@@ -7,10 +7,9 @@
 <div class="row">
     <div class="col-sm-3">
         <ul class="nav nav-pills nav-stacked">
-            {% url 'dashboard:following-all' as following_all_url %}
-            {% url 'dashboard:following-galleries' as following_galleries_url %}
-            {% url 'dashboard:following-groups' as following_groups_url %}
-            {% url 'dashboard:following-followers' as following_followers_url %}
+            {% url 'dashboard:feeds-all' as following_all_url %}
+            {% url 'dashboard:feeds-galleries' as following_galleries_url %}
+            {% url 'dashboard:feeds-groups' as following_groups_url %}
             <li role="presentation" class="{% if request.path == following_all_url %}active{% endif %}">
                 <a href="{{ following_all_url }}">
                     <i class="fa fa-circle"></i>All
@@ -26,12 +25,6 @@
             <li role="presentation" class="{% if request.path == following_groups_url %}active{% endif %}">
                 <a href="{{ following_groups_url }}">
                     <i class="fa fa-circle"></i>Groups
-                    <span class="badge pull-right">12</span>
-                </a>
-            </li>
-            <li role="presentation" class="{% if request.path == following_followers_url %}active{% endif %}">
-                <a href="{{ following_followers_url }}">
-                    <i class="fa fa-circle"></i>Followers
                     <span class="badge pull-right">12</span>
                 </a>
             </li>
@@ -53,16 +46,16 @@
     </div>
     <div class="col-sm-6">
         {% for action in actions %}
-        <div class="dashboard-card well well-sm">
+        <div class="feed-card well well-sm">
             <div class="media">
                 <div class="media-left">
-                    <a href="{% url 'gallery:list-by-user' action.actor %}">
+                    <a href="{% url 'account_profile' action.actor %}">
                         {% avatar action.actor 65 class='avatar-circle' %}
                     </a>
                 </div>
                 <div class="media-body media-middle">
                     <p>
-                        <a href="{% url 'gallery:list-by-user' action.actor %}">@{{ action.actor }}</a>
+                        <a href="{% url 'account_profile' action.actor %}">@{{ action.actor }}</a>
                         {{ action.verb }}
                         {% if action.target != user %}
                             <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
@@ -72,29 +65,31 @@
                         {{ action.timesince }} ago.
                     </p>
                     {% if action.target.created_by %}
-                    <div class="feed-card panel panel-default">
+                    <div class="media-card panel panel-default">
                         <div class="panel-body">
                             <div class="media">
-                                {% with source=action.target|get_image %} {% if source %}
-                                <div class="media-left">
-                                    {% generateimage 'feed-card-thumbnail' source=source -- alt=action.target %}
-                                </div>
-                                {% endif %} {% endwith %}
+                                {% with source=action.target|get_image %}
+                                    {% if source %}
+                                    <div class="media-left">
+                                        {% generateimage 'feed-card-thumbnail' source=source -- width=80 alt=action.target %}
+                                    </div>
+                                    {% endif %}
+                                {% endwith %}
                                 <div class="media-body">
                                     <span class="h4">
                                         {{ action.target }}
-                                        <small>by <a href="{% url 'gallery:list-by-user' action.actor %}">@{{ action.target.created_by }}</a></small>
+                                        <small>by <a href="{% url 'account_profile' action.actor %}">@{{ action.target.created_by }}</a></small>
                                     </span>
                                     <a href="{{ action.target.get_absolute_url }}">
                                     </a>
                                     <br>
-                                    <em class="text-muted">
+                                    <p class="media-card-description text-muted">
                                         {% if action.target.description %}
                                             {{ action.target.description|slice:':75' }}...
                                         {% else %}
                                             No description was provided.
                                         {% endif %}
-                                    </em>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -113,7 +108,7 @@
             <span>End of results.</span>
         </div>
         {% endif %}
-        {% if all_actions_count > 20 %}
+        {% if all_actions_count > page_obj.paginator.per_page %}
             {% url 'group:item' group.slug as next_url %}
             {% include 'partials/pagination.html' with next_url=next_url %}
         {% endif %}
@@ -126,8 +121,8 @@
             <ul class="list-group">
                 {% for people in people_you_may_follow %}
                 <li class="list-group-item">
-                    <a href="{% url 'gallery:list-by-user' people %}">{{ people.get_full_name }}</a>
-                    <em class="text-muted">@{{ people }}</em>
+                    <a href="{% url 'account_profile' people.username %}">{{ people.first_name }} {{ people.last_name }}</a>
+                    <em class="text-muted">@{{ people.username }}</em>
                     <br>
                     <em class="text-muted">{{ people.follow_set.count }} followers | {{ people.gallery_set.count }} galleries</em>
                 </li>

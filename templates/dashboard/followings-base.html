@@ -1,0 +1,90 @@
+{% extends 'dashboard/base.html' %}
+{% load imagekit %}
+{% load activity_tags %}
+{% load avatar_tags %}
+{% load effigia_extras %}
+
+{% block dashboard %}
+<div class="row">
+    <div class="col-sm-9">
+        <div class="row">
+            <div class="col-xs-12">
+                {% url 'dashboard:followings-users' as following_users_url %}
+                {% url 'dashboard:followings-galleries' as following_galleries_url %}
+                {% url 'dashboard:followings-groups' as following_groups_url %}
+                {% url 'dashboard:followings-followers' as following_followers_url %}
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="{% if request.path == following_users_url %}active{% endif %}">
+                        <a href="{{ following_users_url }}">
+                            <i class="fa fa-user-circle"></i>Followed
+                            <span class="badge">{{ followed_users_count }}</span>
+                        </a>
+                    </li>
+                    <li role="presentation" class="{% if request.path == following_galleries_url %}active{% endif %}">
+                        <a href="{{ following_galleries_url }}">
+                            <i class="fa fa-film"></i>Galleries
+                            <span class="badge">{{ followed_galleries_count }}</span>
+                        </a>
+                    </li>
+                    <li role="presentation" class="{% if request.path == following_groups_url %}active{% endif %}">
+                        <a href="{{ following_groups_url }}">
+                            <i class="fa fa-group"></i>Groups
+                            <span class="badge">{{ followed_groups_count }}</span>
+                        </a>
+                    </li>
+                    <li role="presentation" class="{% if request.path == following_followers_url %}active{% endif %}">
+                        <a href="{{ following_followers_url }}">
+                            <i class="fa fa-rss-square"></i>Followers
+                            <span class="badge">{{ followers_count }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            {% block following_content %}
+                {% for following in followings %}
+                    {% if request.path != following_followers_url %}
+                        {% include 'dashboard/followings-card-partial.html' with obj=following.follow_object %}
+                    {% else %}
+                        {% include 'dashboard/followings-card-partial.html' with obj=following.user %}
+                    {% endif %}
+                {% empty %}
+                <div class="well">
+                    <em class="text-muted">No activities to display here yet. Be the first.</em>
+                </div>
+                {% endfor %}
+            {% endblock %}
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                {% if all_followings_count > page_obj.paginator.per_page %}
+                    {% url 'group:item' group.slug as next_url %}
+                    {% include 'partials/pagination.html' with next_url=next_url %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div id="people-you-may-follow" class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-user-circle-o"></i>People you may follow
+            </div>
+            <ul class="list-group">
+                {% for people in people_you_may_follow %}
+                <li class="list-group-item">
+                    <a href="{% url 'account_profile' people %}">{{ people.get_full_name }}</a>
+                    <em class="text-muted">@{{ people }}</em>
+                    <br>
+                    <em class="text-muted">{{ people.follow_set.count }} followers | {{ people.gallery_set.count }} galleries</em>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="panel-footer text-right">
+                <a href="">See more people &nbsp;<i class="fa fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

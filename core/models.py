@@ -6,18 +6,26 @@ from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.text import slugify
-from django_extensions.db.models import TimeStampedModel
+from model_utils import Choices
+from model_utils import FieldTracker
+from model_utils.models import StatusModel
+from model_utils.models import SoftDeletableModel
+from model_utils.models import TimeStampedModel
 
 
-class EffigiaModel(TimeStampedModel):
+class EffigiaModel(TimeStampedModel, SoftDeletableModel, StatusModel):
     class Meta:
         abstract = True
 
+    STATUS = Choices('draft', 'published')
     name = models.CharField(max_length=255)
     is_private = models.BooleanField(default=False)
     description = models.TextField()
     slug = models.SlugField(unique=True)
     created_by = models.ForeignKey(get_user_model())
+    anonymous_visits_count = models.PositiveIntegerField(default=0)
+
+    tracker = FieldTracker()
 
     def __str__(self):
         return self.name
@@ -28,7 +36,9 @@ class EffigiaModel(TimeStampedModel):
     def save(self, *args, **kwargs):
         verb = 'created' if self.pk is None else 'updated'
         super(EffigiaModel, self).save(*args, **kwargs)
-        self.slug = '{}-{}'.format(slugify(self.name), self.pk)
+        if not self.slug:
+            self.slug = '{}-{}'.format(slugify(self.name), self.pk)
+            super(EffigiaModel, self).save()
         action.send(self.created_by, verb='%s a %s' % (verb, self._meta.verbose_name), target=self)
 
     def delete(self, *args, **kwargs):

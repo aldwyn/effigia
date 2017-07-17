@@ -6,15 +6,14 @@
 <div class="row">
     <div class="col-sm-3">
         <ul class="nav nav-pills nav-stacked">
-            {% url 'dashboard:following-all' as following_all_url %}
-            {% url 'dashboard:following-galleries' as following_galleries_url %}
-            {% url 'dashboard:following-groups' as following_groups_url %}
-            {% url 'dashboard:following-following' as following_following_url %}
-            {% url 'dashboard:following-followers' as following_followers_url %}
+            {% url 'dashboard:feeds-all' as following_all_url %}
+            {% url 'dashboard:feeds-galleries' as following_galleries_url %}
+            {% url 'dashboard:feeds-groups' as following_groups_url %}
+            {% url 'dashboard:followings' as following_following_url %}
             <li role="presentation" class="{% if request.path == following_all_url %}active{% endif %}">
                 <a href="{{ following_all_url }}">
                     <i class="fa fa-circle"></i>All
-                    <span class="badge pull-right">12</span>
+                    <span class="badge pull-right">{{ all_actions_count }}</span>
                 </a>
             </li>
             <li role="presentation" class="{% if request.path == following_groups_url %}active{% endif %}">
@@ -47,6 +46,9 @@
         <ul class="list-group">
         {% for action in actions %}
             <li class="list-group-item">
+                {% if action.verb__count > 1 %}
+                    <span class="badge pull-right">{{ action.verb__count }} times</span>
+                {% endif %}
                 <i class="fa fa-circle"></i>You {{ action.verb }} <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a> {{ action.timesince }} ago.
             </li>
         {% empty %}
@@ -55,12 +57,12 @@
             </li>
         {% endfor %}
         </ul>
+        {% if all_actions_count > page_obj.paginator.per_page %}
+            {% url 'dashboard:my-activities' as next_url %}
+            {% include 'partials/pagination.html' with next_url=next_url %}
+        {% endif %}
     </div>
 </div>
 
-{% if all_actions_count > 15 %}
-    {% url 'gallery:list' as next_url %}
-    {% include 'partials/pagination.html' with next_url=next_url %}
-{% endif %}
 
 {% endblock %}

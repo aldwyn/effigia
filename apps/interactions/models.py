@@ -2,12 +2,12 @@
 from __future__ import unicode_literals
 
 from actstream import action
-from django_extensions.db.models import TimeStampedModel
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from model_utils.models import TimeStampedModel
 
 
 class Like(TimeStampedModel):

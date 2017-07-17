@@ -26,12 +26,12 @@
         <div class="col-sm-8 col-sm-offset-2">
             <div class="media">
                 <div class="media-left">
-                    <a href="{% url 'gallery:list-by-user' post.created_by %}">
+                    <a href="{% url 'account_profile' post.created_by %}">
                         {% avatar post.created_by 75 class='avatar-circle' %}
                     </a>
                 </div>
                 <div class="media-body">
-                    <em><a href="{% url 'gallery:list-by-user' post.created_by %}">@{{ post.created_by }}</a> posted:</em>
+                    <em><a href="{% url 'account_profile' post.created_by %}">@{{ post.created_by }}</a> posted:</em>
                     <blockquote>{{ post.description|linebreaksbr }}</blockquote>
                     <p class="text-right">
                         <span class="text-muted">Posted on {{ post.created }}</span>
@@ -70,12 +70,12 @@
                                 {% for comment in post.comments.all %}
                                 <div class="media">
                                     <div class="media-left">
-                                        <a href="{% url 'gallery:list-by-user' comment.created_by %}">
+                                        <a href="{% url 'account_profile' comment.created_by %}">
                                             <img src="https://placehold.it/75x75" alt="">
                                         </a>
                                     </div>
                                     <div class="media-body">
-                                        <em><a href="{% url 'gallery:list-by-user' comment.created_by %}">@{{ comment.created_by }}</a> commented:</em>
+                                        <em><a href="{% url 'account_profile' comment.created_by %}">@{{ comment.created_by }}</a> commented:</em>
                                         <p>{{ comment.text|linebreaksbr }}</p>
                                         <p class="text-right">
                                             <a href="" class="spacify-action btn btn-xs">

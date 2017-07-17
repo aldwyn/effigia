@@ -62,7 +62,7 @@
                                 </h4>
                             </a>
                             <div class="gallery-card-caption-desc">
-                                Curated by  <a href="{% url 'gallery:list-by-user' gallery.created_by %}">@{{ gallery.created_by }}</a> | {{ gallery.portfolios.count }} portfolios
+                                Curated by  <a href="{% url 'account_profile' gallery.created_by %}">@{{ gallery.created_by }}</a> | {{ gallery.portfolios.count }} portfolios
                                 <p>
                                     {% if query %}
                                         {% highlight gallery.description with query html_div 'span' css_class 'search-highlight' %}
@@ -84,7 +84,7 @@
         {% endfor %}
     </div>
 
-    {% if all_galleries_count > 15 %}
+    {% if all_galleries_count > page_obj.paginator.per_page %}
         {% url 'gallery:list' as next_url %}
         {% include 'partials/pagination.html' with next_url=next_url %}
     {% endif %}

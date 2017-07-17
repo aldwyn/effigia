@@ -16,8 +16,22 @@
         {% if user.is_authenticated %}
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="{% if request.path|startswith:'/dashboard' %}active{% endif %}">
-                        <a href="{% url 'dashboard:home' %}">Home</a>
+                    <li class="{% if not request.path|startswith:'/gallery' or not not request.path|startswith:'/group' %}active{% endif %} dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Home &nbsp;<i class="fa fa-caret-down"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="{% url 'dashboard:feeds-all' %}">Feeds</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'dashboard:my-galleries' %}">My Galleries</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'dashboard:followings-users' %}">Followings</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'dashboard:my-activities' %}">My Activities</a>
+                            </li>
+                        </ul>
                     </li>
                     <!--
                     <li class="dropdown">
@@ -31,8 +45,12 @@
                     <li class="{% if request.path|startswith:'/gallery' %}active{% endif %} dropdown">
                         <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Galleries &nbsp;<i class="fa fa-caret-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{% url 'gallery:list' %}"><i class="fa fa-chevron-circle-right"></i>Browse Galleries</a></li>
-                            <li><a href="{% url 'gallery:create' %}"><i class="fa fa-plus-square"></i>Create a Gallery</a></li>
+                            <li>
+                                <a href="{% url 'gallery:list' %}"><i class="fa fa-chevron-circle-right"></i>Browse Galleries</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'gallery:create' %}"><i class="fa fa-plus-square"></i>Create a Gallery</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
