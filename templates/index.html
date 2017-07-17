@@ -194,9 +194,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nanobar/0.4.2/nanobar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js"></script>
-    <script src="{% static '/core/index.js' %}"></script>
     <script>
         $(document).ready(function() {
+            var nanobar = new Nanobar();
+            nanobar.go(100);
             $.notify({
                 icon: 'fa fa-check-circle',
                 title: '<strong>This is an alpha site.</strong><br/>Better tinker this website with test users!<br/>',
@@ -209,24 +210,24 @@
                     align: 'left'
                 },
             });
-        {% if messages %}
-            {% for message in messages %}
-            $.notify({
-                icon: 'fa fa-check-circle',
-                message: "{{ message }}"
-            }, {
-                delay: 5000,
-                placement: {
-                    from: 'bottom',
-                    align: 'right'
-                },
-                animate: {
-                    enter: 'animated zoomInDown',
-                    exit: 'animated zoomOutUp'
-                }
-            });
-            {% endfor %}
-        {% endif %}
+            {% if messages %}
+                {% for message in messages %}
+                $.notify({
+                    icon: 'fa fa-check-circle',
+                    message: "{{ message }}"
+                }, {
+                    delay: 5000,
+                    placement: {
+                        from: 'bottom',
+                        align: 'right'
+                    },
+                    animate: {
+                        enter: 'animated zoomInDown',
+                        exit: 'animated zoomOutUp'
+                    }
+                });
+                {% endfor %}
+            {% endif %}
         });
     </script>
 

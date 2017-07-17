@@ -64,8 +64,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_countries',
     'django_nose',
-    'elasticsearch',
-    'haystack',
+    'easy_timezones',
     'imagekit',
     'ordered_model',
     'storages',
@@ -90,6 +89,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'easy_timezones.middleware.EasyTimezoneMiddleware',
     'core.middlewares.common.EffigiaVisitMiddleware',
 ]
 
@@ -178,6 +178,9 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'accounts.User'
 
+GEOIP_DATABASE = os.path.join(BASE_DIR, 'core/resources/GeoLiteCity.dat')
+GEOIPV6_DATABASE = os.path.join(BASE_DIR, 'core/resources/GeoLiteCity.dat')
+
 LOGIN_URL = reverse_lazy('account_login')
 LOGOUT_URL = reverse_lazy('account_logout')
 LOGIN_REDIRECT_URL = reverse_lazy('dashboard:home')
@@ -203,14 +206,6 @@ DJANGO_ADMIN_PASS = get_env_variable('DJANGO_ADMIN_PASS')
 # ACTSTREAM_SETTINGS = {
 #     'MANAGER': 'core.managers.EffigiaActionManager'
 # }
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
-    },
-}
 
 WPADMIN = {
     'admin': {

@@ -10,3 +10,4 @@ app.yaml
 debug.log
 db.sqlite3
 *.pyc
+*.dat

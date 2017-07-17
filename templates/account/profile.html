@@ -20,6 +20,10 @@
                         {% endif %}
                     </a>
                 {% endwith %}
+            {% else %}
+                <a href="{% url 'account_profile_edit' %}" class="btn btn-sm btn-warning pull-right">
+                    <i class="fa fa-edit"></i>Edit Profile
+                </a>
             {% endif %}
             <div>
                 {% if profile.user|is_following:user %}

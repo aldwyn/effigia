@@ -6,12 +6,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Count
+from django.db.models import Q
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.views.generic import CreateView
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
-from haystack.generic_views import SearchView
 
 from core.models import Category
 from ..interactions.forms import CommentForm
@@ -34,13 +34,27 @@ class BaseGalleryListView(GalleryListQuerySetMixin, ListView):
     paginate_by = 15
     include_defaults = False
 
+    def get_queryset(self):
+        if self.request.GET.get('q'):
+            qs = self.request.GET['q']
+            print qs
+            return self.model.objects.filter(
+                Q(is_default=False),
+                Q(name__icontains=qs) |
+                Q(created_by__username__icontains=qs) |
+                Q(category__name__icontains=qs)
+            )
+        return self.model.objects.filter(is_default=False)
+
     def get_context_data(self, **kwargs):
         context = super(BaseGalleryListView, self).get_context_data(**kwargs)
+        if self.request.GET.get('q'):
+            context['query'] = self.request.GET['q']
         context['page_header'] = 'All Galleries'
         return context
 
 
-class GalleryListView(SearchView):
+class GalleryListView(BaseGalleryListView):
     template_name = 'galleries/list.html'
     context_object_name = 'galleries'
     model = Gallery

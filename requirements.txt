@@ -5,14 +5,13 @@ django-allauth==0.32.0
 django-avatar==4.0.0
 django-countries==4.6.1
 django-debug-toolbar==1.8
+django-easy-timezones==0.8.0
 django-guardian==1.4.9
-django-haystack==2.6.1
 django-imagekit==4.0.1
 django-jsonfield==1.0.1
 django-model-utils==3.0.0
 django-nose==1.4.4
 django-ordered-model==1.4.1
-elasticsearch==2.4.1
 factory-boy==2.8.1
 google-cloud-storage==1.2.0
 gunicorn==19.7.1

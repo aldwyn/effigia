@@ -114,7 +114,3 @@ class FollowingsFollowersView(BaseFollowingsView):
 
 class NotificationsView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/notifications.html'
-
-
-class SettingsView(LoginRequiredMixin, TemplateView):
-    template_name = 'dashboard/settings.html'

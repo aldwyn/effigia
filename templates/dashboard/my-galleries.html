@@ -1,32 +1,28 @@
 {% extends 'dashboard/base.html' %}
+{% load tz %}
 {% load imagekit %}
 
 {% block dashboard %}
 <div class="row">
-    <div class="col-sm-2">
-        <a href="{% url 'gallery:create' %}" class="btn btn-block btn-warning"><i class="fa fa-plus-square"></i>Create a Gallery</a>
-    </div>
-</div>
-
-<div class="row">
     {% for gallery in galleries %}
-        {% generateimage 'gallery-thumbnail' source=gallery.cover_image as gallery_cover %}
-        <div class="col-sm-4">
-            <div class="gallery-card slide-up">
-                <div class="gallery-card-image" style="background-image: url({{ gallery_cover.url }})"></div>
-                <div class="gallery-card-caption">
-                    <a href="{% url 'gallery:item' gallery.slug %}">
-                        <h4>
-                            <i class="fa fa-chevron-circle-right"></i>&nbsp;
-                            <strong>{{ gallery.name }}</strong>
-                        </h4>
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <a href="{{ gallery.get_absolute_url }}">
+                    {% generateimage 'gallery-thumbnail' source=gallery.cover_image -- class="img-responsive" alt=gallery.name %}
+                </a>
+                <div class="caption">
+                    <a href="{{ gallery.get_absolute_url }}">
+                        <strong>{{ gallery.name }}</strong>
                     </a>
-                    <div class="gallery-card-caption-desc">
-                        You curated {{ gallery.portfolios.count }} portfolios
-                        <p class="text-muted">
-                            {{ gallery.description }}
-                        </p>
-                    </div>
+                    <p class="text-muted">
+                        {% with portfolios_count=gallery.portfolios.count %}
+                            <a href="{{ gallery.created_by.get_absolute_url }}">{{ gallery.created_by }}</a>
+                            | {{ portfolios_count }} portfolio{{ portfolios_count|pluralize }}
+                        {% endwith %}
+                    </p>
+                    <p class="text-muted gallery-card-caption-desc">
+                        {{ gallery.description|slice:':75' }}...
+                    </p>
                 </div>
             </div>
         </div>

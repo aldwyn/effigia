@@ -1,4 +1,5 @@
 {% extends 'dashboard/base.html' %}
+{% load tz %}
 {% load imagekit %}
 {% load avatar_tags %}
 {% load effigia_extras %}
@@ -46,7 +47,7 @@
     </div>
     <div class="col-sm-6">
         {% for action in actions %}
-        <div class="feed-card well well-sm" data-toggle="tooltip" data-placement="top" title="{{ action.timestamp }}">
+        <div class="feed-card well well-sm" data-toggle="tooltip" data-placement="top" title="{% localtime on %}{{ action.timestamp }}{% endlocaltime %}">
             <div class="media">
                 <div class="media-left">
                     <a href="{% url 'account_profile' action.actor %}">
@@ -64,35 +65,35 @@
                         {% endif %}.
                     </p>
                     {% if action.target.created_by %}
-                    <div class="media-card panel panel-default">
-                        <div class="panel-body">
-                            <div class="media">
-                                {% with source=action.target|get_image %}
-                                    {% if source %}
-                                    <div class="media-left">
-                                        {% generateimage 'feed-card-thumbnail' source=source -- width=80 alt=action.target %}
-                                    </div>
-                                    {% endif %}
-                                {% endwith %}
-                                <div class="media-body">
-                                    <span class="h4">
-                                        <a href="">{{ action.target }}</a>
-                                        <small>by <a href="{% url 'account_profile' action.actor %}">@{{ action.target.created_by }}</a></small>
-                                    </span>
-                                    <a href="{{ action.target.get_absolute_url }}">
-                                    </a>
-                                    <br>
-                                    <p class="media-card-description text-muted">
-                                        {% if action.target.description %}
-                                            {{ action.target.description|slice:':75' }}...
-                                        {% else %}
-                                            No description was provided.
+                        <div class="media-card panel panel-default">
+                            <div class="panel-body">
+                                <div class="media">
+                                    {% with source=action.target|get_image %}
+                                        {% if source %}
+                                        <div class="media-left">
+                                            {% generateimage 'feed-card-thumbnail' source=source -- width=80 alt=action.target %}
+                                        </div>
                                         {% endif %}
-                                    </p>
+                                    {% endwith %}
+                                    <div class="media-body">
+                                        <span class="h4">
+                                            <a href="">{{ action.target }}</a>
+                                            <small>by <a href="{% url 'account_profile' action.actor %}">@{{ action.target.created_by }}</a></small>
+                                        </span>
+                                        <a href="{{ action.target.get_absolute_url }}">
+                                        </a>
+                                        <br>
+                                        <p class="media-card-description text-muted">
+                                            {% if action.target.description %}
+                                                {{ action.target.description|slice:':75' }}...
+                                            {% else %}
+                                                No description was provided.
+                                            {% endif %}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     {% endif %}
                 </div>
             </div>
@@ -103,10 +104,11 @@
         </div>
         {% endfor %}
         {% if page_obj.paginator.object_list.count > 0 and page_obj.number == page_obj.paginator.num_pages %}
-        <div class="well well-sm text-center text-muted">
-            <span>End of results.</span>
-        </div>
+            <div class="well well-sm text-center text-muted">
+                <span>End of results.</span>
+            </div>
         {% endif %}
+
         {% url 'group:item' group.slug as next_url %}
         {% include 'partials/pagination.html' %}
     </div>

@@ -60,7 +60,15 @@ class PortfolioCreateView(LoginRequiredMixin, CreateView):
     model = Portfolio
     fields = ['name', 'image', 'description', 'gallery']
 
+    def get_form(self):
+        form = super(PortfolioCreateView, self).get_form()
+        if self.request.method == 'GET':
+            form.fields['gallery'].queryset = Gallery.objects.filter(created_by=self.request.user)
+        return form
+
     def form_valid(self, form):
+        print form.__dict__
+        assert False
         form.instance.created_by = self.request.user
         portfolio = form.save()
         messages.add_message(

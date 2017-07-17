@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load highlight %}
 {% load imagekit %}
 
 {% block content %}
@@ -7,7 +6,9 @@
     <div class="row">
         <div class="col-lg-6">
             <h1 class="page-header">{{ page_header }}
-                <small>({{ all_galleries_count }} galleries)</small>
+                {% with galleries_count=page_obj.paginator.object_list.count %}
+                    <small>({{ galleries_count }} galler{{ galleries_count|pluralize:'y,ies' }})</small>
+                {% endwith %}
             </h1>
         </div>
         <div class="col-lg-6">
@@ -18,7 +19,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
-                                    <input type="text" class="form-control" name="q" value="{{ query }}" placeholder="Search for galleries..." aria-describedby="basic-addon1">
+                                    <input type="text" class="form-control" name="q" value="{{ query }}" placeholder="Search for galleries, users..." aria-describedby="basic-addon1">
                                 </div>
                             </div>
                         </form>
@@ -32,53 +33,32 @@
     </div>
 
     <div class="row">
-        {% for result in galleries %}
-            {% with gallery=result.object %}
-                {% generateimage 'gallery-thumbnail' source=gallery.cover_image as gallery_cover %}
-                <div class="col-sm-4">
-                    <div class="gallery-card slide-up">
-                        <div class="gallery-card-image" style="background-image: url({{ gallery_cover.url }})">
-                            {% if query %}
-                                <strong>
-                                    {% highlight gallery.name with query css_class 'search-highlight' %}
-                                </strong>
-                                by <em>@{% highlight gallery.created_by with query css_class 'search-highlight' %}</em>
-                            {% else %}
-                                <strong>{{ gallery.name }}</strong>
-                                by <em>@{{ gallery.created_by }}</em>
-                            {% endif %}
-                        </div>
-                        <div class="gallery-card-caption">
-                            <a href="{% url 'gallery:item' gallery.slug %}">
-                                <h4>
-                                    <i class="fa fa-chevron-circle-right"></i>&nbsp;
-                                    <strong>
-                                        {% if query %}
-                                            {% highlight gallery.name with query css_class 'search-highlight' %}
-                                        {% else %}
-                                            {{ gallery.name }}
-                                        {% endif %}
-                                    </strong>
-                                </h4>
-                            </a>
-                            <div class="gallery-card-caption-desc">
-                                Curated by  <a href="{% url 'account_profile' gallery.created_by %}">@{{ gallery.created_by }}</a> | {{ gallery.portfolios.count }} portfolios
-                                <p>
-                                    {% if query %}
-                                        {% highlight gallery.description with query html_div 'span' css_class 'search-highlight' %}
-                                    {% else %}
-                                        {{ gallery.description }}
-                                    {% endif %}
-                                </p>
-                            </div>
-                        </div>
+        {% for gallery in galleries %}
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <a href="{{ gallery.get_absolute_url }}">
+                        {% generateimage 'gallery-thumbnail' source=gallery.cover_image -- class="img-responsive" alt=gallery.name %}
+                    </a>
+                    <div class="caption">
+                        <a href="{{ gallery.get_absolute_url }}">
+                            <strong>{{ gallery.name }}</strong>
+                        </a>
+                        <p class="text-muted">
+                            {% with portfolios_count=gallery.portfolios.count %}
+                                <a href="{{ gallery.created_by.get_absolute_url }}">{{ gallery.created_by }}</a>
+                                | {{ portfolios_count }} portfolio{{ portfolios_count|pluralize }}
+                            {% endwith %}
+                        </p>
+                        <p class="text-muted gallery-card-caption-desc">
+                            {{ gallery.description|slice:':75' }}...
+                        </p>
                     </div>
                 </div>
-            {% endwith %}
+            </div>
         {% empty %}
             <div class="col-md-4">
                 <div class="well">
-                    <em class="text-muted">No galleries to show here yet.</em>
+                    <em class="text-muted">No galleries to show here.</em>
                 </div>
             </div>
         {% endfor %}
