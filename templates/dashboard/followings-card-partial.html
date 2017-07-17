@@ -19,9 +19,6 @@
                     {% if obj|is_following:user %}
                         &nbsp;<span class="label label-primary text-uppercase">Follows you</span>
                     {% endif %}
-                    {% if obj.profile.bio %}
-                        <p>{{ obj.profile.bio }}</p>
-                    {% endif %}
                 </div>
             {% else %}
                 {% with source=obj|get_image %}

@@ -28,6 +28,9 @@
                 </div>
             </div>
         {% endif %}
+
+        {% url 'group:list' as next_url %}
+        {% include 'partials/pagination.html' %}
     </div>
 </div>
 {% endblock %}

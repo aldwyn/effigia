@@ -37,9 +37,7 @@
     {% endfor %}
 </div>
 
-{% if all_galleries_count > page_obj.paginator.per_page %}
-    {% url 'gallery:list' as next_url %}
-    {% include 'partials/pagination.html' with next_url=next_url %}
-{% endif %}
+{% url 'gallery:list' as next_url %}
+{% include 'partials/pagination.html' %}
 
 {% endblock %}

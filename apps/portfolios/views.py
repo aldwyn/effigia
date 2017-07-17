@@ -31,7 +31,6 @@ class PortfolioListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PortfolioListView, self).get_context_data(**kwargs)
-        context['all_portfolios_count'] = len(self.get_queryset())
         context['gallery'] = Gallery.objects.get(slug=self.kwargs.get('slug'))
         return context
 
@@ -73,8 +72,9 @@ class PortfolioBulkCreateView(LoginRequiredMixin, CreateView):
     template_name = 'portfolios/bulk-create.html'
 
     def get_context_data(self, **kwargs):
-        kwargs['gallery'] = Gallery.objects.get(slug=self.kwargs['slug'])
-        return super(PortfolioBulkCreateView, self).get_context_data(**kwargs)
+        context = super(PortfolioBulkCreateView, self).get_context_data(**kwargs)
+        context['gallery'] = Gallery.objects.get(slug=self.kwargs['slug'])
+        return context
 
     def get_form(self, form_class=None):
         if self.request.POST and self.request.FILES:

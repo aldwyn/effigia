@@ -54,6 +54,9 @@
                 </div>
             </div>
         {% endif %}
+        
+        {% url 'group:item' group.slug as next_url %}
+        {% include 'partials/pagination.html' %}
     </div>
 </div>
 {% endblock %}

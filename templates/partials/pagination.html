@@ -1,26 +1,36 @@
-<nav aria-label="...">
-    <ul class="pager">
-        {% if page_obj.number >= page_obj.previous_page_number %}
-            {% if query %}
-                <li class="previous">
-                    <a href="{{ next_url }}?q={{ query }}&page={{ page_obj.previous_page_number }}"><span aria-hidden="true">&larr;</span> Previous</a>
-                </li>
-            {% else %}
-                <li class="previous">
-                    <a href="{{ next_url }}?page={{ page_obj.previous_page_number }}"><span aria-hidden="true">&larr;</span> Previous</a>
-                </li>
+{% if page_obj.paginator.object_list.count > page_obj.paginator.per_page %}
+    <nav aria-label="...">
+        <ul class="pager">
+            {% if page_obj.number >= page_obj.previous_page_number %}
+                {% if query %}
+                    <li class="previous">
+                        <a href="{{ next_url }}?q={{ query }}&amp;page={{ page_obj.previous_page_number }}">
+                            <span aria-hidden="true">&larr;</span> Previous
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="previous">
+                        <a href="{{ next_url }}?page={{ page_obj.previous_page_number }}">
+                            <span aria-hidden="true">&larr;</span> Previous
+                        </a>
+                    </li>
+                {% endif %}
             {% endif %}
-        {% endif %}
-        {% if page_obj.number < page_obj.paginator.num_pages %}
-            {% if query %}
-                <li class="next">
-                    <a href="{{ next_url }}?q={{ query }}&page={{ page_obj.next_page_number }}">Next <span aria-hidden="true">&rarr;</span></a>
-                </li>
-            {% else %}
-                <li class="next">
-                    <a href="{{ next_url }}?page={{ page_obj.next_page_number }}">Next <span aria-hidden="true">&rarr;</span></a>
-                </li>
+            {% if page_obj.number < page_obj.paginator.num_pages %}
+                {% if query %}
+                    <li class="next">
+                        <a href="{{ next_url }}?q={{ query }}&amp;page={{ page_obj.next_page_number }}">
+                            Next <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="next">
+                        <a href="{{ next_url }}?page={{ page_obj.next_page_number }}">
+                            Next <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
+                {% endif %}
             {% endif %}
-        {% endif %}
-    </ul>
-</nav>
+        </ul>
+    </nav>
+{% endif %}

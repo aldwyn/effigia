@@ -46,7 +46,7 @@
     </div>
     <div class="col-sm-6">
         {% for action in actions %}
-        <div class="feed-card well well-sm">
+        <div class="feed-card well well-sm" data-toggle="tooltip" data-placement="top" title="{{ action.timestamp }}">
             <div class="media">
                 <div class="media-left">
                     <a href="{% url 'account_profile' action.actor %}">
@@ -55,14 +55,13 @@
                 </div>
                 <div class="media-body media-middle">
                     <p>
-                        <a href="{% url 'account_profile' action.actor %}">@{{ action.actor }}</a>
+                        <a href="{% url 'account_profile' action.actor %}">{{ action.actor }}</a>
                         {{ action.verb }}
                         {% if action.target != user %}
                             <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
                         {% else %}
                             you
-                        {% endif %}
-                        {{ action.timesince }} ago.
+                        {% endif %}.
                     </p>
                     {% if action.target.created_by %}
                     <div class="media-card panel panel-default">
@@ -77,7 +76,7 @@
                                 {% endwith %}
                                 <div class="media-body">
                                     <span class="h4">
-                                        {{ action.target }}
+                                        <a href="">{{ action.target }}</a>
                                         <small>by <a href="{% url 'account_profile' action.actor %}">@{{ action.target.created_by }}</a></small>
                                     </span>
                                     <a href="{{ action.target.get_absolute_url }}">
@@ -103,35 +102,16 @@
             <em class="text-muted">No activities to display here yet. Be the first.</em>
         </div>
         {% endfor %}
-        {% if all_actions_count > 0 and page_obj.number == page_obj.paginator.num_pages %}
+        {% if page_obj.paginator.object_list.count > 0 and page_obj.number == page_obj.paginator.num_pages %}
         <div class="well well-sm text-center text-muted">
             <span>End of results.</span>
         </div>
         {% endif %}
-        {% if all_actions_count > page_obj.paginator.per_page %}
-            {% url 'group:item' group.slug as next_url %}
-            {% include 'partials/pagination.html' with next_url=next_url %}
-        {% endif %}
+        {% url 'group:item' group.slug as next_url %}
+        {% include 'partials/pagination.html' %}
     </div>
     <div class="col-sm-3">
-        <div id="people-you-may-follow" class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fa fa-user-circle-o"></i>People you may follow
-            </div>
-            <ul class="list-group">
-                {% for people in people_you_may_follow %}
-                <li class="list-group-item">
-                    <a href="{% url 'account_profile' people.username %}">{{ people.first_name }} {{ people.last_name }}</a>
-                    <em class="text-muted">@{{ people.username }}</em>
-                    <br>
-                    <em class="text-muted">{{ people.follow_set.count }} followers | {{ people.gallery_set.count }} galleries</em>
-                </li>
-                {% endfor %}
-            </ul>
-            <div class="panel-footer text-right">
-                <a href="">See more people &nbsp;<i class="fa fa-arrow-right"></i></a>
-            </div>
-        </div>
+        {% include 'partials/people-you-may-follow.html' %}
     </div>
 </div>
 

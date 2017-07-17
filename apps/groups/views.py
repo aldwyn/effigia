@@ -28,10 +28,10 @@ class GroupItemView(ListView):
         return Group.objects.get(slug=self.kwargs['slug']).posts.all()
 
     def get_context_data(self, **kwargs):
-        kwargs['all_posts_count'] = self.get_queryset().count()
-        kwargs['group'] = Group.objects.get(slug=self.kwargs['slug'])
-        kwargs['post_create_form'] = modelform_factory(Post, fields=['description'])
-        return super(GroupItemView, self).get_context_data(**kwargs)
+        context = super(GroupItemView, self).get_context_data(**kwargs)
+        context['group'] = Group.objects.get(slug=self.kwargs['slug'])
+        context['post_create_form'] = modelform_factory(Post, fields=['description'])
+        return context
 
 
 class GroupCreateView(LoginRequiredMixin, CreateView):

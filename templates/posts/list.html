@@ -63,10 +63,9 @@
                     <em class="text-muted">No posts to display here yet. Be the first.</em>
                 </div>
             {% endif %}
-            {% if all_posts_count > page_obj.paginator.per_page %}
-                {% url 'group:item' group.slug as next_url %}
-                {% include 'partials/pagination.html' with next_url=next_url %}
-            {% endif %}
+
+            {% url 'group:item' group.slug as next_url %}
+            {% include 'partials/pagination.html' %}
         </div>
         <div class="col-sm-4">
             <div class="well">

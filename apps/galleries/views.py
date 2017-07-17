@@ -2,13 +2,10 @@
 from __future__ import unicode_literals
 
 from django.contrib import messages
-from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Count
-from django.shortcuts import redirect
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.views.generic import CreateView
@@ -39,7 +36,6 @@ class BaseGalleryListView(GalleryListQuerySetMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(BaseGalleryListView, self).get_context_data(**kwargs)
-        context['all_galleries_count'] = self.get_queryset().count()
         context['page_header'] = 'All Galleries'
         return context
 
@@ -47,12 +43,11 @@ class BaseGalleryListView(GalleryListQuerySetMixin, ListView):
 class GalleryListView(SearchView):
     template_name = 'galleries/list.html'
     context_object_name = 'galleries'
-    # model = Gallery
+    model = Gallery
     paginate_by = 15
 
     def get_context_data(self, **kwargs):
         context = super(GalleryListView, self).get_context_data(**kwargs)
-        context['all_galleries_count'] = self.get_queryset().count()
         context['page_header'] = 'All Galleries'
         if self.request.GET.get('q'):
             context['page_header'] = 'Results for "%s"' % self.request.GET.get('q')

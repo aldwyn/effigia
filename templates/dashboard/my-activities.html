@@ -57,10 +57,8 @@
             </li>
         {% endfor %}
         </ul>
-        {% if all_actions_count > page_obj.paginator.per_page %}
-            {% url 'dashboard:my-activities' as next_url %}
-            {% include 'partials/pagination.html' with next_url=next_url %}
-        {% endif %}
+        {% url 'dashboard:my-activities' as next_url %}
+        {% include 'partials/pagination.html' %}
     </div>
 </div>
 

@@ -1,0 +1,18 @@
+{% if people_you_may_follow %}
+<div id="people-you-may-follow" class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-user-circle-o"></i>People you may follow
+    </div>
+    <ul class="list-group">
+        {% for people in people_you_may_follow %}
+        <li class="list-group-item">
+            <a href="{% url 'account_profile' people.username %}">{{ people.first_name }} {{ people.last_name }}</a>
+            <em class="text-muted">| {{ people.username }}</em>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="panel-footer text-right">
+        <a href="">See more people &nbsp;<i class="fa fa-arrow-right"></i></a>
+    </div>
+</div>
+{% endif %}

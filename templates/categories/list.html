@@ -24,10 +24,8 @@
     <hr>
     {% endfor %}
 
-    {% if all_categories_count > page_obj.paginator.per_page %}
-        {% url 'category:list' as next_url %}
-        {% include 'partials/pagination.html' with next_url=next_url %}
-    {% endif %}
+    {% url 'category:list' as next_url %}
+    {% include 'partials/pagination.html' %}
 
 </div>
 {% endblock %}
