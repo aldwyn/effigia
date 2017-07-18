@@ -13,6 +13,8 @@ from django.views.generic import CreateView
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 
+from core.mixins import ObjectDeleteMixin
+from core.mixins import ObjectUpdateMixin
 from core.models import Category
 from ..interactions.forms import CommentForm
 from ..interactions.models import Like
@@ -116,7 +118,7 @@ class GalleryCreateView(LoginRequiredMixin, CreateView):
         return super(GalleryCreateView, self).form_valid(form)
 
 
-class GalleryEditView(LoginRequiredMixin, UpdateView):
+class GalleryEditView(LoginRequiredMixin, ObjectUpdateMixin, UpdateView):
     template_name = 'galleries/edit.html'
     context_object_name = 'gallery'
     fields = ['name', 'description', 'category', 'cover_image']

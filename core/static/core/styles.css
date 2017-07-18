@@ -139,3 +139,14 @@ img.avatar-circle {
     font-style: italic;
     margin-bottom: 0;
 }
+
+.error-banner {
+    text-align: center;
+    font-weight: bolder;
+    margin-top: 20%;
+    font-size: 6em;
+}
+
+.error-banner-desc {
+    margin-bottom: 20%;
+}

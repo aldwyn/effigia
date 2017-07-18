@@ -77,7 +77,7 @@ class BaseFollowingsView(LoginRequiredMixin,
     template_name = 'dashboard/followings-base.html'
     context_object_name = 'followings'
     model = Follow
-    paginate_by = 5
+    paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super(BaseFollowingsView, self).get_context_data(**kwargs)

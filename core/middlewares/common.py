@@ -19,15 +19,25 @@ MODELS_FOR_SAVING_VISITS = {
 }
 
 
-class EffigiaVisitMiddleware(MiddlewareMixin):
+class MiddlewareObjectMixin(object):
+
+    def get_object(self, klass, **kwargs):
+        if kwargs.get('slug'):
+            return klass.objects.get(slug=kwargs['slug'])
+
+    def is_item_view(self, view_func, view_kwargs):
+        return (hasattr(view_func, 'view_class') and
+                view_func.view_class in MODELS_FOR_SAVING_VISITS and
+                view_kwargs.get('slug'))
+
+
+class EffigiaVisitMiddleware(MiddlewareObjectMixin, MiddlewareMixin):
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         """ Save an action for the visited objects of the current user """
-        if (hasattr(view_func, 'view_class') and
-                view_func.view_class in MODELS_FOR_SAVING_VISITS and
-                view_kwargs.get('slug')):
+        if (self.is_item_view(view_func, view_kwargs)):
             klass = MODELS_FOR_SAVING_VISITS[view_func.view_class]
-            obj = klass.objects.get(slug=view_kwargs['slug'])
+            obj = self.get_object(klass, **view_kwargs)
             if request.user.is_authenticated():
                 action.send(request.user, verb='visited a %s' % obj._meta.verbose_name, target=obj)
             else:

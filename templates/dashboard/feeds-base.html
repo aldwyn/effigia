@@ -77,7 +77,7 @@
                                     {% endwith %}
                                     <div class="media-body">
                                         <span class="h4">
-                                            <a href="">{{ action.target }}</a>
+                                            <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
                                             <small>by <a href="{% url 'account_profile' action.actor %}">@{{ action.target.created_by }}</a></small>
                                         </span>
                                         <a href="{{ action.target.get_absolute_url }}">

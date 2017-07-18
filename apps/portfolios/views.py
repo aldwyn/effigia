@@ -67,8 +67,6 @@ class PortfolioCreateView(LoginRequiredMixin, CreateView):
         return form
 
     def form_valid(self, form):
-        print form.__dict__
-        assert False
         form.instance.created_by = self.request.user
         portfolio = form.save()
         messages.add_message(

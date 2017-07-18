@@ -1,5 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Page 403: Permission Denied</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1 class="error-banner">
+                <small>Page</small>
+                <span>403</span>
+            </h1>
+            <hr>
+            <div class="alert alert-warning error-banner-desc">
+                <i class="fa fa-exclamation-circle"></i><strong>Permission Denied</strong>
+                <p>
+                    You're not allowed to access this.
+                    <a href="{% url 'dashboard:home' %}">Go to Home</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

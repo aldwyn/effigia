@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_countries',
     'django_nose',
-    'easy_timezones',
+    # 'easy_timezones',
     'imagekit',
     'ordered_model',
     'storages',
@@ -89,7 +89,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'easy_timezones.middleware.EasyTimezoneMiddleware',
+    # 'easy_timezones.middleware.EasyTimezoneMiddleware',
     'core.middlewares.common.EffigiaVisitMiddleware',
 ]
 
@@ -178,8 +178,8 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'accounts.User'
 
-GEOIP_DATABASE = os.path.join(BASE_DIR, 'core/resources/GeoLiteCity.dat')
-GEOIPV6_DATABASE = os.path.join(BASE_DIR, 'core/resources/GeoLiteCity.dat')
+# GEOIP_DATABASE = os.path.join(BASE_DIR, 'core/resources/GeoLiteCity.dat')
+# GEOIPV6_DATABASE = os.path.join(BASE_DIR, 'core/resources/GeoLiteCity.dat')
 
 LOGIN_URL = reverse_lazy('account_login')
 LOGOUT_URL = reverse_lazy('account_logout')
