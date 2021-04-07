@@ -178,25 +178,22 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'accounts.User'
 
-# GEOIP_DATABASE = os.path.join(BASE_DIR, 'core/resources/GeoLiteCity.dat')
-# GEOIPV6_DATABASE = os.path.join(BASE_DIR, 'core/resources/GeoLiteCity.dat')
-
 LOGIN_URL = reverse_lazy('account_login')
 LOGOUT_URL = reverse_lazy('account_logout')
 LOGIN_REDIRECT_URL = reverse_lazy('dashboard:home')
 LOGOUT_REDIRECT_URL = reverse_lazy('core:index')
 
-STATIC_URL = os.getenv('DJANGO_STATIC_URL')
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-MEDIA_URL = os.getenv('DJANGO_MEDIA_URL')
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-DEFAULT_FILE_STORAGE = os.getenv('DJANGO_FILE_STORAGE_BACKEND')
+# DEFAULT_FILE_STORAGE = os.getenv('DJANGO_FILE_STORAGE_BACKEND')
 
 GS_BUCKET_NAME = os.getenv('GS_BUCKET_NAME')
 GS_FILE_OVERWRITE = False
