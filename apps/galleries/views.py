@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.db.models import Count
 from django.db.models import Q
 from django.views.generic import ListView
@@ -39,7 +39,6 @@ class BaseGalleryListView(GalleryListQuerySetMixin, ListView):
     def get_queryset(self):
         if self.request.GET.get('q'):
             qs = self.request.GET['q']
-            print qs
             return self.model.objects.filter(
                 Q(is_default=False),
                 Q(name__icontains=qs) |
@@ -92,7 +91,7 @@ class GalleryItemView(DetailView):
         context['comment_form'] = CommentForm()
         context['featured_portfolios'] = context['object'].portfolios.all()[:3]
         content_type = ContentType.objects.get_for_model(Gallery)
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             context['liked'] = Like.objects.filter(
                 liker=self.request.user,
                 content_type=content_type,

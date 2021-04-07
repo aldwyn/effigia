@@ -1,13 +1,13 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
 
 urlpatterns = [
-    url(r'^by-gallery/(?P<slug>[\w\-]+)$', views.PortfolioListView.as_view(), name='list'),
-    url(r'^i/(?P<slug>[\w\-]+)$', views.PortfolioItemView.as_view(), name='item'),
-    url(r'^i/(?P<slug>[\w\-]+)/edit$', views.PortfolioEditView.as_view(), name='edit'),
-    url(r'^i/(?P<slug>[\w\-]+)/delete$', views.PortfolioDeleteView.as_view(), name='delete'),
-    url(r'^i/(?P<slug>[\w\-]+)/bulk$', views.PortfolioBulkCreateView.as_view(), name='bulk-create'),
-    url(r'^create$', views.PortfolioCreateView.as_view(), name='create'),
+    path('by-gallery/<slug>', views.PortfolioListView.as_view(), name='list'),
+    path('i/<slug>', views.PortfolioItemView.as_view(), name='item'),
+    path('i/<slug>/edit', views.PortfolioEditView.as_view(), name='edit'),
+    path('i/<slug>/delete', views.PortfolioDeleteView.as_view(), name='delete'),
+    path('i/<slug>/bulk', views.PortfolioBulkCreateView.as_view(), name='bulk-create'),
+    path('create', views.PortfolioCreateView.as_view(), name='create'),
 ]

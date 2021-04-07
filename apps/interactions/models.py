@@ -7,11 +7,11 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
-from model_utils.models import TimeStampedModel
+from django_extensions.db.models import TimeStampedModel
 
 
 class Like(TimeStampedModel):
-    liker = models.ForeignKey(get_user_model(), related_name='liked')
+    liker = models.ForeignKey(get_user_model(), related_name='liked', on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
@@ -31,7 +31,7 @@ class Like(TimeStampedModel):
 
 class Comment(TimeStampedModel):
     text = models.TextField()
-    created_by = models.ForeignKey(get_user_model(), related_name='comments')
+    created_by = models.ForeignKey(get_user_model(), related_name='comments', on_delete=models.CASCADE)
     likes = GenericRelation(Like, related_query_name='comments')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()

@@ -1,13 +1,13 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
 
 urlpatterns = [
-    url(r'^list$', views.GalleryListView.as_view(), name='list'),
-    url(r'^i/(?P<slug>[\w\-]+)$', views.GalleryItemView.as_view(), name='item'),
-    url(r'^by-category/(?P<slug>[\w\-]+)$', views.GalleryByCategoryListView.as_view(), name='list-by-category'),
-    url(r'^i/(?P<slug>[\w\-]+)/edit$', views.GalleryEditView.as_view(), name='edit'),
-    url(r'^i/(?P<slug>[\w\-]+)/delete$', views.GalleryDeleteView.as_view(), name='delete'),
-    url(r'^create$', views.GalleryCreateView.as_view(), name='create'),
+    path('list', views.GalleryListView.as_view(), name='list'),
+    path('i/<slug>', views.GalleryItemView.as_view(), name='item'),
+    path('by-category/<slug>', views.GalleryByCategoryListView.as_view(), name='list-by-category'),
+    path('i/<slug>/edit', views.GalleryEditView.as_view(), name='edit'),
+    path('i/<slug>/delete', views.GalleryDeleteView.as_view(), name='delete'),
+    path('create', views.GalleryCreateView.as_view(), name='create'),
 ]

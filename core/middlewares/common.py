@@ -38,7 +38,7 @@ class EffigiaVisitMiddleware(MiddlewareObjectMixin, MiddlewareMixin):
         if (self.is_item_view(view_func, view_kwargs)):
             klass = MODELS_FOR_SAVING_VISITS[view_func.view_class]
             obj = self.get_object(klass, **view_kwargs)
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 action.send(request.user, verb='visited a %s' % obj._meta.verbose_name, target=obj)
             else:
                 obj.anonymous_visits_count += 1

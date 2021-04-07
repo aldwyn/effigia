@@ -12,16 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 from django.core.exceptions import ImproperlyConfigured
-from django.core.urlresolvers import reverse_lazy
-
-
-def get_env_variable(var_name):
-    """ Get the environment variable or return exception """
-    try:
-        return os.environ[var_name]
-    except KeyError:
-        error_msg = "Set the %s environment variable" % var_name
-        raise ImproperlyConfigured(error_msg)
+from django.urls import reverse_lazy
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -37,8 +28,7 @@ SECRET_KEY = 'wdmfxchl(qb-uf-q3g#zbo3*ordjlls1(+6*$rbik(2%((y36#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-# ALLOWED_HOSTS = ['ubuntubitch', 'localhost', '127.0.0.1']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'effigia.herokuapp.com']
 
 INTERNAL_IPS = ['127.0.0.1']
 
@@ -46,7 +36,7 @@ INTERNAL_IPS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'wpadmin',
+    # 'wpadmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,7 +53,9 @@ INSTALLED_APPS = [
     'avatar',
     'debug_toolbar',
     'django_countries',
-    'django_nose',
+    'django_extensions',
+    'django_prometheus',
+    # 'django_nose',
     # 'easy_timezones',
     'imagekit',
     'ordered_model',
@@ -81,6 +73,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -91,6 +84,7 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     # 'easy_timezones.middleware.EasyTimezoneMiddleware',
     'core.middlewares.common.EffigiaVisitMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 SITE_ID = 1
@@ -121,13 +115,16 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': get_env_variable('DJANGO_DB_NAME'),
-        'USER': get_env_variable('DJANGO_DB_USER'),
-        'PASSWORD': get_env_variable('DJANGO_DB_PASS'),
-        'HOST': get_env_variable('DJANGO_DB_HOST'),
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django_prometheus.db.backends.postgresql',
+        'NAME': os.getenv('DJANGO_DB_NAME'),
+        'USER': os.getenv('DJANGO_DB_USER'),
+        'PASSWORD': os.getenv('DJANGO_DB_PASS'),
+        'HOST': os.getenv('DJANGO_DB_HOST'),
     }
 }
+
+DJANGO_EXTENSIONS_RESET_DB_POSTGRESQL_ENGINES = ['django_prometheus.db.backends.postgresql']
 
 
 # Password validation
@@ -186,22 +183,22 @@ LOGOUT_URL = reverse_lazy('account_logout')
 LOGIN_REDIRECT_URL = reverse_lazy('dashboard:home')
 LOGOUT_REDIRECT_URL = reverse_lazy('core:index')
 
-STATIC_URL = get_env_variable('DJANGO_STATIC_URL')
+STATIC_URL = os.getenv('DJANGO_STATIC_URL')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-MEDIA_URL = get_env_variable('DJANGO_MEDIA_URL')
+MEDIA_URL = os.getenv('DJANGO_MEDIA_URL')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-DEFAULT_FILE_STORAGE = get_env_variable('DJANGO_FILE_STORAGE_BACKEND')
+DEFAULT_FILE_STORAGE = os.getenv('DJANGO_FILE_STORAGE_BACKEND')
 
-GS_BUCKET_NAME = get_env_variable('GS_BUCKET_NAME')
+GS_BUCKET_NAME = os.getenv('GS_BUCKET_NAME')
 GS_FILE_OVERWRITE = False
 
-DJANGO_ADMIN_PASS = get_env_variable('DJANGO_ADMIN_PASS')
+DJANGO_ADMIN_PASS = os.getenv('DJANGO_ADMIN_PASS')
 
 # ACTSTREAM_SETTINGS = {
 #     'MANAGER': 'core.managers.EffigiaActionManager'
@@ -243,21 +240,26 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-GOOGLE_OAUTH2_CLIENT_ID = get_env_variable('GOOGLE_OAUTH2_CLIENT_ID')
-GOOGLE_OAUTH2_CLIENT_SECRET = get_env_variable('GOOGLE_OAUTH2_CLIENT_SECRET')
+GOOGLE_OAUTH2_CLIENT_ID = os.getenv('GOOGLE_OAUTH2_CLIENT_ID')
+GOOGLE_OAUTH2_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH2_CLIENT_SECRET')
 
-FACEBOOK_OAUTH2_CLIENT_ID = get_env_variable('FACEBOOK_OAUTH2_CLIENT_ID')
-FACEBOOK_OAUTH2_CLIENT_SECRET = get_env_variable('FACEBOOK_OAUTH2_CLIENT_SECRET')
+FACEBOOK_OAUTH2_CLIENT_ID = os.getenv('FACEBOOK_OAUTH2_CLIENT_ID')
+FACEBOOK_OAUTH2_CLIENT_SECRET = os.getenv('FACEBOOK_OAUTH2_CLIENT_SECRET')
 
-TWITTER_OAUTH2_CLIENT_ID = get_env_variable('TWITTER_OAUTH2_CLIENT_ID')
-TWITTER_OAUTH2_CLIENT_SECRET = get_env_variable('TWITTER_OAUTH2_CLIENT_SECRET')
+TWITTER_OAUTH2_CLIENT_ID = os.getenv('TWITTER_OAUTH2_CLIENT_ID')
+TWITTER_OAUTH2_CLIENT_SECRET = os.getenv('TWITTER_OAUTH2_CLIENT_SECRET')
 
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = get_env_variable('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = get_env_variable('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
 DEBUG = True
 if not os.getenv('GAE_INSTANCE'):
     EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+
+if os.getenv('ON_HEROKU'):
+    import django_heroku
+    django_heroku.settings(locals())

@@ -36,4 +36,4 @@ def get_image(source):
 
 @register.filter
 def startswith(text, substr):
-    return isinstance(text, basestring) and text.startswith(substr)
+    return isinstance(text, str) and text.startswith(substr)

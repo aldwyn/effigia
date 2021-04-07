@@ -14,6 +14,6 @@ class Gallery(EffigiaModel):
 
     cover_image = models.ImageField(upload_to='covers/gallery/')
     is_default = models.BooleanField(default=False)
-    category = models.ForeignKey('core.Category', related_name='galleries')
+    category = models.ForeignKey('core.Category', related_name='galleries', on_delete=models.CASCADE)
     comments = GenericRelation(Comment, related_query_name='galleries')
     likes = GenericRelation(Like, related_query_name='galleries')

@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from actstream import action
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.utils.text import slugify
 from model_utils import Choices
@@ -22,7 +22,7 @@ class EffigiaModel(TimeStampedModel, SoftDeletableModel, StatusModel):
     is_private = models.BooleanField(default=False)
     description = models.TextField()
     slug = models.SlugField(unique=True)
-    created_by = models.ForeignKey(get_user_model())
+    created_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     anonymous_visits_count = models.PositiveIntegerField(default=0)
 
     tracker = FieldTracker()

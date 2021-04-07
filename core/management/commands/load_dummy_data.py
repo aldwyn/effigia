@@ -103,7 +103,7 @@ class Command(BaseCommand):
 
     def load_dummy_users(self, default_user_count=30):
         self.__log_info('Creating {} users...'.format(default_user_count))
-        for i in xrange(default_user_count):
+        for i in range(default_user_count):
             user = UserFactory.build()
             user.save()
             user.profile.is_test_user = True
@@ -113,7 +113,7 @@ class Command(BaseCommand):
 
     def load_dummy_galleries(self, default_gallery_count=40):
         self.__log_info('Creating {} galleries...'.format(default_gallery_count))
-        for i in xrange(default_gallery_count):
+        for i in range(default_gallery_count):
             gallery = GalleryFactory.build(
                 created_by=random.choice(self.users),
                 category=random.choice(self.categories),
@@ -125,7 +125,7 @@ class Command(BaseCommand):
 
     def load_dummy_portfolios(self, default_portfolio_count=100):
         self.__log_info('Creating {} portfolios...'.format(default_portfolio_count))
-        for i in xrange(default_portfolio_count):
+        for i in range(default_portfolio_count):
             gallery = random.choice(self.galleries)
             portfolio = PortfolioFactory.build(
                 gallery=gallery,
@@ -138,7 +138,7 @@ class Command(BaseCommand):
 
     def load_dummy_groups(self, default_group_count=30):
         self.__log_info('Creating {} groups...'.format(default_group_count))
-        for i in xrange(default_group_count):
+        for i in range(default_group_count):
             group = GroupFactory.build(
                 created_by=random.choice(self.users),
                 slug='group-%s' % i
@@ -149,7 +149,7 @@ class Command(BaseCommand):
 
     def load_dummy_posts(self, default_post_count=100):
         self.__log_info('Creating {} posts...'.format(default_post_count))
-        for i in xrange(default_post_count):
+        for i in range(default_post_count):
             post = PostFactory.build(
                 group=random.choice(self.groups),
                 created_by=random.choice(self.users),
@@ -161,7 +161,7 @@ class Command(BaseCommand):
 
     def load_dummy_comments(self, obj_list, default_max_count=15):
         self.__log_info('Creating comments on `{}`...'.format(obj_list[0].__class__))
-        comments_pool = [CommentFactory.build() for _ in xrange(100)]
+        comments_pool = [CommentFactory.build() for _ in range(100)]
         for obj in obj_list:
             counts = random.randint(1, default_max_count)
             self.__log_result('%s: %s comments' % (obj, counts))
@@ -173,7 +173,7 @@ class Command(BaseCommand):
     def load_dummy_followings(self, obj_list, default_max_count=10):
         self.__log_info('Creating followings on `{}`...'.format(obj_list[0].__class__))
         for user in self.users:
-            for obj in random.sample(obj_list, random.randint(1, default_max_count)):
+            for obj in random.sample(list(obj_list), random.randint(1, default_max_count)):
                 if obj != user:
                     follow(user, obj)
 

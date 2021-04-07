@@ -1,10 +1,10 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
 
 urlpatterns = [
-    url(r'^i/(?P<slug>[\w\-]+)$', views.PostItemView.as_view(), name='item'),
-    url(r'^i/(?P<slug>[\w\-]+)/edit$', views.PostEditView.as_view(), name='edit'),
-    url(r'^g/(?P<slug>[\w\-]+)/create$', views.PostCreateView.as_view(), name='create'),
+    path('i/<slug>', views.PostItemView.as_view(), name='item'),
+    path('i/<slug>/edit', views.PostEditView.as_view(), name='edit'),
+    path('g/<slug>/create', views.PostCreateView.as_view(), name='create'),
 ]

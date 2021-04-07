@@ -6,7 +6,7 @@ from actstream.models import user_stream
 from actstream.models import Action
 from actstream.models import Follow
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
 from django.views.generic import ListView

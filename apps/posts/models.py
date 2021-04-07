@@ -10,7 +10,7 @@ from ..interactions.models import Comment, Like
 
 
 class Post(EffigiaModel):
-    group = models.ForeignKey('groups.Group', related_name='posts')
+    group = models.ForeignKey('groups.Group', related_name='posts', on_delete=models.CASCADE)
     likers = models.ManyToManyField(get_user_model(), related_name='posts_liked')
     comments = GenericRelation(Comment, related_query_name='posts')
     likes = GenericRelation(Like, related_query_name='posts')

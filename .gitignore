@@ -9,5 +9,6 @@ elasticsearch.yml
 app.yaml
 debug.log
 db.sqlite3
+.vscode
 *.pyc
 *.dat

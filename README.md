@@ -12,7 +12,7 @@ Y8b.     888    888    888 Y88b 888 888 888  888 d8b Y88b.    Y88..88P 888  888 
                             "Y88P"                                                   
 ```
 
-[![Requirements Status](https://requires.io/github/aldwyn/effigia/requirements.svg?branch=master)](https://requires.io/github/aldwyn/effigia/requirements/?branch=master)
+[![Requirements Status](https://requires.io/github/aldwyn/effigia/requirements.svg?branch=main)](https://requires.io/github/aldwyn/effigia/requirements/?branch=main)
 
 # *effigia.com* - For Your Portfolios
 
@@ -26,6 +26,19 @@ If you're into forums and discussions, you can join some active groups or create
 
 PS. *effigia* means an *ideal, image, likeness, and effigy* in Latin.
 
-[Click here to see live host on Google App Angine](https://effigia-172804.appspot.com)
+[Click here to see live host on Heroku](https://effigia.herokuapp.com)
+
+
+###  Local Development
+```sh
+# prepare env
+pip install -r requirements.txt
+
+# create Postgres db prior to executing the following
+python3 manage.py reset_db --noinput -c
+python3 manage.py migrate
+python3 manage.py collectstatic --noinput
+python3 manage.py load_dummy_data
+```
 
 **Disclaimer**: *The site is still in alpha (i.e. the development is on progress and it still has to take a lot of acceptance testing). You can sign-in via the provided usernames and password on the main page.*
