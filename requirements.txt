@@ -1,6 +1,7 @@
 bcrypt==3.2.0
 Django==3.1.7
 django-activity-stream==0.10.0
+django-admin-interface==0.16.0
 django-allauth==0.44.0
 django-avatar==5.0.0
 django-countries==7.1

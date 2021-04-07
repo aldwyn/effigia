@@ -36,7 +36,8 @@ INTERNAL_IPS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    # 'wpadmin',
+    'admin_interface',
+    'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -108,6 +109,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 
 # Database
@@ -203,20 +206,6 @@ DJANGO_ADMIN_PASS = os.getenv('DJANGO_ADMIN_PASS')
 # ACTSTREAM_SETTINGS = {
 #     'MANAGER': 'core.managers.EffigiaActionManager'
 # }
-
-WPADMIN = {
-    'admin': {
-        'title': 'Datafeed',
-        'menu': {
-            'top': 'wpadmin.menu.menus.BasicTopMenu',
-            'left': 'wpadmin.menu.menus.BasicLeftMenu',
-        },
-        'dashboard': {
-            'breadcrumbs': True,
-        },
-        'custom_style': STATIC_URL + 'wpadmin/css/themes/sunrise.css',
-    }
-}
 
 # django-allauth
 ACCOUNT_SESSION_REMEMBER = False
