@@ -66,24 +66,27 @@ class Command(BaseCommand):
         current_site.domain = 'effigia.com'
         current_site.name = 'Effigia'
         current_site.save()
-        google_app = SocialApp.objects.create(
-            name='Google',
-            provider='google',
-            client_id=settings.GOOGLE_OAUTH2_CLIENT_ID,
-            secret=settings.GOOGLE_OAUTH2_CLIENT_SECRET)
-        facebook_app = SocialApp.objects.create(
-            name='Facebook',
-            provider='facebook',
-            client_id=settings.FACEBOOK_OAUTH2_CLIENT_ID,
-            secret=settings.FACEBOOK_OAUTH2_CLIENT_SECRET)
-        twitter_app = SocialApp.objects.create(
-            name='Twitter',
-            provider='twitter',
-            client_id=settings.TWITTER_OAUTH2_CLIENT_ID,
-            secret=settings.TWITTER_OAUTH2_CLIENT_SECRET)
-        google_app.sites.add(current_site)
-        facebook_app.sites.add(current_site)
-        twitter_app.sites.add(current_site)
+        if settings.GOOGLE_OAUTH2_CLIENT_ID and settings.GOOGLE_OAUTH2_CLIENT_SECRET:
+            google_app = SocialApp.objects.create(
+                name='Google',
+                provider='google',
+                client_id=settings.GOOGLE_OAUTH2_CLIENT_ID,
+                secret=settings.GOOGLE_OAUTH2_CLIENT_SECRET)
+            google_app.sites.add(current_site)
+        if settings.FACEBOOK_OAUTH2_CLIENT_ID and settings.FACEBOOK_OAUTH2_CLIENT_SECRET:
+            facebook_app = SocialApp.objects.create(
+                name='Facebook',
+                provider='facebook',
+                client_id=settings.FACEBOOK_OAUTH2_CLIENT_ID,
+                secret=settings.FACEBOOK_OAUTH2_CLIENT_SECRET)
+            facebook_app.sites.add(current_site)
+        if settings.TWITTER_OAUTH2_CLIENT_ID and settings.TWITTER_OAUTH2_CLIENT_SECRET:
+            twitter_app = SocialApp.objects.create(
+                name='Twitter',
+                provider='twitter',
+                client_id=settings.TWITTER_OAUTH2_CLIENT_ID,
+                secret=settings.TWITTER_OAUTH2_CLIENT_SECRET)
+            twitter_app.sites.add(current_site)
 
     def load_dummy_categories(self):
         categories = [
