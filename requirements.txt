@@ -16,7 +16,7 @@ factory-boy==2.8.1
 google-cloud-storage==1.2.0
 gunicorn==19.7.1
 pilkit==2.0
-Pillow==4.2.1
+Pillow==8.1.1
 psycopg2==2.7.1
 
 -e git+https://github.com/justquick/django-activity-stream.git@1cd38f2#egg=actstream
