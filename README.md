@@ -35,6 +35,7 @@ PS. *effigia* means an *ideal, image, likeness, and effigy* in Latin.
 pip install -r requirements.txt
 
 # create Postgres db prior to executing the following
+source .env.local
 python3 manage.py reset_db --noinput -c
 python3 manage.py migrate
 python3 manage.py collectstatic --noinput

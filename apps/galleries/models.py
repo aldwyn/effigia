@@ -3,12 +3,13 @@ from __future__ import unicode_literals
 
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django_prometheus.models import ExportModelOperationsMixin
 
 from core.models import EffigiaModel
 from ..interactions.models import Comment, Like
 
 
-class Gallery(EffigiaModel):
+class Gallery(ExportModelOperationsMixin('gallery'), EffigiaModel):
     class Meta:
         verbose_name_plural = 'galleries'
 

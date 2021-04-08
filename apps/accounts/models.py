@@ -7,15 +7,16 @@ from django.db import models
 from django.urls import reverse
 from django_countries.fields import CountryField
 from django_extensions.db.models import TimeStampedModel
+from django_prometheus.models import ExportModelOperationsMixin
 
 
-class User(AbstractUser):
+class User(ExportModelOperationsMixin('user'), AbstractUser):
 
     def get_absolute_url(self):
         return reverse('account_profile', args=[self])
 
 
-class UserProfile(TimeStampedModel):
+class UserProfile(ExportModelOperationsMixin('userprofile'), TimeStampedModel):
     user = models.OneToOneField(get_user_model(), related_name='profile', on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='userprofiles/avatars')
     is_test_user = models.BooleanField(default=False)

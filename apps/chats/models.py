@@ -5,9 +5,10 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
+from django_prometheus.models import ExportModelOperationsMixin
 
 
-class Chat(TimeStampedModel):
+class Chat(ExportModelOperationsMixin('chat'), TimeStampedModel):
     from_addr = models.ForeignKey(get_user_model(), related_name='message_from', on_delete=models.CASCADE)
     to_addr = models.ForeignKey(get_user_model(), related_name='message_to', on_delete=models.CASCADE)
 
@@ -15,7 +16,7 @@ class Chat(TimeStampedModel):
         return reverse('chat:list')
 
 
-class Message(TimeStampedModel):
+class Message(ExportModelOperationsMixin('message'), TimeStampedModel):
     body = models.TextField()
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
 

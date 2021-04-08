@@ -8,9 +8,10 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django_extensions.db.models import TimeStampedModel
+from django_prometheus.models import ExportModelOperationsMixin
 
 
-class Like(TimeStampedModel):
+class Like(ExportModelOperationsMixin('like'), TimeStampedModel):
     liker = models.ForeignKey(get_user_model(), related_name='liked', on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -29,7 +30,7 @@ class Like(TimeStampedModel):
         return super(Like, self).delete(*args, **kwargs)
 
 
-class Comment(TimeStampedModel):
+class Comment(ExportModelOperationsMixin('comment'), TimeStampedModel):
     text = models.TextField()
     created_by = models.ForeignKey(get_user_model(), related_name='comments', on_delete=models.CASCADE)
     likes = GenericRelation(Like, related_query_name='comments')
