@@ -27,8 +27,54 @@ spec:
       serviceAccountName: {{ include "effigia-chart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: {{ include "effigia-chart.fullname" . }}-sites-enabled-configmap
+        - name: staticfiles
+          emptyDir: {}
+      initContainers:
+        - name: wait-for-provisioning-job
+          image: {{ .Values.kubectl.image }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - kubectl
+            - wait
+            - --for
+            - condition=complete
+            - "jobs/{{ include "effigia-chart.fullname" . }}-provisioning-job"
+        - name: collectstatic
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["python", "manage.py", "collectstatic", "--noinput"]
+          volumeMounts:
+            - name: staticfiles
+              mountPath: /var/www/html
       containers:
-        - name: {{ .Chart.Name }}
+        - name: staticfiles
+          image: {{ .Values.django.static.image }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d/
+            - name: staticfiles
+              mountPath: /var/www/html/
+          readinessProbe:
+            httpGet:
+              path: /static
+              port: 80
+          livenessProbe:
+            httpGet:
+              path: /static
+              port: 80
+          resources:
+            requests:
+              cpu: 10m
+              memory: 20Mi
+        - name: api
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
