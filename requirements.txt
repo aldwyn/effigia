@@ -1,5 +1,5 @@
 bcrypt==3.2.0
-Django==3.2.4
+Django==3.2.5
 django-activity-stream==0.10.0
 django-admin-interface==0.16.1
 django-allauth==0.44.0
